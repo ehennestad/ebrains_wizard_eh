@@ -1,15 +1,16 @@
 import React from 'react';
 
 import GeneralWizard from './Wizard/GeneralWizard';
-import ReferencesAndContributionsWizard from './Wizard/ReferencesAndContributionsWizard';
-import ResourcesAndLegalWizard from './Wizard/ResourcesAndLegalWizard';
+import DatasetWizard from './Wizard/DatasetWizard';
+import FundingAndAffiliationWizard from './Wizard/FundingAndAffiliationWizard';
+import ContributorsWizard from './Wizard/ContributorsWizard';
 import ExperimentWizard from './Wizard/ExperimentWizard.js';
-import SubjectGroupWizard from './Wizard/SubjectGroupWizard';
-import SubjectTemplateWizard from './Wizard/SubjectTemplateWizard';
-import SubjectsWizard from './Wizard/SubjectsWizard';
-import TissueSampleCollectionWizard from './Wizard/TissueSampleCollectionWizard';
-import TissueSampleTemplateWizard from './Wizard/TissueSampleTemplateWizard';
-import TissueSamplesWizard from './Wizard/TissueSamplesWizard';
+//import SubjectGroupWizard from './Wizard/SubjectGroupWizard';
+//import SubjectTemplateWizard from './Wizard/SubjectTemplateWizard';
+//import SubjectsWizard from './Wizard/SubjectsWizard';
+//import TissueSampleCollectionWizard from './Wizard/TissueSampleCollectionWizard';
+//import TissueSampleTemplateWizard from './Wizard/TissueSampleTemplateWizard';
+//import TissueSamplesWizard from './Wizard/TissueSamplesWizard';
 import Result from './Result';
 
 import { 
@@ -24,36 +25,31 @@ import {
 
 import {
   generalSchema,
+  datasetSchema,
   experimentSchema,
   areSubjectsGrouped,
   areTissueSamplesGrouped,
   getNumberOfSubjects,
   getNumberOfTissueSamples,
   getStudyTopic,
-  getSubjectTemplateSchema,
-  getSubjectGroupsSchemaForTissueSample,
-  getTissueSampleTemplateSchema,
-  getArtificialTissueSampleTemplateSchema,
-  getSubjectGroupsSchema,
-  getSubjectsSchema,
-  getTissueSamplesSchema,
-  getTissueSampleCollectionsSchema,
-  generateItemsFromTemplate
+  generateItemsFromTemplate,
+  uiSchema
 } from '../helpers/Wizard';
 
-import * as referencesAndContributionsModule from '../schemas/referencesAndContributions.json';
-import * as resourcesAndLegalModule from '../schemas/resourcesAndLegal.json';
+import * as fundingAndAffiliationModule from '../schemas/fundingAndAffiliation.json';
+import * as contributorsModule from '../schemas/contributors.json';
 
-const referencesAndContributionsSchema = referencesAndContributionsModule.default;
-const resourcesAndLegalSchema = resourcesAndLegalModule.default;
+const fundingAndAffiliationSchema = fundingAndAffiliationModule.default;
+const contributorsSchema = contributorsModule.default;
 
 const STUDY_TOPIC_SUBJECT_VALUE = "Subject";
 const STUDY_TOPIC_TISSUE_SAMPLE_VALUE = "Tissue sample";
 const STUDY_TOPIC_ARTIFICIAL_TISSUE_SAMPLE_VALUE = "Artificial tissue sample";
 
 const WIZARD_STEP_GENERAL = "WIZARD_STEP_GENERAL";
-const WIZARD_STEP_REFERENCES_AND_CONTRIBUTIONS = "WIZARD_STEP_REFERENCES_AND_CONTRIBUTIONS";
-const WIZARD_STEP_RESOURCES_AND_LEGAL = "WIZARD_STEP_RESOURCES_AND_LEGAL";
+const WIZARD_STEP_DATASET = "WIZARD_STEP_DATASET";
+const WIZARD_STEP_FUNDING_AND_AFFILIATION = "WIZARD_STEP_FUNDING_AND_AFFILIATION";
+const WIZARD_STEP_CONTRIBUTORS = "WIZARD_STEP_CONTRIBUTORS";
 const WIZARD_STEP_EXPERIMENT = "WIZARD_STEP_EXPERIMENT";
 const WIZARD_STEP_SUBJECT_GROUP = "WIZARD_STEP_SUBJECT_GROUP";
 const WIZARD_STEP_SUBJECT_TEMPLATE = "WIZARD_STEP_SUBJECT_TEMPLATE";
@@ -66,10 +62,10 @@ class Wizard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataset: undefined,
+      datasetinfo: undefined,
       general: undefined,
-      referencesAndContributions: undefined,
-      resourcesAndLegal: undefined,
+      fundingAndAffiliation: undefined,
+      contributors: undefined,
       experiment: undefined,
       subjectGroups: undefined,
       subjectTemplate: undefined,
@@ -79,6 +75,7 @@ class Wizard extends React.Component {
       tissueSamples: [],
       wizardStep: WIZARD_STEP_GENERAL,
       schema: generalSchema,
+      uiSchema: uiSchema,
       result: undefined
     }
   }
@@ -86,182 +83,48 @@ class Wizard extends React.Component {
   handleGeneralSubmit = data => {
     this.setState({
       general: data,
-      wizardStep: WIZARD_STEP_REFERENCES_AND_CONTRIBUTIONS,
-      schema: referencesAndContributionsSchema
+      wizardStep: WIZARD_STEP_DATASET,
+      schema: datasetSchema
     });
   };
 
-  handleReferencesAndContributionsSubmit = data => {
+  handleDatasetSubmit = data => {
     this.setState({
-      referencesAndContributions: data,
-      wizardStep: WIZARD_STEP_RESOURCES_AND_LEGAL,
-      schema: resourcesAndLegalSchema
+      datasetinfo: data,
+      wizardStep: WIZARD_STEP_FUNDING_AND_AFFILIATION,
+      schema: fundingAndAffiliationSchema
+    });
+  };
+
+
+  handleFundingAndAffiliationSubmit = data => {
+    this.setState({
+      fundingAndAffiliation: data,
+      wizardStep: WIZARD_STEP_CONTRIBUTORS,
+      schema: contributorsSchema
     });
   }
 
-  handleResourcesAndLegalSubmit = data => {
+  handleContributorsSubmit = data => {
     this.setState({
-      resourcesAndLegal: data,
+      contributors: data,
       wizardStep: WIZARD_STEP_EXPERIMENT,
       schema: experimentSchema
     });
   }
 
   handleExperimentSubmit = data => {
-    const studyTopic = getStudyTopic(data);
-    const dataset = {...this.state.general, ...this.state.referencesAndContributions, ...this.state.resourcesAndLegal, ...data};
+
+    const dataset = {...this.state.general, ...this.state.fundingAndAffiliation, ...this.state.contributors, ...data};
+    const res = generateDocumentsFromDataset(dataset);
+
     this.setState(prevState => ({
-      dataset: {...prevState.general, ...prevState.referencesAndContributions, ...prevState.resourcesAndLegal, ...data}, 
-      experiment: data
+      dataset: {...prevState.general, ...prevState.fundingAndAffiliation, ...prevState.contributors, ...data}, 
+      experiment: data,
+      result: res,
+      wizardStep: WIZARD_END
     }));
-    
-    if (studyTopic === STUDY_TOPIC_SUBJECT_VALUE) {
-      if (areSubjectsGrouped(data)) {
-        const subjectGroupsSchema = getSubjectGroupsSchema(data);
-        this.setState({
-          schema: subjectGroupsSchema,
-          wizardStep: WIZARD_STEP_SUBJECT_GROUP
-        });
-      } else {
-        const subjectTemplateSchema = getSubjectTemplateSchema();
-        this.setState({
-          schema: subjectTemplateSchema,
-          wizardStep: WIZARD_STEP_SUBJECT_TEMPLATE
-        });
-      }
-    } else if (studyTopic === STUDY_TOPIC_TISSUE_SAMPLE_VALUE) {
-      const subjectGroupsSchema = getSubjectGroupsSchemaForTissueSample();
-      this.setState({
-        schema: subjectGroupsSchema,
-        wizardStep: WIZARD_STEP_SUBJECT_GROUP
-      });
-    } else if (studyTopic === STUDY_TOPIC_ARTIFICIAL_TISSUE_SAMPLE_VALUE) {
-      if (areTissueSamplesGrouped(data)) {
-        const tissueSampleCollectionsSchema = getTissueSampleCollectionsSchema(data);
-        this.setState({
-          schema: tissueSampleCollectionsSchema,
-          wizardStep: WIZARD_STEP_TISSUE_SAMPLE_GROUP
-        });
-      } else {
-        const tissueSampleTemplateSchema = getArtificialTissueSampleTemplateSchema();
-        this.setState({
-          schema: tissueSampleTemplateSchema,
-          wizardStep: WIZARD_STEP_TISSUE_SAMPLE_TEMPLATE
-        });
-      }
-    } else {
-      const res = generateDocumentsFromDataset(dataset);
-      this.setState({
-        result: res,
-        wizardStep: WIZARD_END
-      });
-    }
   }
-
-  handleSubjectGroupSubmit = data => {
-    this.setState({subjectGroups: data});
-    const dataset = this.state.dataset;
-    const studyTopic = getStudyTopic(dataset);
-    if (studyTopic === STUDY_TOPIC_TISSUE_SAMPLE_VALUE) {
-      if (areTissueSamplesGrouped(dataset)) {
-        const tissueSampleCollectionsSchema = getTissueSampleCollectionsSchema(dataset);
-        this.setState({
-          schema: tissueSampleCollectionsSchema,
-          wizardStep: WIZARD_STEP_TISSUE_SAMPLE_GROUP
-        });
-      } else {
-        const tissueSampleTemplateSchema = getTissueSampleTemplateSchema(data);
-        this.setState({
-          schema: tissueSampleTemplateSchema,
-          wizardStep: WIZARD_STEP_TISSUE_SAMPLE_TEMPLATE
-        });        
-      }
-    } else { //studyTopic === STUDY_TOPIC_SUBJECT_VALUE
-      const res = generateDocumentsFromDatasetAndSubjectGroups(dataset, data);
-      this.setState({
-        result: res,
-        wizardStep: WIZARD_END
-      });
-    }
-  };
-
-  handleSubjectsSubmit = data => {
-    const res = generateDocumentsFromDatasetAndSubjects(this.state.dataset, data);
-    this.setState({
-      subjects: data,
-      result: res,
-      wizardStep: WIZARD_END
-    });
-  };
-
-  handleTissueSampleCollectionsSubmit = data => {
-    const dataset = this.state.dataset;
-    const studyTopic = getStudyTopic(dataset);
-    const res = (studyTopic === STUDY_TOPIC_ARTIFICIAL_TISSUE_SAMPLE_VALUE)?
-      generateDocumentsFromDatasetAndArtificialTissueSampleCollections(dataset, data):
-      generateDocumentsFromDatasetAndTissueSampleCollections(dataset, this.state.subjectGroups, data);
-    this.setState({
-      tissueSampleCollections: data,
-      result: res,
-      wizardStep: WIZARD_END
-    });
-  };
-
-  handleTissueSamplesSubmit = data => {
-    const dataset = this.state.dataset;
-    const studyTopic = getStudyTopic(dataset);
-    const res = (studyTopic === STUDY_TOPIC_ARTIFICIAL_TISSUE_SAMPLE_VALUE)?
-      generateDocumentsFromDatasetAndArtificialTissueSamples(dataset, data):
-      generateDocumentsFromDatasetAndTissueSamples(dataset, this.state.subjectGroups, data);
-    this.setState({
-      tissueSamples: data,
-      result: res,
-      wizardStep: WIZARD_END
-    });
-  };
-
-  handleSubjectTemplateSubmit = data => {
-    if (JSON.stringify(data) !== JSON.stringify(this.state.subjectTemplate)) {
-      const size = getNumberOfSubjects(this.state.dataset);
-      const newSubjects = generateItemsFromTemplate(data, size);
-      newSubjects.forEach((subject, index) => {
-        if(subject.lookupLabel) {
-          subject.lookupLabel = `${subject.lookupLabel} ${index + 1}`;
-        }
-      });
-      this.setState({
-        subjectTemplate: data,
-        subjects: newSubjects
-      });
-    }
-    const subjectsSchema = getSubjectsSchema();
-    this.setState({
-      schema: subjectsSchema,
-      wizardStep: WIZARD_STEP_SUBJECTS
-    });
-  };
-
-  handleTissueSampleTemplateSubmit = data => {
-    const dataset = this.state.dataset;
-    if (JSON.stringify(data) !== JSON.stringify(this.state.tissueSampleTemplate)) {
-      const size = getNumberOfTissueSamples(dataset);
-      const newTissueSamples = generateItemsFromTemplate(data, size);
-      newTissueSamples.forEach((sample, index) => {
-        if(sample.lookupLabel) {
-          sample.lookupLabel = `${sample.lookupLabel} ${index + 1}`;
-        }
-      });
-      this.setState({
-        tissueSampleTemplate: data,
-        tissueSamples: newTissueSamples
-      });
-    }
-    const tissueSamplesSchema = getTissueSamplesSchema();
-    this.setState({
-      schema: tissueSamplesSchema,
-      wizardStep: WIZARD_STEP_TISSUE_SAMPLES
-    });
-  };
 
   goBackToGeneralWizard = () => {
     this.setState({
@@ -270,17 +133,24 @@ class Wizard extends React.Component {
     });
   }
 
-  goBackToReferencesAndContributions = () => {
+  goBackToDatasetWizard = () => {
     this.setState({
-      schema: referencesAndContributionsSchema,
-      wizardStep: WIZARD_STEP_REFERENCES_AND_CONTRIBUTIONS
+      schema: datasetSchema,
+      wizardStep: WIZARD_STEP_DATASET
+    });
+  }
+
+  goBackTofundingAndAffiliation = () => {
+    this.setState({
+      schema: fundingAndAffiliationSchema,
+      wizardStep: WIZARD_STEP_FUNDING_AND_AFFILIATION
     });
   };
 
-  goBackToResourcesAndLegal = () => {
+  goBackTocontributors = () => {
     this.setState({
-      schema: resourcesAndLegalSchema,
-      wizardStep: WIZARD_STEP_RESOURCES_AND_LEGAL
+      schema: contributorsSchema,
+      wizardStep: WIZARD_STEP_CONTRIBUTORS
     });
   }
 
@@ -291,61 +161,6 @@ class Wizard extends React.Component {
     });
   }
 
-  goBackToSubjectTemplateWizard = () => {  
-    const subjectTemplateSchema = getSubjectTemplateSchema();
-    this.setState({
-      schema: subjectTemplateSchema,
-      result: null,
-      wizardStep: WIZARD_STEP_SUBJECT_TEMPLATE
-    });
-  };
-
-  goBackToSubjectsWizard = () => {
-    const subjectsSchema = getSubjectsSchema();
-    this.setState({
-      schema: subjectsSchema,
-      result: null,
-      wizardStep: WIZARD_STEP_SUBJECTS
-    });
-  };
-
-  goBackToSubjectGroupsWizard = () => {
-    const studyTopic = getStudyTopic(this.state.dataset);
-    const subjectGroupsSchema = (studyTopic === STUDY_TOPIC_TISSUE_SAMPLE_VALUE)?getSubjectGroupsSchemaForTissueSample():getSubjectGroupsSchema();
-    this.setState({
-      schema: subjectGroupsSchema,
-      result: null,
-      wizardStep: WIZARD_STEP_SUBJECT_GROUP
-    });
-  };
-
-  goBackToTissueSampleTemplateWizard = () => {
-    const tissueSampleTemplateSchema = getArtificialTissueSampleTemplateSchema();
-    this.setState({
-      schema: tissueSampleTemplateSchema,
-      result: null,
-      wizardStep: WIZARD_STEP_TISSUE_SAMPLE_TEMPLATE
-    });
-  };
-
-  goBackToTissueSamplesWizard = () => {
-    const tissueSamplesSchema = getTissueSamplesSchema()
-    this.setState({
-      schema: tissueSamplesSchema,
-      result: null,
-      wizardStep: WIZARD_STEP_TISSUE_SAMPLES
-    });
-  };
-
-  goBackToTissueSampleCollectionsWizard = () => {
-    const tissueSampleCollectionsSchema = getTissueSampleCollectionsSchema(this.state.dataset)
-    this.setState({
-      schema: tissueSampleCollectionsSchema,
-      result: null,
-      wizardStep: WIZARD_STEP_TISSUE_SAMPLE_GROUP
-    });
-  };
-
   handleGoBackToPreviousStepWizard = () => {
     const dataset = this.state.dataset;
     const studyTopic = getStudyTopic(dataset);
@@ -354,14 +169,17 @@ class Wizard extends React.Component {
       case WIZARD_STEP_SUBJECT_TEMPLATE:
         this.goBackToExperiment();
         break;
-      case WIZARD_STEP_REFERENCES_AND_CONTRIBUTIONS:
+      case WIZARD_STEP_DATASET:
         this.goBackToGeneralWizard();
         break;
-      case WIZARD_STEP_RESOURCES_AND_LEGAL:
-        this.goBackToReferencesAndContributions();
+      case WIZARD_STEP_FUNDING_AND_AFFILIATION:
+        this.goBackToDatasetWizard();
+        break;
+      case WIZARD_STEP_CONTRIBUTORS:
+        this.goBackTofundingAndAffiliation();
         break;
       case WIZARD_STEP_EXPERIMENT:
-        this.goBackToResourcesAndLegal();
+        this.goBackTocontributors();
         break;
       case WIZARD_STEP_TISSUE_SAMPLE_GROUP:
       case WIZARD_STEP_TISSUE_SAMPLE_TEMPLATE:
@@ -404,8 +222,8 @@ class Wizard extends React.Component {
     this.setState({
       dataset: undefined,
       general: undefined,
-      referencesAndContributions: undefined,
-      resourcesAndLegal: undefined,
+      fundingAndAffiliation: undefined,
+      contributors: undefined,
       experiment: undefined,
       subjectGroups: null,
       subjectTemplate: null,
@@ -414,6 +232,7 @@ class Wizard extends React.Component {
       tissueSampleCollections: [],
       tissueSampleTemplate: null,
       schema: generalSchema,
+      uiSchema: uiSchema,
       result: null,
       wizardStep: WIZARD_STEP_GENERAL
     });
@@ -424,44 +243,25 @@ class Wizard extends React.Component {
     switch (this.state.wizardStep) {
       case WIZARD_STEP_GENERAL:
         return (
-          <GeneralWizard schema={schema} formData={this.state.general} onSubmit={this.handleGeneralSubmit} />
+          <GeneralWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.general} onSubmit={this.handleGeneralSubmit} />
         );
-      case WIZARD_STEP_REFERENCES_AND_CONTRIBUTIONS:
+      case WIZARD_STEP_DATASET:
         return (
-          <ReferencesAndContributionsWizard schema={schema} formData={this.state.referencesAndContributions} onSubmit={this.handleReferencesAndContributionsSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
+          <DatasetWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.datasetinfo} onSubmit={this.handleDatasetSubmit} onBack={this.handleGoBackToPreviousStepWizard}/>
+        );  
+      case WIZARD_STEP_FUNDING_AND_AFFILIATION:
+        return (
+          <FundingAndAffiliationWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.fundingAndAffiliation} onSubmit={this.handleFundingAndAffiliationSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
         );
-      case WIZARD_STEP_RESOURCES_AND_LEGAL:
+      case WIZARD_STEP_CONTRIBUTORS:
         return (
-          <ResourcesAndLegalWizard schema={schema} formData={this.state.resourcesAndLegal} onSubmit={this.handleResourcesAndLegalSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
+          <ContributorsWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.contributors} onSubmit={this.handleContributorsSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
         );
       case WIZARD_STEP_EXPERIMENT:
         return (
-          <ExperimentWizard schema={schema} formData={this.state.experiment} onSubmit={this.handleExperimentSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
+          <ExperimentWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.experiment} onSubmit={this.handleExperimentSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
         );
-      case WIZARD_STEP_SUBJECT_GROUP:
-        return (
-          <SubjectGroupWizard schema={schema} formData={this.state.subjectGroups} onSubmit={this.handleSubjectGroupSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
-        );
-      case WIZARD_STEP_SUBJECT_TEMPLATE:
-        return (
-          <SubjectTemplateWizard schema={schema} formData={this.state.subjectTemplate} onSubmit={this.handleSubjectTemplateSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
-        );
-      case WIZARD_STEP_SUBJECTS:
-        return (
-          <SubjectsWizard schema={schema} formData={this.state.subjects} onSubmit={this.handleSubjectsSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
-        );
-      case WIZARD_STEP_TISSUE_SAMPLE_GROUP:
-        return (
-          <TissueSampleCollectionWizard schema={schema} formData={this.state.tissueSampleCollections} onSubmit={this.handleTissueSampleCollectionsSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
-        );
-      case WIZARD_STEP_TISSUE_SAMPLE_TEMPLATE:
-        return (
-          <TissueSampleTemplateWizard schema={schema} formData={this.state.tissueSampleTemplate} onSubmit={this.handleTissueSampleTemplateSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
-        );
-      case WIZARD_STEP_TISSUE_SAMPLES:
-        return (
-          <TissueSamplesWizard schema={schema} formData={this.state.tissueSamples} onSubmit={this.handleTissueSamplesSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
-        );
+
       default:
         return (
           <Result result={this.state.result} onBack={this.handleGoBackToPreviousStepWizard} onReset={this.handleReset} />

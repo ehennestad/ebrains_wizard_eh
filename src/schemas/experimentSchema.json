@@ -1,77 +1,187 @@
 {
-    "title": "Experiment",
-    "type": "object",
-    "properties": {
-      "ethicsAssessment": {
-        "type": "string",
-        "title": "Ethics assessment",
-        "controlledTerm": "ethicsAssessment"
+  "title": "Experimental metadata - Step 5 of 5",
+  "type": "object",
+  "description": "In the last step, you have the option to provide experimental metadata for the dataset as a whole, as well as for each individual subject or subject group. If your dataset contains files that belong to individual subjects, subject groups, or techniques, we also encourage you to share this information in order to increase the FAIRness of your dataset.",
+  "definitions":{
+    "subjectExpMetadata": {
+      "type": "object",
+      "title": "",
+      "properties": {
+        "subjectsExist": {
+          "type": "boolean",
+          "title": " ",
+          "description": "Did you use experimental subjects in any way? Tick 'Yes' if you have information about subject groups, individual subjects and/or tissue samples."
+        }
       },
-      "experimentalApproach": {
-        "type": "string",
-        "title": "Experimental approach",
-        "controlledTerm": "experimentalApproach"
-      },
-      "studyTopic": {
-        "type": "string",
-        "title": "What have you been studying?",
-        "enum": [
-          "Subject",
-          "Tissue sample",
-          "Artificial tissue sample"
-        ]
+      "dependencies":{
+        "subjectsExist":{
+          "oneOf":[
+            {
+              "properties":{
+                "subjectsExist": {
+                  "const": false
+                }
+              }
+            },
+            {
+              "properties":{
+                "subjectsExist": {
+                  "const": true
+                },
+                "subjectsTable": {
+                  "type":"object",
+                  "title": "",
+                  "properties":{
+                    "subjectRows": {
+                      "type": "array",
+                      "minItems": 5,
+                      "default": [
+                        {
+                          "subjectID": "Subject-001",
+                          "species": "Rattus norvegicus",
+                          "sex": "Male",
+                          "ageCategory": "Young adult",
+                          "age": "3 months",
+                          "weight": "280 g",
+                          "strain": "Wistar",
+                          "pathology": "none",
+                          "phenotype": "none"
+                          }
+                      ],
+                      "items": 
+                        {
+                        "type": "object",
+                        "properties": {
+                          "subjectID": {
+                            "title": "Subject ID",
+                            "type": "string"
+                          },
+                          "species": {
+                            "title": "Species",
+                            "type": "string"
+                          },
+                          "sex": {
+                            "title": "Biological sex",
+                            "type": "string"
+                          },
+                          "ageCategory": {
+                            "title": "Age category",
+                            "type": "string"
+                          },
+                          "age": {
+                            "title": "Age",
+                            "type": "string"
+                          },
+                          "weight": {
+                            "title": "Weight",
+                            "type": "string"
+                          },
+                          "strain": {
+                            "title": "Strain",
+                            "type": "string"
+                          },
+                          "pathology": {
+                            "title": "Pathology",
+                            "type": "string"
+                          },
+                          "phenotype": {
+                            "title": "Phenotype",
+                            "type": "string"
+                          }
+                        }         
+                      }        
+                    }
+                  }
+                }
+            
+              }
+            }
+
+          ]
+        }
       }
+    }
+
+
+  },
+  "properties": {
+
+    "subjectExpMetadata": {
+      "$ref": "#/definitions/subjectExpMetadata"
     },
-    "dependencies": {
-      "studyTopic": {
-        "oneOf": [
-          {
-            "properties": {
-              "studyTopic": {
-                "enum": [
-                  null
-                ]
-              }
-            }
-          },
-          {
-            "properties": {
-              "studyTopic": {
-                "enum": [
-                  "Subject"
-                ]
-              },
-              "numberOfSubjects": {
-                "type": "number",
-                "title": "How many subjects did you study?",
-                "minimum": 1
-              },
-              "individualSubjects": {
-                "type": "boolean",
-                "title": "Do you have individual subject information?"
-              }
-            }
-          },
-          {
-            "properties": {
-              "studyTopic": {
-                "enum": [
-                  "Tissue sample",
-                  "Artificial tissue sample"
-                ]
-              },
-              "numberOfTissueSamples": {
-                "type": "number",
-                "title": "How many tissue samples did you study?",
-                "minimum": 1
-              },
-              "individualTissueSamples": {
-                "type": "boolean",
-                "title": "Do you have individual tissue sample information?"
-              }
-            }
+
+
+
+    "datasetExpMetadata": {
+      "type": "object",
+      "title": "Dataset characteristics",
+      "properties": {
+        "experimentalApproachIntro": {
+          "type": "null",
+          "title": "Experimental approach",
+          "description": "Please indicate which experimental approaches best describe your data. Start typing to find relevant categories and select as many as appropriate. "
+        },
+        "experimentalApproach": {
+          "type": "array",
+          "title": "",
+          "items": {
+            "type": "string",
+            "controlledTerm": "experimentalApproach",
+            "examples": [
+            ]
           }
-        ]
+        },
+
+        "preparationTypeIntro": {
+          "type": "null",
+          "title": "Preparation type",
+          "description": "Please specify whether your data were acquired in vivo, in vitro etc. Remember to consider each of your methods and add all preparation types that apply."          
+        },
+
+        "preparationType": {
+          "type": "array",
+          "title": "",
+          "items": {
+            "type": "string",
+            "controlledTerm": "preparationType"
+          }
+
+
+        },
+
+
+        "techniqueIntro": {
+          "type": "null",
+          "title": "Technique",
+          "description": "Please select techniques describing your data acquisition and analysis. Start typing to find relevant techniques."
+        },
+        "technique": {
+          "type": "array",
+          "title": "",
+          "items": {
+            "type": "string",
+            "controlledTerm": "technique",
+            "examples": [
+            ]
+          }
+
+        },
+        "keywordsIntro": {
+          "type": "null",
+          "title": "Keywords",
+          "description": "Please add up to five keywords describing your dataset. Keywords may indicate specific data collection methods, disease models, cell types or brain regions. Try to think of keywords that make your dataset easier to find for other researchers: what terms would you search for when looking for this type of data? Keywords may be composed of more than one word, e.g. 'protein kinase A'. Please do not use abbreviations."
+        },
+
+
+        "keywords": {
+          "type": "array",
+          "maxItems": 5,
+          "title": "",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     }
   }
+}

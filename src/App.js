@@ -4,8 +4,9 @@ import './App.css';
 const App = () => (
   <div className="App">
     <header className="App-header">
-      <img src="openMINDS_logo.png" alt="openminds" height="100" />
+      <img src="EBRAINS-Curation-Services.png" alt="EBRAINS Curation Services Logo" height="120" style={{"margin":"10px","display":"block","marginLeft":"auto","marginRight":"auto"}} />
     </header>
+    <div className="gradient"></div>
     <div className="container form">
       <Wizard />
     </div>

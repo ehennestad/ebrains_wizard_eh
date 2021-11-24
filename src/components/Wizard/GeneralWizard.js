@@ -1,12 +1,13 @@
 import React from 'react';
 import Form from '@rjsf/core';
+import RichTextWidget from '../customWidgets';
 
-const GeneralWizard = React.memo(({ schema, formData, onSubmit }) => {
+const GeneralWizard = React.memo(({ schema, uiSchema, formData, onSubmit }) => {
 
   const handleOnSubmit = ({ formData }) => onSubmit(formData);
 
   return (
-    <Form schema={schema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} >
+    <Form widgets={{richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} >
       <div className="footer">
         <div className="col-xs-5 back-panel">
         </div>

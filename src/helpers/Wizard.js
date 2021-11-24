@@ -1,35 +1,23 @@
 import * as generalSchemaModule from '../schemas/generalSchema.json';
+import * as datasetSchemaModule from '../schemas/datasetSchema.json';
 import * as experimentSchemaModule from '../schemas/experimentSchema.json';
-import * as subjectSchemaModule from '../schemas/subjectSchema.json';
-import * as tissueSampleSchemaModule from '../schemas/tissueSampleSchema.json'; 
 
-import * as biologicalSexModule from '../controlledTerms/biologicalSex.json'; 
-import * as cellTypeModule from '../controlledTerms/cellType.json'; 
-import * as ethicsAssessmentModule from '../controlledTerms/ethicsAssessment.json'; 
+import * as uiSchemaModule from '../schemas/uiSchema.json'
+
 import * as experimentalApproachModule from '../controlledTerms/experimentalApproach.json'; 
-import * as licenseModule from '../controlledTerms/license.json'; 
-import * as phenotypeModule from '../controlledTerms/phenotype.json'; 
-import * as productAccessibilityModule from '../controlledTerms/productAccessibility.json'; 
-import * as semanticDataTypeModule from '../controlledTerms/semanticDataType.json'; 
-import * as speciesModule from '../controlledTerms/species.json'; 
-import * as strainModule from '../controlledTerms/strain.json'; 
-import * as tissueSampleTypeModule from '../controlledTerms/tissueSampleType.json'; 
-import * as unitOfMeasurementModule from '../controlledTerms/unitOfMeasurement.json'; 
+import * as techniqueModule from '../controlledTerms/technique.json'
+import * as preparationTypeModule from '../controlledTerms/preparationType.json'
+
+import * as datasetlicenseModule from '../controlledTerms/datasetLicense.json'; 
 
 const controlledTerms = {
-  biologicalSex: biologicalSexModule.default,
-	cellType: cellTypeModule.default,
-	ethicsAssessment: ethicsAssessmentModule.default,
-	experimentalApproach: experimentalApproachModule.default,
-	license: licenseModule.default,
-	phenotype: phenotypeModule.default,
-	productAccessibility: productAccessibilityModule.default,
-	semanticDataType: semanticDataTypeModule.default,
-	species: speciesModule.default,
-	strain: strainModule.default,
-	tissueSampleType: tissueSampleTypeModule.default,
-  unitOfMeasurement: unitOfMeasurementModule.default
+  experimentalApproach: experimentalApproachModule.default,
+  technique: techniqueModule.default,
+  preparationType: preparationTypeModule.default,
+  datasetlicense: datasetlicenseModule.default
 };
+
+export const uiSchema = uiSchemaModule.default;
 
 const getUnitOfMeasurementLabel = identifier => {
   const item = controlledTerms.unitOfMeasurement.find(e => e.identifier === identifier);
@@ -56,8 +44,12 @@ const populateSchemaWithControlledTerms = schema => {
       case "string":
         const controlledTerm = schema.controlledTerm && controlledTerms[schema.controlledTerm];
         if (controlledTerm) {
-          schema.enum = controlledTerm.map(term => term.identifier);
-          schema.enumNames = controlledTerm.map(term => term.name);
+          if(schema.examples) {
+            schema.examples = controlledTerm.map(term => term.name);
+          } else {
+            schema.enum = controlledTerm.map(term => term.identifier);
+            schema.enumNames = controlledTerm.map(term => term.name);
+          }
         }
         break;
       default:
@@ -77,9 +69,10 @@ const getSubjectEnumList =  subjects => {
 };
 
 export const generalSchema = populateSchemaWithControlledTerms(generalSchemaModule.default);
+export const datasetSchema = populateSchemaWithControlledTerms(datasetSchemaModule.default);
 export const experimentSchema = populateSchemaWithControlledTerms(experimentSchemaModule.default);
-export const subjectSchema = populateSchemaWithControlledTerms(subjectSchemaModule.default);
-export const tissueSampleSchema = populateSchemaWithControlledTerms(tissueSampleSchemaModule.default);
+// export const subjectSchema = populateSchemaWithControlledTerms(subjectSchemaModule.default);
+// export const tissueSampleSchema = populateSchemaWithControlledTerms(tissueSampleSchemaModule.default);
 
 export const areSubjectsGrouped = dataset => !dataset || !dataset.individualSubjects;
 
@@ -96,83 +89,5 @@ export const getNumberOfTissueSamples = dataset => {
 };
 
 export const getStudyTopic = dataset => dataset?dataset.studyTopic:undefined;
-
-export const getSubjectTemplateSchema = () => ({...subjectSchema, title: "Subject template"});
-
-export const getArtificialTissueSampleTemplateSchema = () => ({...tissueSampleSchema, title: "Tissue sample template"});
-
-export const getTissueSampleTemplateSchema = subjects => {
-  const subjectEnumList = getSubjectEnumList(subjects);
-  const schema =  {
-    ...tissueSampleSchema,
-    title: "Tissue sample template"
-  };
-  schema.properties.studiedStates.items.properties.subjectGroupState = {
-    type: "string",
-    title: "Subject state",
-    enum: subjectEnumList
-  };
-  return schema;
-};
-
-export const getSubjectGroupsSchema = dataset => {
-  const items = JSON.parse(JSON.stringify(subjectSchema));
-  items.properties.quantity = {
-    type: "number",
-    title: "Number of subjects",
-    default: getNumberOfSubjects(dataset)
-  };
-  return {
-    title: "Subject groups",
-    type: "array",
-    minItems: 1,
-    items: items
-  };
-};
-
-export const getSubjectGroupsSchemaForTissueSample = () => {
-  const items = JSON.parse(JSON.stringify(subjectSchema));
-  return {
-    title: "Subject(s) of all your tissue samples",
-    type: "array",
-    minItems: 1,
-    items: items
-  };
-};
-
-export const getSubjectsSchema = () => {
-  const items = JSON.parse(JSON.stringify(subjectSchema));
-  return {
-    title: "Subjects",
-    type: "array",
-    minItems: 1,
-    items: items
-  };
-};
-
-export const getTissueSamplesSchema = () => {
-  const items = JSON.parse(JSON.stringify(tissueSampleSchema));
-  return {
-    title: "Tissue samples",
-    type: "array",
-    minItems: 1,
-    items: items
-  };
-};
-
-export const getTissueSampleCollectionsSchema = dataset => {
-  const items = JSON.parse(JSON.stringify(tissueSampleSchema))
-  items.properties.quantity = {
-    type: "number",
-    title: "Number of tissue samples",
-    default: getNumberOfTissueSamples(dataset)
-  };
-  return {
-    title: "Tissue sample collections",
-    type: "array",
-    minItems: 1,
-    items: items
-  };
-};
 
 export const generateItemsFromTemplate = (template, size) => [...Array(size).keys()].map(() => JSON.parse(JSON.stringify(template)));
