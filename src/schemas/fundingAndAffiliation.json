@@ -1,0 +1,105 @@
+{
+  "title": "Funding and affiliation - Step 3 of 5",
+  "type": "object",
+  "definitions": {
+    "affiliation": {
+      "type": "object",
+      "properties": {
+        "affiliation": {
+          "type": "string",
+          "title": "Affiliation to the HBP",
+          "description": "Are you affiliated to the Human Brain Project?",
+          "oneOf": [{
+              "title": "I am affiliated to and receive funding from the HBP",
+              "const": "HBP internal"
+            },
+            {
+              "title": "I am affiliated to the HBP via a partnering project",
+              "const": "partnering project"
+            },
+            {
+              "title": "I am NOT affiliated to the HBP in any way",
+              "const": "external"
+            }
+          ]
+
+        }
+
+      },
+      "dependencies": {
+        "affiliation": {
+          "oneOf": [{
+              "properties": {
+                "affiliation": {
+                  "const": "HBP internal"
+                },
+                "taskID": {
+                  "type": "string",
+                  "title": "Please specify the HBP task ID for this dataset:"
+                },
+
+                "component": {
+                  "type": "string",
+                  "title": "Please specify the HBP component ID or output number (not relevant for datasets collected under SGA3):"
+                },
+
+                "fundingGeneral": {
+                  "type": "array",
+                  "title": "HBP funding phase for the individual researcher (data custodian)",
+                  "description": "For which HBP funding phase(s) have you received funding?",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "RUP",
+                      "SGA1",
+                      "SGA2",
+                      "SGA3"
+                    ]
+                  },
+                  "uniqueItems": true
+                }
+
+              }
+            },
+            {
+              "properties": {
+                "affiliation": {
+                  "const": "partnering project"
+                },
+                "partneringProject": {
+                  "type": "string",
+                  "title": "Partnering project name (e.g. FIIND, CHAMPMouse, TVB-Cloud):"
+                }
+              }
+            },
+            {
+              "properties": {
+                "affiliation": {
+                  "const": "external"
+                },
+                "funder": {
+                  "type": "string",
+                  "title": "Funding Information - Funder name",
+                  "description": "Please state the full name of the funder you received funding from for the data you want to share (no abbreviations)."
+                },
+                "grantID": {
+                  "type": "string",
+                  "title": "Funding Information - Grant ID",
+                  "description": "Please state the grant ID for the funding you have received."
+                }
+
+              }
+            }
+
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "affiliation": {
+      "title": "",
+      "$ref": "#/definitions/affiliation"
+    }
+  }
+}

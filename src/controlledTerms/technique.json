@@ -1,0 +1,550 @@
+[
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/3DPolarizedLightImaging",
+    "name": "3D polarized light imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/activityModulationTechnique",
+    "name": "activity modulation technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/anaesthesiaAdministration",
+    "name": "anaesthesia administration"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/anaesthesiaMonitoring",
+    "name": "anaesthesia monitoring"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/anaesthesiaTechnique",
+    "name": "anaesthesia technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/anatomicalDelineationTechnique",
+    "name": "anatomical delineation technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/anatomicalParcellationTechnique",
+    "name": "anatomical parcellation technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/anatomicalSegmentationTechnique",
+    "name": "anatomical segmentation technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/anterogradeTracing",
+    "name": "anterograde tracing"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/autoradiography",
+    "name": "autoradiography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/averageLinkageClustering",
+    "name": "average linkage clustering"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/biocytinStaining",
+    "name": "biocytin staining"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/brightfieldMicroscopy",
+    "name": "brightfield microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/callosotomy",
+    "name": "callosotomy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/cellAttachedPatchClamp",
+    "name": "cell attached patch clamp"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/CLARITY_TDE",
+    "name": "CLARITY/TDE"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/confocalMicroscopy",
+    "name": "confocal microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/conjunctionAnalysis",
+    "name": "conjunction analysis"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/contrastEnhancement",
+    "name": "contrast enhancement"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/craniotomy",
+    "name": "craniotomy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/currentClamp",
+    "name": "current clamp"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/currentSourceDensityAnalysis",
+    "name": "current source density analysis"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/currentStepStimulation",
+    "name": "current step stimulation"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/cytoarchitectonicMapping",
+    "name": "cytoarchitectonic mapping"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/DABStaining",
+    "name": "DAB staining"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/deepLearning",
+    "name": "deep learning"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/densityMeasurement",
+    "name": "density measurement"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/diffusionTensorImaging",
+    "name": "diffusion tensor imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/diffusionWeightedImaging",
+    "name": "diffusion-weighted imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/dualViewInvertedSelectivePlaneIlluminationMicroscopy",
+    "name": "dual-view inverted selective plane illumination microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/electrocorticography",
+    "name": "electrocorticography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/electroencephalography",
+    "name": "electroencephalography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/electronMicroscopy",
+    "name": "electron microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/electronTomography",
+    "name": "electron tomography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/electrooculography",
+    "name": "electrooculography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/epiduralElectrocorticography",
+    "name": "epidural electrocorticography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/epifluorescentMicroscopy",
+    "name": "epifluorescent microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/extracellularElectrophysiology",
+    "name": "extracellular electrophysiology"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/fixationTechnique",
+    "name": "fixation technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/fluorescenceMicroscopy",
+    "name": "fluorescence microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/focusedIonBeamScanningElectronMicroscopy",
+    "name": "focused ion beam scanning electron microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/functionalMagneticResonanceImaging",
+    "name": "functional magnetic resonance imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/geneExpressionMeasurement",
+    "name": "gene expression measurement"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/geneKnockin",
+    "name": "gene knockin"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/geneKnockout",
+    "name": "gene knockout"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/generalLinearModeling",
+    "name": "general linear modeling"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/hierarchicalAgglomerativeClustering",
+    "name": "hierarchical agglomerative clustering"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/hierarchicalClustering",
+    "name": "hierarchical clustering"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/hierarchicalDivisiveClustering",
+    "name": "hierarchical divisive clustering"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/highDensityElectroencephalography",
+    "name": "high-density electroencephalography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/highFieldFunctionalMagneticResonanceImaging",
+    "name": "high-field functional magnetic resonance imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/highFieldMagneticResonanceImaging",
+    "name": "high-field magnetic resonance imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/histochemistry",
+    "name": "histochemistry"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/immunohistochemistry",
+    "name": "immunohistochemistry"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/inSituHybridisation",
+    "name": "in situ hybridisation"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/interSubjectAnalysis",
+    "name": "inter-subject analysis"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/intraSubjectAnalysis",
+    "name": "intra-subject analysis"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/intracardialPerfusionTechnique",
+    "name": "intracardial perfusion technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/intracellularInjection",
+    "name": "intracellular injection"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/iontophoresis",
+    "name": "iontophoresis"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/iontophoreticMicroinjection",
+    "name": "iontophoretic microinjection"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/lightMicroscopy",
+    "name": "light microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/lightSheetFluorescenceMicroscopy",
+    "name": "light sheet fluorescence microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/literatureMining",
+    "name": "literature mining"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/magneticResonanceImaging",
+    "name": "magnetic resonance imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/magneticResonanceSpectroscopy",
+    "name": "magnetic resonance spectroscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/maximumProbabilityProjection",
+    "name": "maximum probability projection"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/metaAnalysis",
+    "name": "meta-analysis"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/metaAnalyticConnectivityModeling",
+    "name": "meta-analytic connectivity modeling"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/metaAnalyticConnectivityModelling",
+    "name": "meta-analytic connectivity modelling"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/metadataParsing",
+    "name": "metadata parsing"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/microscopy",
+    "name": "microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/microstimulation",
+    "name": "microstimulation"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/microtomeSectioning",
+    "name": "microtome sectioning"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/morphometricAnalysis",
+    "name": "morphometric analysis"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/multiElectrodeExtracellularElectrophysiology",
+    "name": "multi-electrode extracellular electrophysiology"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/NisslStaining",
+    "name": "Nissl staining"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/optogeneticInhibition",
+    "name": "optogenetic inhibition"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/optogeneticStimulation",
+    "name": "optogenetic stimulation"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/organExtraction",
+    "name": "organ extraction"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/patchClamp",
+    "name": "patch clamp"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/perfusionTechnique",
+    "name": "perfusion technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/photoactivation",
+    "name": "photoactivation"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/photoinactivation",
+    "name": "photoinactivation"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/polarizedLightMicroscopy",
+    "name": "polarized light microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/populationReceptiveFieldMapping",
+    "name": "population receptive field mapping"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/positronEmissionTomography",
+    "name": "positron emission tomography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/primaryAntibodyStaining",
+    "name": "primary antibody staining"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/probabilisticAnatomicalParcellationTechnique",
+    "name": "probabilistic anatomical parcellation technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/probabilisticDiffusionTractography",
+    "name": "probabilistic diffusion tractography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/pseudoContinuousArterialSpinLabeling",
+    "name": "pseudo-continuous arterial spin labeling"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/qualitativeAnalysis",
+    "name": "qualitative analysis"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/quantification",
+    "name": "quantification"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/quantitativeAnalysis",
+    "name": "quantitative analysis"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/quantitativeMagneticResonanceImaging",
+    "name": "quantitative magnetic resonance imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/receptiveFieldMapping",
+    "name": "receptive field mapping"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/reconstructionTechnique",
+    "name": "reconstruction technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/reporterGeneBasedExpressionMeasurement",
+    "name": "reporter gene based expression measurement"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/reporterProteinBasedExpressionMeasurement",
+    "name": "reporter protein based expression measurement"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/scanningElectronMicroscopy",
+    "name": "scanning electron microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/SDSDigestedFreezeFractureReplicaLabeling",
+    "name": "SDS-digested freeze-fracture replica labeling"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/secondaryAntibodyStaining",
+    "name": "secondary antibody staining"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/semanticAnchoring",
+    "name": "semantic anchoring"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/serialSectionTransmissionElectronMicroscopy",
+    "name": "serial section transmission electron microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/silverStaining",
+    "name": "silver staining"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/singleCellRNASequencing",
+    "name": "single cell RNA sequencing"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/singleElectrodeExtracellularElectrophysiology",
+    "name": "single electrode extracellular electrophysiology"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/singlePulseElectricalStimulation",
+    "name": "single pulse electrical stimulation"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/sodiumDodecylSulfateDigestedFreezeFractureReplicaLabeling",
+    "name": "sodium dodecyl sulfate-digested freeze-fracture replica labeling"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/spatialRegistration",
+    "name": "spatial registration"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/spatialTransformation",
+    "name": "spatial transformation"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/stereoelectroencephalography",
+    "name": "stereoelectroencephalography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/stereotacticSurgery",
+    "name": "stereotactic surgery"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/structuralMagneticResonanceImaging",
+    "name": "structural magnetic resonance imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/structuralNeuroimaging",
+    "name": "structural neuroimaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/subduralElectrocorticography",
+    "name": "subdural electrocorticography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/SWITCHImmunohistochemistry",
+    "name": "SWITCH immunohistochemistry"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/T1WeightedMagneticResonanceImaging",
+    "name": "T1-weighted magnetic resonance imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/T2WeightedMagneticResonanceImaging",
+    "name": "T2-weighted magnetic resonance imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/TDEClearing",
+    "name": "TDE clearing"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/tissueClearing",
+    "name": "tissue clearing"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/tissueFixationTechnique",
+    "name": "tissue fixation technique"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/tractTracing",
+    "name": "tract tracing"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/tractography",
+    "name": "tractography"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/transcranialMagneticStimulation",
+    "name": "transcranial magnetic stimulation"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/transmissionElectronMicroscopy",
+    "name": "transmission electron microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/twoPhotonExcitationFluorescenceMicroscopy",
+    "name": "two-photon excitation fluorescence microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/ultraHighFieldFunctionalMagneticResonanceImaging",
+    "name": "ultra high-field functional magnetic resonance imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/ultraHighFieldMagneticResonanceImaging",
+    "name": "ultra high-field magnetic resonance imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/ultraHighFieldMagneticResonanceSpectroscopy",
+    "name": "ultra high-field magnetic resonance spectroscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/vibratomeSectioning",
+    "name": "vibratome sectioning"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/voltageClamp",
+    "name": "voltage clamp"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/voltageSensitiveDyeImaging",
+    "name": "voltage sensitive dye imaging"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/whiskerStimulation",
+    "name": "whisker stimulation"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/wholeCellPatchClamp",
+    "name": "whole cell patch clamp"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/widefieldFluorescenceMicroscopy",
+    "name": "widefield fluorescence microscopy"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/technique/widefieldMicroscopy",
+    "name": "widefield microscopy"
+  }
+]

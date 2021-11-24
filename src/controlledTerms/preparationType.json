@@ -1,0 +1,26 @@
+[
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/preparationType/exVivo",
+    "name": "ex vivo"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/preparationType/inSilico",
+    "name": "in silico"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/preparationType/inSitu",
+    "name": "in situ"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/preparationType/inUtero",
+    "name": "in utero"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/preparationType/inVitro",
+    "name": "in vitro"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/preparationType/inVivo",
+    "name": "in vivo"
+  }
+]
