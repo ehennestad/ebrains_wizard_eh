@@ -43,7 +43,7 @@
                   "title": "Please specify the HBP component ID or output number (not relevant for datasets collected under SGA3):"
                 },
 
-                "fundingGeneral": {
+                "fundingPhase": {
                   "type": "array",
                   "title": "HBP funding phase for the individual researcher (data custodian)",
                   "description": "For which HBP funding phase(s) have you received funding?",

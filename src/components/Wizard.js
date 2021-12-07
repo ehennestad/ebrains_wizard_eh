@@ -15,12 +15,6 @@ import Result from './Result';
 
 import { 
   generateDocumentsFromDataset, 
-  generateDocumentsFromDatasetAndSubjectGroups, 
-  generateDocumentsFromDatasetAndSubjects, 
-  generateDocumentsFromDatasetAndTissueSampleCollections,
-  generateDocumentsFromDatasetAndArtificialTissueSampleCollections,
-  generateDocumentsFromDatasetAndTissueSamples,
-  generateDocumentsFromDatasetAndArtificialTissueSamples
 }  from '../helpers/Translator';
 
 import {
@@ -29,10 +23,7 @@ import {
   experimentSchema,
   areSubjectsGrouped,
   areTissueSamplesGrouped,
-  getNumberOfSubjects,
-  getNumberOfTissueSamples,
   getStudyTopic,
-  generateItemsFromTemplate,
   uiSchema
 } from '../helpers/Wizard';
 
@@ -115,11 +106,11 @@ class Wizard extends React.Component {
 
   handleExperimentSubmit = data => {
 
-    const dataset = {...this.state.general, ...this.state.fundingAndAffiliation, ...this.state.contributors, ...data};
+    const dataset = {...this.state.general, ...this.state.datasetinfo, ...this.state.fundingAndAffiliation, ...this.state.contributors, ...data};
     const res = generateDocumentsFromDataset(dataset);
 
     this.setState(prevState => ({
-      dataset: {...prevState.general, ...prevState.fundingAndAffiliation, ...prevState.contributors, ...data}, 
+      dataset: {...prevState.general, ...prevState.datasetinfo, ...prevState.fundingAndAffiliation, ...prevState.contributors, ...data}, 
       experiment: data,
       result: res,
       wizardStep: WIZARD_END

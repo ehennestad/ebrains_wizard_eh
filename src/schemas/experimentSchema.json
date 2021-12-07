@@ -28,72 +28,12 @@
                 "subjectsExist": {
                   "const": true
                 },
-                "subjectsTable": {
-                  "type":"object",
-                  "title": "",
-                  "properties":{
-                    "subjectRows": {
-                      "type": "array",
-                      "minItems": 5,
-                      "default": [
-                        {
-                          "subjectID": "Subject-001",
-                          "species": "Rattus norvegicus",
-                          "sex": "Male",
-                          "ageCategory": "Young adult",
-                          "age": "3 months",
-                          "weight": "280 g",
-                          "strain": "Wistar",
-                          "pathology": "none",
-                          "phenotype": "none"
-                          }
-                      ],
-                      "items": 
-                        {
-                        "type": "object",
-                        "properties": {
-                          "subjectID": {
-                            "title": "Subject ID",
-                            "type": "string"
-                          },
-                          "species": {
-                            "title": "Species",
-                            "type": "string"
-                          },
-                          "sex": {
-                            "title": "Biological sex",
-                            "type": "string"
-                          },
-                          "ageCategory": {
-                            "title": "Age category",
-                            "type": "string"
-                          },
-                          "age": {
-                            "title": "Age",
-                            "type": "string"
-                          },
-                          "weight": {
-                            "title": "Weight",
-                            "type": "string"
-                          },
-                          "strain": {
-                            "title": "Strain",
-                            "type": "string"
-                          },
-                          "pathology": {
-                            "title": "Pathology",
-                            "type": "string"
-                          },
-                          "phenotype": {
-                            "title": "Phenotype",
-                            "type": "string"
-                          }
-                        }         
-                      }        
-                    }
-                  }
+                "externalTable": {
+                  "title": " ",
+                  "type": "string",
+                  "text": "<p>Please use the following table to describe your subjects:</p><p><a href='CommonTrack_SubjectMetadata.xlsx'>CommonTrack_SubjectMetadata.xlsx</a></p>"
                 }
-            
+                            
               }
             }
 
@@ -109,8 +49,6 @@
     "subjectExpMetadata": {
       "$ref": "#/definitions/subjectExpMetadata"
     },
-
-
 
     "datasetExpMetadata": {
       "type": "object",
@@ -128,16 +66,15 @@
             "type": "string",
             "controlledTerm": "experimentalApproach",
             "examples": [
-            ]
+            ],
+            "exampleIDs": []
           }
         },
-
         "preparationTypeIntro": {
           "type": "null",
           "title": "Preparation type",
           "description": "Please specify whether your data were acquired in vivo, in vitro etc. Remember to consider each of your methods and add all preparation types that apply."          
         },
-
         "preparationType": {
           "type": "array",
           "title": "",
@@ -145,11 +82,7 @@
             "type": "string",
             "controlledTerm": "preparationType"
           }
-
-
         },
-
-
         "techniqueIntro": {
           "type": "null",
           "title": "Technique",
@@ -162,7 +95,8 @@
             "type": "string",
             "controlledTerm": "technique",
             "examples": [
-            ]
+            ],
+            "exampleIDs": []            
           }
 
         },

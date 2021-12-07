@@ -66,19 +66,14 @@ const setPropertyWithLinksCreation = (documents, object, name, source, documentG
     setPropertyWithLinks(object, name, ids);
 };
 
-const createCopyrightDocument = (documents, copyright) => {
-  const id = createDocument(documents, `${OPENMINDS_VOCAB}Copyright`, `${copyright.year}-${copyright.holder}`);
-  const target = documents.ids[id];
-  setProperty(target, "year", copyright.year);
-  setProperty(target, "holder", copyright.holder);
-  return id;
-};
-
 const createPersonDocument = (documents, author) => {
-    const id = createDocument(documents, `${OPENMINDS_VOCAB}Person`, `${author.familyName}-${author.givenName}`);
+    const id = createDocument(documents, `${OPENMINDS_VOCAB}Person`, `${author.lastName}-${author.firstName}`);
     const target = documents.ids[id];
-    setProperty(target, "familyName", author.familyName);
-    setProperty(target, "givenName", author.givenName);
+    setProperty(target, "givenName", author.firstName);
+    setProperty(target, "familyName", author.lastName);   
+    setProperty(target, "affiliation", author.affiliation);  // needs to be mapped to organization
+    setProperty(target, "email", author.email);  // contactInformation
+    setProperty(target, "ORCID", author.orcid);  // digitalIdentifier
     return id;
 };
 
@@ -220,7 +215,7 @@ const createDigitalIdentifierDocument = (documents, doi) => {
   return id;
 };
 
-const createFullDocumentationDocument = (documents, fullDocumentation) => {
+/* const createFullDocumentationDocument = (documents, fullDocumentation) => {
   const id = createDocument(documents, `${OPENMINDS_VOCAB}FullDocumentation`, fullDocumentation);
   const target = documents.ids[id];
   setProperty(target, "name", fullDocumentation);
@@ -240,15 +235,16 @@ const createRepositoryDocument = (documents, repository) => {
   setProperty(target, "IRI", repository);
   return id;
 };
-
+ */
 const createRelatedPublicationDocument = (documents, relatedPublication) => {
-  const id = createDocument(documents, `${OPENMINDS_VOCAB}DOI`, relatedPublication);
+  const id = createDocument(documents, `${OPENMINDS_VOCAB}DOI`, relatedPublication.pubURL);
   const target = documents.ids[id];
-  setProperty(target, "identifier", relatedPublication);
+  setProperty(target, "title", relatedPublication.pubTitle);
+  setProperty(target, "identifier", relatedPublication.pubURL);
   return id;
 };
 
-const createContributionTypeDocument = (documents, contributionType) => {
+/* const createContributionTypeDocument = (documents, contributionType) => {
   const id = createDocument(documents, `${OPENMINDS_VOCAB}ContributionType`, contributionType);
   const target = documents.ids[id];
   setProperty(target, "name", contributionType);
@@ -271,42 +267,70 @@ const createInputDataDocument = (documents, inputData) => {
     setProperty(target, "identifier", inputData);
     return id;
   };
-
+ */
 
 const createDatasetDocument = (documents, source) => {
-    const datasetId = createDocument(documents, `${OPENMINDS_VOCAB}DatasetVersion`, source.name);
+    const datasetId = createDocument(documents, `${OPENMINDS_VOCAB}DatasetVersion`, source.datasetinfo.datasetTitle);
     const dataset = documents.ids[datasetId];
 
-    setPropertyWithLinks(dataset, "accessibility", [source.accessibility]);
-    setProperty(dataset, "description", source.description);
-    setProperty(dataset, "name", source.name);
-    setProperty(dataset, "keyword", source.keyword);
-    setProperty(dataset, "homepage", source.homepage);
-    setProperty(dataset, "releasedDate", source.releasedDate);
-    setProperty(dataset, "versionIdentifier", source.versionNumber);
-    setProperty(dataset, "supportChannel", source.supportChannel);
-    
-    if(source.doi) {
-      if(source.doi.doi === "No") {
-        setPropertyWithLinksCreation(documents, dataset, "author", source.doi.authors, createPersonDocument);
-      }
-      if(source.doi.doi === "Yes") {
-        setPropertyWithLinksCreation(documents, dataset, "digitalIdentifier", source.doi.value, createDigitalIdentifierDocument);
-      }
-    }
-    setPropertyWithLinksCreation(documents, dataset, "custodian", source.custodian, createPersonDocument);
-    setPropertyWithLinksCreation(documents, dataset, "copyright", source.copyrightHolderAndYear, createCopyrightDocument);
-    setPropertyWithLinks(dataset, "ethicsAssessment", source.ethicsAssessment);
-    setPropertyWithLinks(dataset, "experimentalApproach", source.experimentalApproach);
-    setPropertyWithLinksCreation(documents, dataset, "fullDocumentation", source.fullDocumentation, createFullDocumentationDocument);
-    setPropertyWithLinksCreation(documents, dataset, "funding", source.funding, createFundingDocument);
-    setPropertyWithLinks(dataset, "license", source.license);
-    setPropertyWithLinksCreation(documents, dataset, "repository", source.repositoryUrl, createRepositoryDocument);
-    setPropertyWithLinksCreation(documents, dataset, "relatedPublication", source.relatedPublication, createRelatedPublicationDocument);
-    setPropertyWithLinks(dataset, "type", source.type);
-    setPropertyWithLinksCreation(documents, dataset, "otherContribution", source.otherContribution, createOtherContributionDocument);
-    setPropertyWithLinksCreation(documents, dataset, "inputData", source.inputData, createInputDataDocument);
+    // Page 1
 
+    setProperty(dataset, "fullName", source.datasetinfo.datasetTitle);
+    setProperty(dataset, "description", source.datasetinfo.summary);
+    setPropertyWithLinksCreation(documents, dataset, "custodian", source.custodian, createPersonDocument);
+    setPropertyWithLinksCreation(documents, dataset, "contactperson", source.contactperson.contactinfo, createPersonDocument);
+
+    // Page 2
+
+    setProperty(dataset, "dataType", source.dataType);
+
+    if(source.sharedAlready.sharedAlready === true) {
+        setPropertyWithLinksCreation(documents, dataset, "digitalIdentifier", source.sharedAlready.DOI, createDigitalIdentifierDocument);
+    }
+
+    if(source.versions.versions!=="no"){
+        setProperty(dataset, "alternativeVersion", source.versions.versionDOI);            
+        if(source.versions.versions==="updated"){
+            setProperty(dataset, "versionInnovation", source.versions.versionInnovation);            
+        }
+    }
+
+    setProperty(dataset, "dataCollectionFinished", source.dataCollection);
+    setProperty(dataset, "embargo", source.embargo.embargo);
+    setProperty(dataset, "embargoEndDate", source.embargo.releaseDate);
+    setPropertyWithLinks(dataset, "license", source.license);
+
+    // Page 3
+
+    switch(source.affiliation.affiliation){
+        case "HBP internal":
+            setProperty(dataset, "HBPtaskID", source.affiliation.taskID);
+            setProperty(dataset, "HBPcomponentID", source.affiliation.component);
+            setProperty(dataset, "HBPfundingPhase", [source.affiliation.fundingPhase]);
+            break;
+        case "partnering project":
+            setProperty(dataset, "partneringProject", source.affiliation.partneringProject);
+            break;
+        case "external":
+            setProperty(dataset, "Funder", source.affiliation.funder);
+            setProperty(dataset, "GrantID", source.affiliation.grantID);
+            break;
+        default:
+            break;
+    }
+
+    // Page 4
+
+    setPropertyWithLinksCreation(documents, dataset, "contributors", source.contributors, createPersonDocument);
+    setPropertyWithLinksCreation(documents, dataset, "relatedPublication", source.publications, createRelatedPublicationDocument);
+
+    // Page 5
+
+    setPropertyWithLinks(dataset, "experimentalApproach", source.datasetExpMetadata.experimentalApproach);
+    setPropertyWithLinks(dataset, "preparationType", source.datasetExpMetadata.preparationType);
+    setPropertyWithLinks(dataset, "technique", source.datasetExpMetadata.technique);
+    setProperty(dataset, "keywords", source.datasetExpMetadata.keywords);
+    
     return datasetId;
 };
 

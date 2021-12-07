@@ -86,7 +86,7 @@
     "taskID": {
         "ui:help": "If your data are related to more than one task ID, please list them separated by a semicolon (;)."
     },
-    "fundingGeneral": {
+    "fundingPhase": {
         "ui:widget": "checkboxes"
     },
     "publications": {
@@ -160,7 +160,11 @@
     
                   }            
             }
-        }
+        },
+
+        "externalTable": {
+            "ui:widget": "richtext"
+        }    
 
     },
 
@@ -185,5 +189,6 @@
                 "orderable": false
             }
         }      
-    }    
+    }
+
 }

@@ -1,0 +1,18 @@
+[
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/semanticDataType/derivedData",
+    "name": "derived data"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/semanticDataType/experimentalData",
+    "name": "experimental data"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/semanticDataType/rawData",
+    "name": "raw data"
+  },
+  {
+    "identifier": "https://openminds.ebrains.eu/instances/semanticDataType/simulatedData",
+    "name": "simulated data"
+  }
+]

@@ -10,15 +10,15 @@
       "items": {
         "type": "object",
         "properties": {
-          "familyName": {
+          "firstName": {
             "type": "string",
             "title": "First name"
           },
-          "givenName": {
+          "lastName": {
             "type": "string",
             "title": "Last name"
           },
-          "ORCID": {
+          "orcid": {
             "type": "string",
             "title": "ORCID"
           },

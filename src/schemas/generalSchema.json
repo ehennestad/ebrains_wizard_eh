@@ -12,11 +12,11 @@
       "description": "The Data Custodian is responsible for the content and quality of the data and metadata, and is the person to contact in case of misconduct. The custodian is frequently the research group leader or principal investigator.",
       "type": "object",
       "properties": {
-        "firstname": {
+        "firstName": {
           "type": "string",
           "title": "First name"
         },
-        "lastname": {
+        "lastName": {
           "type": "string",
           "title": "Last name"
         },
@@ -44,11 +44,11 @@
       "title": "",
       "type": "object",
       "properties": {
-        "firstname": {
+        "firstName": {
           "type": "string",
           "title": "First name"
         },
-        "lastname": {
+        "lastName": {
           "type": "string",
           "title": "Last name"
         },
@@ -91,7 +91,7 @@
       "type": "object",
       "title": "Dataset info",
       "properties": {
-        "dataset-title": {
+        "datasetTitle": {
           "type": "string",
           "title": "Dataset title",
           "description": "Please provide a title for your dataset (max. 110 characters including spaces). This can also be a working title to be adjusted later on. Please choose a descriptive title, and avoid acronyms and abbreviations where possible.",

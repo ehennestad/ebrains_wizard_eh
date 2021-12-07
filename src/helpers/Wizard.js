@@ -7,14 +7,15 @@ import * as uiSchemaModule from '../schemas/uiSchema.json'
 import * as experimentalApproachModule from '../controlledTerms/experimentalApproach.json'; 
 import * as techniqueModule from '../controlledTerms/technique.json'
 import * as preparationTypeModule from '../controlledTerms/preparationType.json'
-
-import * as datasetlicenseModule from '../controlledTerms/datasetLicense.json'; 
+import * as semanticDataTypeModule from '../controlledTerms/semanticDataType.json'
+import * as datasetLicenseModule from '../controlledTerms/datasetLicense.json'; 
 
 const controlledTerms = {
   experimentalApproach: experimentalApproachModule.default,
   technique: techniqueModule.default,
   preparationType: preparationTypeModule.default,
-  datasetlicense: datasetlicenseModule.default
+  datasetLicense: datasetLicenseModule.default,
+  semanticDataType: semanticDataTypeModule.default
 };
 
 export const uiSchema = uiSchemaModule.default;
@@ -46,6 +47,7 @@ const populateSchemaWithControlledTerms = schema => {
         if (controlledTerm) {
           if(schema.examples) {
             schema.examples = controlledTerm.map(term => term.name);
+            schema.exampleIDs = controlledTerm.map(term => term.identifier);            
           } else {
             schema.enum = controlledTerm.map(term => term.identifier);
             schema.enumNames = controlledTerm.map(term => term.name);
@@ -61,12 +63,12 @@ const populateSchemaWithControlledTerms = schema => {
 
 export const getSubjectStateEnum = (subject, subjectState) => `${subject.lookupLabel} [${subjectState.age.value}${getUnitOfMeasurementLabel(subjectState.age.unit)} - ${subjectState.weight.value}${getUnitOfMeasurementLabel(subjectState.weight.unit)}]`;
 
-const getSubjectEnumList =  subjects => {
-  return subjects.reduce((acc, subject) => subject.studiedStates.reduce((acc2, state) => {
-    acc2.push(getSubjectStateEnum(subject, state));
-    return acc2;
-  }, acc), []);
-};
+// const getSubjectEnumList =  subjects => {
+//   return subjects.reduce((acc, subject) => subject.studiedStates.reduce((acc2, state) => {
+//     acc2.push(getSubjectStateEnum(subject, state));
+//     return acc2;
+//   }, acc), []);
+// };
 
 export const generalSchema = populateSchemaWithControlledTerms(generalSchemaModule.default);
 export const datasetSchema = populateSchemaWithControlledTerms(datasetSchemaModule.default);
