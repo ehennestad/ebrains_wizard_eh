@@ -1,26 +1,26 @@
 [
   {
-    "identifier": "https://openminds.ebrains.eu/instances/preparationType/exVivo",
+    "identifier": "https://kg.ebrains.eu/api/instances/77f7c7e7-ad5f-4001-b246-7f50981076b1",
     "name": "ex vivo"
   },
   {
-    "identifier": "https://openminds.ebrains.eu/instances/preparationType/inSilico",
+    "identifier": "https://kg.ebrains.eu/api/instances/a3c483d1-e63b-4075-b126-f81699111e94",
     "name": "in silico"
   },
   {
-    "identifier": "https://openminds.ebrains.eu/instances/preparationType/inSitu",
+    "identifier": "https://kg.ebrains.eu/api/instances/ce45de62-d26d-4e5a-aaa4-f4bddf45ac52",
     "name": "in situ"
   },
   {
-    "identifier": "https://openminds.ebrains.eu/instances/preparationType/inUtero",
+    "identifier": "https://kg.ebrains.eu/api/instances/1b850db7-92ba-4c7f-9819-f198dc3a9306",
     "name": "in utero"
   },
   {
-    "identifier": "https://openminds.ebrains.eu/instances/preparationType/inVitro",
+    "identifier": "https://kg.ebrains.eu/api/instances/9f3abe1b-af7c-446d-b637-6a4f19ab7939",
     "name": "in vitro"
   },
   {
-    "identifier": "https://openminds.ebrains.eu/instances/preparationType/inVivo",
+    "identifier": "https://kg.ebrains.eu/api/instances/1ea3e394-b6d6-4cbd-8be6-c0681a255e59",
     "name": "in vivo"
   }
 ]

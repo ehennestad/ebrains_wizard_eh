@@ -1,26 +1,26 @@
 [
     {
-      "identifier": "https://openminds.ebrains.eu/instances/licenses/ccBy4.0",
+      "identifier": "https://kg.ebrains.eu/api/instances/64c1704b-db12-4b29-9541-b9143d081044",
       "name": "CC BY 4.0"
     },
     {
-      "identifier": "https://openminds.ebrains.eu/instances/licenses/ccByNc4.0",
+      "identifier": "https://kg.ebrains.eu/api/instances/0238ac9e-72e2-4d06-8c55-7a429eb92aab",
       "name": "CC BY-NC 4.0"
     },
     {
-      "identifier": "https://openminds.ebrains.eu/instances/licenses/ccByNcNd4.0",
+      "identifier": "https://kg.ebrains.eu/api/instances/c5e5ce6c-ecec-42b0-8fd8-532343eae8cb",
       "name": "CC BY-NC-ND 4.0"
     },
     {
-      "identifier": "https://openminds.ebrains.eu/instances/licenses/ccByNcSa4.0",
+      "identifier": "https://kg.ebrains.eu/api/instances/6ebce971-7f99-4fbc-9621-eeae47a70d85",
       "name": "CC BY-NC-SA 4.0"
     },
     {
-      "identifier": "https://openminds.ebrains.eu/instances/licenses/ccByNd4.0",
+      "identifier": "https://kg.ebrains.eu/api/instances/8467fb50-2a7f-403d-ab5c-d61d1631a1fa",
       "name": "CC BY-ND 4.0"
     },
     {
-      "identifier": "https://openminds.ebrains.eu/instances/licenses/ccBySa4.0",
+      "identifier": "https://kg.ebrains.eu/api/instances/418544bf-c328-468f-bdcc-9b40623bd65b",
       "name": "CC BY-SA 4.0"
     }
   ]

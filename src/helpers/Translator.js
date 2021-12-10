@@ -1,3 +1,6 @@
+import * as experimentalApproachModule from '../controlledTerms/experimentalApproach.json'; 
+import * as techniqueModule from '../controlledTerms/technique.json'
+
 import _  from "lodash-uuid";
 
 import {
@@ -270,7 +273,7 @@ const createInputDataDocument = (documents, inputData) => {
  */
 
 const createDatasetDocument = (documents, source) => {
-    const datasetId = createDocument(documents, `${OPENMINDS_VOCAB}DatasetVersion`, source.datasetinfo.datasetTitle);
+    const datasetId = createDocument(documents, "https://openminds.ebrains.eu/core/DatasetVersion", source.datasetinfo.datasetTitle);  // `${OPENMINDS_VOCAB}DatasetVersion`
     const dataset = documents.ids[datasetId];
 
     // Page 1
@@ -326,10 +329,21 @@ const createDatasetDocument = (documents, source) => {
 
     // Page 5
 
-    setPropertyWithLinks(dataset, "experimentalApproach", source.datasetExpMetadata.experimentalApproach);
-    setPropertyWithLinks(dataset, "preparationType", source.datasetExpMetadata.preparationType);
-    setPropertyWithLinks(dataset, "technique", source.datasetExpMetadata.technique);
-    setProperty(dataset, "keywords", source.datasetExpMetadata.keywords);
+    var experimentalApproachIDs = [];
+    for(let key in source.datasetExpMetadata.experimentalApproach){
+        experimentalApproachIDs.push(experimentalApproachModule.default.find(term=>term.name===source.datasetExpMetadata.experimentalApproach[key]).identifier);
+    }
+    setPropertyWithLinks(dataset, "experimentalApproach", experimentalApproachIDs);
+    
+    setPropertyWithLinks(dataset, "preparationDesign", source.datasetExpMetadata.preparationType);
+
+    var techniqueIDs = [];
+    for(let key in source.datasetExpMetadata.technique){
+        techniqueIDs.push(techniqueModule.default.find(term=>term.name===source.datasetExpMetadata.technique[key]).identifier);
+    }
+    setPropertyWithLinks(dataset, "technique", techniqueIDs);
+    
+    setProperty(dataset, "keyword", source.datasetExpMetadata.keywords);
     
     return datasetId;
 };

@@ -22,7 +22,6 @@ const Result = React.memo(({ result, onBack, onReset}) => {
         </div>
         <div className="col-md-8 col-md-offset-2">
           <button className="btn btn-success download-btn" onClick={downloadJson}>Download JSON</button>
-          <button className="btn btn-primary upload-btn" disabled>Submit for curation</button>
           <button className="btn btn-info" onClick={onReset}>Create another dataset</button>
         </div>
       </div>
