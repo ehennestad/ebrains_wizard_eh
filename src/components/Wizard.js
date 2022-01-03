@@ -77,6 +77,9 @@ class Wizard extends React.Component {
       wizardStep: WIZARD_STEP_DATASET,
       schema: datasetSchema
     });
+
+    window.scrollTo(0, 0);
+
   };
 
   handleDatasetSubmit = data => {
@@ -85,6 +88,9 @@ class Wizard extends React.Component {
       wizardStep: WIZARD_STEP_FUNDING_AND_AFFILIATION,
       schema: fundingAndAffiliationSchema
     });
+
+    window.scrollTo(0, 0);
+
   };
 
 
@@ -94,6 +100,9 @@ class Wizard extends React.Component {
       wizardStep: WIZARD_STEP_CONTRIBUTORS,
       schema: contributorsSchema
     });
+
+    window.scrollTo(0, 0);
+
   }
 
   handleContributorsSubmit = data => {
@@ -102,6 +111,9 @@ class Wizard extends React.Component {
       wizardStep: WIZARD_STEP_EXPERIMENT,
       schema: experimentSchema
     });
+
+    window.scrollTo(0, 0);
+
   }
 
   handleExperimentSubmit = data => {
@@ -115,6 +127,9 @@ class Wizard extends React.Component {
       result: res,
       wizardStep: WIZARD_END
     }));
+
+    window.scrollTo(0, 0);
+
   }
 
   goBackToGeneralWizard = () => {
@@ -122,6 +137,9 @@ class Wizard extends React.Component {
       schema: generalSchema,
       wizardStep: WIZARD_STEP_GENERAL
     });
+
+    window.scrollTo(0, 0);
+
   }
 
   goBackToDatasetWizard = () => {
@@ -129,6 +147,9 @@ class Wizard extends React.Component {
       schema: datasetSchema,
       wizardStep: WIZARD_STEP_DATASET
     });
+
+    window.scrollTo(0, 0);
+
   }
 
   goBackTofundingAndAffiliation = () => {
@@ -136,6 +157,9 @@ class Wizard extends React.Component {
       schema: fundingAndAffiliationSchema,
       wizardStep: WIZARD_STEP_FUNDING_AND_AFFILIATION
     });
+
+    window.scrollTo(0, 0);
+
   };
 
   goBackTocontributors = () => {
@@ -143,6 +167,9 @@ class Wizard extends React.Component {
       schema: contributorsSchema,
       wizardStep: WIZARD_STEP_CONTRIBUTORS
     });
+
+    window.scrollTo(0, 0);
+
   }
 
   goBackToExperiment = () => {
@@ -150,6 +177,9 @@ class Wizard extends React.Component {
       schema: experimentSchema,
       wizardStep: WIZARD_STEP_EXPERIMENT
     });
+
+    window.scrollTo(0, 0);
+
   }
 
   handleGoBackToPreviousStepWizard = () => {
@@ -212,6 +242,7 @@ class Wizard extends React.Component {
   handleReset = () => {
     this.setState({
       dataset: undefined,
+      datasetinfo: undefined,
       general: undefined,
       fundingAndAffiliation: undefined,
       contributors: undefined,
