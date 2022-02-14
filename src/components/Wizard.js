@@ -122,7 +122,7 @@ class Wizard extends React.Component {
     const res = generateDocumentsFromDataset(dataset);
 
     this.setState(prevState => ({
-      dataset: {...prevState.general, ...prevState.datasetinfo, ...prevState.fundingAndAffiliation, ...prevState.contributors, ...data}, 
+      dataset: {"general": {...prevState.general}, "datasetinfo": {...prevState.datasetinfo}, "fundingAndAffiliation": {...prevState.fundingAndAffiliation}, "contributors": {...prevState.contributors}, "experiment": {...data}}, 
       experiment: data,
       result: res,
       wizardStep: WIZARD_END
@@ -260,6 +260,24 @@ class Wizard extends React.Component {
     });
   };
 
+  loadState = formStates => {
+
+    this.setState({
+      dataset: formStates.dataset,
+      datasetinfo: formStates.datasetinfo,
+      general: formStates.general,
+      fundingAndAffiliation: formStates.fundingAndAffiliation,
+      contributors: formStates.contributors,
+      experiment: formStates.experiment,
+      result: null,          
+      uiSchema: uiSchema,     
+      schema: generalSchema,
+      wizardStep: WIZARD_STEP_GENERAL
+    });      
+
+    window.scrollTo(0, 0);
+  };
+
   render() {
     const schema = this.state.schema;
     switch (this.state.wizardStep) {
@@ -286,7 +304,7 @@ class Wizard extends React.Component {
 
       default:
         return (
-          <Result result={this.state.result} onBack={this.handleGoBackToPreviousStepWizard} onReset={this.handleReset} />
+          <Result result={this.state.result} dataset={this.state.dataset} onBack={this.handleGoBackToPreviousStepWizard} onReset={this.handleReset} loadState={this.loadState}/>
         );
     }
   }
