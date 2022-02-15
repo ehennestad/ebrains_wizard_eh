@@ -293,7 +293,7 @@ class Wizard extends React.Component {
     switch (this.state.wizardStep) {
       case WIZARD_STEP_GENERAL:
         return (
-          <GeneralWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.general} onSubmit={this.handleGeneralSubmit} />
+          <GeneralWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.general} onSubmit={this.handleGeneralSubmit} loadState={this.loadState}/>
         );
       case WIZARD_STEP_DATASET:
         return (

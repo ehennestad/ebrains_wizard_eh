@@ -61,6 +61,14 @@
 
 .loaddata-btn {
   margin-right: 10px;
+  background-color: #ff8e24;
+  border-color: #f09527;
+
+}
+
+.loaddata-btn:hover {
+  background-color: #ff7f00;
+  border-color: #e97502;
 }
 
 .upload-btn {
