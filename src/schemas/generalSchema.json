@@ -11,6 +11,12 @@
       "title": "Data custodian",
       "description": "The Data Custodian is responsible for the content and quality of the data and metadata, and is the person to contact in case of misconduct. The custodian is frequently the research group leader or principal investigator.",
       "type": "object",
+      "required": [
+        "firstName",
+        "lastName",
+        "affiliation",
+        "email"
+      ],    
       "properties": {
         "firstName": {
           "type": "string",
@@ -43,6 +49,11 @@
     "contactinfo": {
       "title": "",
       "type": "object",
+      "required": [
+        "firstName",
+        "lastName",
+        "email"
+      ],    
       "properties": {
         "firstName": {
           "type": "string",
@@ -90,6 +101,10 @@
     "datasetinfo": {
       "type": "object",
       "title": "Dataset info",
+      "required": [
+        "datasetTitle",
+        "summary"
+      ],    
       "properties": {
         "datasetTitle": {
           "type": "string",

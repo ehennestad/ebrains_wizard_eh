@@ -3,12 +3,12 @@ import Form from '@rjsf/core';
 import {ImageWidget} from '../customWidgets';
 import RichTextWidget from '../customWidgets';
 
-const DatasetWizard = React.memo(({ schema, uiSchema, formData, onSubmit, onBack }) => {
+const DatasetWizard = React.memo(({ schema, uiSchema, formData, transformErrors, onSubmit, onBack }) => {
 
   const handleOnSubmit = ({ formData }) => onSubmit(formData);
 
   return (
-    <Form widgets={{img: ImageWidget, richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} >
+    <Form widgets={{img: ImageWidget, richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} >
       <div className="footer">
         <div className="col-xs-5 back-panel">
           <button type="button" className="btn btn-info" onClick={onBack}>Back</button>

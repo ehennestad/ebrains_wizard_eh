@@ -4,6 +4,7 @@
   "definitions": {
     "affiliation": {
       "type": "object",
+      "required": ["affiliation"],
       "properties": {
         "affiliation": {
           "type": "string",
@@ -29,6 +30,7 @@
       "dependencies": {
         "affiliation": {
           "oneOf": [{
+              "required": ["taskID", "component", "fundingPhase"],
               "properties": {
                 "affiliation": {
                   "const": "HBP internal"
@@ -62,6 +64,7 @@
               }
             },
             {
+              "required": ["affiliation", "partneringProject"],
               "properties": {
                 "affiliation": {
                   "const": "partnering project"
@@ -73,6 +76,7 @@
               }
             },
             {
+              "required": ["affiliation", "funder", "grantID"],
               "properties": {
                 "affiliation": {
                   "const": "external"

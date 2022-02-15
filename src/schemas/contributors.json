@@ -2,7 +2,6 @@
   "title": "Contributors and related publications - Step 4 of 5",
   "type": "object",
   "properties": {
-
     "contributors": {
       "type": "array",
       "title": "Dataset contributors",
@@ -35,14 +34,13 @@
         }
       }
     },
-
-
     "publications": {
       "type": "array",
       "title": "Related publications",
       "description": "Please list all related publications that report on the dataset itself or on analysis based on the data.",
       "items": {
         "type": "object",
+        "required": ["pubTitle", "pubURL"],
         "properties": {
           "pubTitle": {
             "type": "string",

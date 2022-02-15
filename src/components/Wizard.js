@@ -278,6 +278,16 @@ class Wizard extends React.Component {
     window.scrollTo(0, 0);
   };
 
+  transformErrors = errors => {
+  return errors.map(error => {
+    if (error.name === "required") {
+      error.message = "Please fill out this field."
+    }
+    return error;
+  });
+
+  };
+
   render() {
     const schema = this.state.schema;
     switch (this.state.wizardStep) {
@@ -287,7 +297,7 @@ class Wizard extends React.Component {
         );
       case WIZARD_STEP_DATASET:
         return (
-          <DatasetWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.datasetinfo} onSubmit={this.handleDatasetSubmit} onBack={this.handleGoBackToPreviousStepWizard}/>
+          <DatasetWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.datasetinfo} transformErrors={this.transformErrors} onSubmit={this.handleDatasetSubmit} onBack={this.handleGoBackToPreviousStepWizard}/>
         );  
       case WIZARD_STEP_FUNDING_AND_AFFILIATION:
         return (
@@ -299,7 +309,7 @@ class Wizard extends React.Component {
         );
       case WIZARD_STEP_EXPERIMENT:
         return (
-          <ExperimentWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.experiment} onSubmit={this.handleExperimentSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
+          <ExperimentWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.experiment} transformErrors={this.transformErrors} onSubmit={this.handleExperimentSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
         );
 
       default:

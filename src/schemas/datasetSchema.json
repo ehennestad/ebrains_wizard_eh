@@ -2,9 +2,11 @@
     "title": "About your dataset - Step 2 of 5",
     "description": "Please provide some general information about your dataset below.",
     "type": "object",
+    "required": ["dataType", "dataCollection", "license"],    
     "definitions": {
         "sharedAlready": {
             "type": "object",
+            "required": ["sharedAlready"],
             "properties": {
                 "sharedAlready": {
                     "type": "boolean",
@@ -21,6 +23,7 @@
                         }
                     },
                     {
+                        "required": ["DOI"],                        
                         "properties": {
                             "sharedAlready": {
                                 "const": true
@@ -38,6 +41,7 @@
         },
         "versions": {
             "type": "object",
+            "required": ["versions"],
             "properties":{
                 "versions":{
                     "type": "string",
@@ -55,8 +59,7 @@
                             "title": "Yes, this is an alternative version",
                             "const": "alternative"
                         }        
-                    ]
-        
+                    ]        
                 }
             },
             "dependencies":{
@@ -77,9 +80,9 @@
                                 "versionDOI": {
                                     "title": "Please state the digital identifier of the previous / alternative version:",
                                     "type": "string"
-                                }
-                        
-                            }
+                                }                        
+                            },
+                            "required": ["versions", "versionDOI"]
                         },
                         {
                             "properties":{
@@ -93,20 +96,17 @@
                                 "versionInnovation": {
                                     "title": "What has changed since the previous version?",
                                     "type": "string"
-                                }
-                        
-                        
-                            }
+                                }                                                
+                            },
+                            "required": ["versions", "versionDOI", "versionInnovation"]
                         }
-
-
                     ]
                 }
-            }
-            
+            }            
         },
         "embargo":{
             "type": "object",
+            "required": ["embargo"],
             "properties": {
                 "embargo":{
                     "type": "boolean",
@@ -120,8 +120,7 @@
                             "title": "No, free",
                             "const": false
                         }
-                    ]
-        
+                    ]        
                 }
             },
             "dependencies":{
@@ -138,7 +137,8 @@
                                     "title": "Intended release date",
                                     "description": "When do you plan on lifting the embargo? Try to give your best estimation."
                                 }                        
-                            }
+                            },
+                            "required": ["embargo", "releaseDate"]
                         },
                         {
                             "properties":{
@@ -171,12 +171,10 @@
             "title": "",
             "$ref": "#/definitions/sharedAlready"
         },
-
         "versions": {
             "title": "",
             "$ref": "#/definitions/versions"
         },
-
         "dataCollection": {
             "type": "boolean",
             "title": "Data collection status",
@@ -192,12 +190,10 @@
             ]
 
         },
-
         "embargo": {
             "title": "",
             "$ref": "#/definitions/embargo"
         },
-
         "license": {
             "type": "string",
             "title": "License",
