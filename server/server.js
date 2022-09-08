@@ -27,8 +27,8 @@ app.use( fileUpload(uploadOptions) );
 
 // Configure the renderer.
 app.set('view engine', 'ejs'); //Necessary??
-app.set('views', path.join(__dirname, '/build'));  //Necessary??
-app.use(express.static(path.join(__dirname, '/build')));
+app.set('views', path.join(__dirname, '..', '/build'));  //Necessary??
+app.use(express.static(path.join(__dirname, '..', '/build')));
 
 //app.use(bodyparser.json({ limit: '50mb' }));
 //app.use(bodyparser.urlencoded({ limit: '50mb', extended: false }));
