@@ -61,6 +61,7 @@ class Wizard extends React.Component {
       subjectGroups: undefined,
       subjectTemplate: undefined,
       subjects: [],
+      subjectExcelFile: undefined,
       tissueSampleCollections: undefined,
       tissueSampleTemplate: undefined,
       tissueSamples: [],
@@ -278,6 +279,13 @@ class Wizard extends React.Component {
     window.scrollTo(0, 0);
   };
 
+  storeExcelFile = excelFile => {
+    console.log('Excel file received on wizard object')
+    //console.log(excelFile)
+    this.setState( {subjectExcelFile: excelFile} );
+  }; //attachSubjectExcelFile
+
+
   transformErrors = errors => {
   return errors.map(error => {
     if (error.name === "required") {
@@ -314,7 +322,7 @@ class Wizard extends React.Component {
 
       default:
         return (
-          <Result result={this.state.result} dataset={this.state.dataset} onBack={this.handleGoBackToPreviousStepWizard} onReset={this.handleReset} loadState={this.loadState}/>
+          <Result result={this.state.result} dataset={this.state.dataset} subjectExcelFile={this.state.subjectExcelFile} onBack={this.handleGoBackToPreviousStepWizard} onReset={this.handleReset} storeExcelFile={this.storeExcelFile} />
         );
     }
   }
