@@ -52,7 +52,7 @@ app.get('/api/express_test_connection', (req, res) => {
 });
 
 // Create a POST route for receiving files that should be sent to curation team via email.
-app.post('/api/sendmail', async (req, res) => {
+app.post('/api/sendmail', async (req, res) => { // todo: Remove async
 
   console.log('Received post request')
 
@@ -109,18 +109,18 @@ function writeMailBody(jsonObject) {
   
   let mailBodyStr = `Dataset information:
   
-  Contact Person: ${contactFirstName + ' ' + contactLastName}
-  Contact Person Email: ${contactEmail}
-  Dataset Title: ${dsTitle}
+Contact Person: ${contactFirstName + ' ' + contactLastName}
+Contact Person Email: ${contactEmail}
+Dataset Title: ${dsTitle}
     
-  Attachments:
+Attachments:
   
-  `;
+`;
   return mailBodyStr
   }
 
 function prepareMailAttachments(requestObject) {
-  
+
   let mailAttachmentArray = []; // Initialize an empty list for attachments
 
   let jsonAttachment = { // utf-8 string as an attachment
@@ -128,8 +128,8 @@ function prepareMailAttachments(requestObject) {
     content: requestObject.body.jsonData
   };
   mailAttachmentArray.push(jsonAttachment)
-
-  if (req.files) { // push excel file to the attachment list if it is present
+  
+  if (requestObject.files) { // push excel file to the attachment list if it is present
     let excelAttachment = {
       filename:'subject_data.xlsx',
       content: requestObject.files.excelFile.data, // there should be a file named excelFile
