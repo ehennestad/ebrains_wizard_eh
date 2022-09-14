@@ -20,8 +20,12 @@ if (process.env.USER=='eivinhen') {
 else {
     var transportConfiguration = {
       host: process.env.RELAY_HOST,
-      port: 25
+      port: 25,
+      tls: {rejectUnauthorized: false}
     };
+
+    
+
   // var transportConfiguration = smtpTransport({
   //   host: process.env.RELAY_HOST,
   //   port: 25
