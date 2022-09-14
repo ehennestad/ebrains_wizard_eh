@@ -62,8 +62,8 @@ app.post('/api/sendmail', async (req, res) => { // todo: Remove async
     //console.log('jsonObject', jsonObject)
 
     var message = {
-      from: 'ehennestad@gmail.com',
-      to: 'eivind.hennestad@medisin.uio.no',
+      from: 'Metadata Wizard',
+      to: jsonObject[0]["general"]["custodian"]["email"],
       subject: writeMailSubject(jsonObject),
       text: writeMailBody(jsonObject),
       attachments: prepareMailAttachments(req)
