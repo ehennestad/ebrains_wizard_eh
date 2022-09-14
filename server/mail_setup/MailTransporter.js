@@ -1,7 +1,7 @@
 // This script creates a transport object which can be used to send emails
 
 const nodemailer = require('nodemailer');  // Nodemailer is used for sending emails
-const smtpTransport = require('nodemailer-smtp-transport');
+// const smtpTransport = require('nodemailer-smtp-transport');
 
 // Define the smtp server to use and the user credentials
 
@@ -18,11 +18,14 @@ if (process.env.USER=='eivinhen') {
 }
 // For production (get credentials from environment variables)
 else {
-
-  var transportConfiguration = smtpTransport({
-    host: process.env.RELAY_HOST,
-    port: 25
-  });
+    var transportConfiguration = {
+      host: process.env.RELAY_HOST,
+      port: 25
+    };
+  // var transportConfiguration = smtpTransport({
+  //   host: process.env.RELAY_HOST,
+  //   port: 25
+  // });
 
   // var transportConfiguration = {
   //   host: 'smtp.gmail.com', // e.g. smtp.gmail.com
