@@ -41,7 +41,9 @@ else {
   // }
 }
 
+console.log('Creating mailtransporter')
 var mailTransporter = nodemailer.createTransport(transportConfiguration)
+console.log('Created mailtransporter')
 
 mailTransporter.verify((error, success) => {
   if (error) {
