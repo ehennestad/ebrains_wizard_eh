@@ -21,6 +21,7 @@ else {
     var transportConfiguration = {
       host: process.env.RELAY_HOST,
       port: 25,
+      secure: true, // Use TLS
       tls: {rejectUnauthorized: false}
     };
 
