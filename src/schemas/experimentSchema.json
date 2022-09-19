@@ -25,6 +25,7 @@
               }
             },
             {
+              "required": ["uploadedExcelFile"],
               "properties":{
                 "subjectsExist": {
                   "const": true
@@ -34,9 +35,9 @@
                   "type": "string",
                   "text": "<p>Please use the following table to describe your subjects:</p><p><a href='CommonTrack_SubjectMetadata.xlsx'>CommonTrack_SubjectMetadata.xlsx</a></p>"
                 }, 
-                "excelUploadButton": {
-                  "type": "boolean",
-                  "title": "Upload excel file (Placeholder)"
+                "uploadedExcelFile": {
+                  "type": "string",
+                  "title": "Upload your subject metadata excel file"
                 }
               }
             }

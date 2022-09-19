@@ -14,7 +14,7 @@ const ExperimentWizard = React.memo(({ schema, uiSchema, formData, transformErro
           <button type="button" className="btn btn-info" onClick={onBack}>Back</button>
         </div>
         <div className="col-xs-5 col-xs-offset-2 submit-panel">
-          <button type="submit" className="btn btn-info">Next</button></div>
+          <button type="submit" className="btn btn-success">Submit Metadata</button></div>
       </div>
     </Form>
   );

@@ -9,6 +9,8 @@
 const express = require('express');        // Express is a framework for creating web apps
 const path = require('path');              // Path is used for creating file paths
 const fileUpload = require('express-fileupload'); // Middleware for uploading file content
+const atob = require('atob');              // atob is needed for decoding base64 encoded strings
+
 // const bodyparser = require('body-parser'); // Body-parser is needed for parsing incoming request bodies
 
 // Get local modules that are needed for the server
@@ -65,7 +67,8 @@ app.post('/api/sendmail', (req, res) => {
   const emailMetadataSubmitter = jsonObject[0]["general"]["custodian"]["email"];
 
   // Create a string array with email addresses for the curation team and the user submitting metadata.
-  const emailRecipients = [emailCurationTeam, emailMetadataSubmitter];
+  //const emailRecipients = [emailCurationTeam, emailMetadataSubmitter];
+  const emailRecipients = [emailMetadataSubmitter];
 
   let message = createMetadataEmailMessage(jsonObject, req);
 
@@ -157,10 +160,10 @@ function prepareMailAttachments(requestObject) {
   };
   mailAttachmentArray.push(jsonAttachment)
   
-  if (requestObject.files) { // push excel file to the attachment list if it is present
+  if (requestObject.body.excelData) { // push excel data to the attachment list if it is present
     let excelAttachment = {
       filename:'subject_data.xlsx',
-      content: requestObject.files.excelFile.data, // there should be a file named excelFile
+      content: convertExcelDataUrlToByteArray(requestObject.body.excelData), 
       contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
     };
     
@@ -171,4 +174,20 @@ function prepareMailAttachments(requestObject) {
   }
 
   return mailAttachmentArray
+}
+
+function convertExcelDataUrlToByteArray(excelString) {
+  
+  var byteString = atob(excelString.split(',')[1])
+
+  // write the bytes of the string to an ArrayBuffer
+  var ab = new ArrayBuffer(byteString.length);
+  var dw = new DataView(ab);
+  for(var i = 0; i < byteString.length; i++) {
+    dw.setUint8(i, byteString.charCodeAt(i));
+  }
+
+  //convert bytestring from string to uint8array
+  var uint8Array = new Uint8Array(ab);
+  return uint8Array
 }

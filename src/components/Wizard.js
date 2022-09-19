@@ -1,10 +1,13 @@
 import React from 'react';
+import axios from 'axios';
 
 import GeneralWizard from './Wizard/GeneralWizard';
 import DatasetWizard from './Wizard/DatasetWizard';
 import FundingAndAffiliationWizard from './Wizard/FundingAndAffiliationWizard';
 import ContributorsWizard from './Wizard/ContributorsWizard';
 import ExperimentWizard from './Wizard/ExperimentWizard.js';
+import SubmissionCompletedWizard from './Wizard/SubmissionCompletedWizard.js';
+
 //import SubjectGroupWizard from './Wizard/SubjectGroupWizard';
 //import SubjectTemplateWizard from './Wizard/SubjectTemplateWizard';
 //import SubjectsWizard from './Wizard/SubjectsWizard';
@@ -29,9 +32,11 @@ import {
 
 import * as fundingAndAffiliationModule from '../schemas/fundingAndAffiliation.json';
 import * as contributorsModule from '../schemas/contributors.json';
+import * as submissionModule from '../schemas/submissionSchema.json';
 
 const fundingAndAffiliationSchema = fundingAndAffiliationModule.default;
 const contributorsSchema = contributorsModule.default;
+const submissionSchema = submissionModule.default;
 
 const STUDY_TOPIC_SUBJECT_VALUE = "Subject";
 const STUDY_TOPIC_TISSUE_SAMPLE_VALUE = "Tissue sample";
@@ -121,12 +126,35 @@ class Wizard extends React.Component {
 
     const dataset = {...this.state.general, ...this.state.datasetinfo, ...this.state.fundingAndAffiliation, ...this.state.contributors, ...data};
     const res = generateDocumentsFromDataset(dataset);
+    
+    let subjectExcelData = [];
+
+    if (data.subjectExpMetadata.subjectsExist) {
+      subjectExcelData = data.subjectExpMetadata.uploadedExcelFile;
+      delete data.subjectExpMetadata.uploadedExcelFile
+    } else {
+      subjectExcelData = [];
+    }
+
+    const datasetObject =  {"general": {...this.state.general}, "datasetinfo": {...this.state.datasetinfo}, "fundingAndAffiliation": {...this.state.fundingAndAffiliation}, "contributors": {...this.state.contributors}, "experiment": {...data}}
+    // submit to email
+    // Create a json string from data which user has entered.
+    var jsonData = JSON.stringify([datasetObject, res]);
+
+    // Create a FormData object in order to send data and files to the backend server
+    let formData = new FormData();
+    formData.append('jsonData', jsonData) // Json data is in the form of a string
+    formData.append('excelData', subjectExcelData) // Excel data is in the form of a dataURL
+    
+    // Route the POST request with files+data to api/sendmail
+    axios.post('/api/sendmail', formData)
 
     this.setState(prevState => ({
       dataset: {"general": {...prevState.general}, "datasetinfo": {...prevState.datasetinfo}, "fundingAndAffiliation": {...prevState.fundingAndAffiliation}, "contributors": {...prevState.contributors}, "experiment": {...data}}, 
       experiment: data,
       result: res,
-      wizardStep: WIZARD_END
+      wizardStep: WIZARD_END,
+      schema: submissionSchema
     }));
 
     window.scrollTo(0, 0);
@@ -319,6 +347,10 @@ class Wizard extends React.Component {
         return (
           <ExperimentWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.experiment} transformErrors={this.transformErrors} onSubmit={this.handleExperimentSubmit} onBack={this.handleGoBackToPreviousStepWizard} />
         );
+      case WIZARD_END:
+          return (
+            <SubmissionCompletedWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.experiment} transformErrors={this.transformErrors} result={this.state.result} dataset={this.state.dataset} onReset={this.handleReset}/>
+          );
 
       default:
         return (

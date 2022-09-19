@@ -100,7 +100,12 @@
         "subjectsExist": {
             "ui:widget": "radio"
         },
-
+        "uploadedExcelFile": {
+            "ui:widget": "file",
+            "ui:options": {
+                "accept": ".xlsx, .xls"
+          }
+        },
         "subjectsTable": {
             "subjectRows": {
                 "ui:field": "table",
@@ -161,14 +166,13 @@
                   }            
             }
         },
-
         "externalTable": {
             "ui:widget": "richtext"
-        }    
-
+        }
     },
 
     "datasetExpMetadata": {
+        
         "experimentalApproach": {
             "ui:options":  {
                 "orderable": false
@@ -189,6 +193,10 @@
                 "orderable": false
             }
         }      
+    },     
+    
+    "submissionText": {
+        "ui:widget": "richtext"
     }
 
 }
