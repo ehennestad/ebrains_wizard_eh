@@ -16,34 +16,17 @@ if (process.env.USER=='eivinhen') {
       }
     }
 }
-// For production (get credentials from environment variables)
+// For production (use the cscs mail relay)
 else {
     var transportConfiguration = {
       host: process.env.RELAY_HOST,
       port: 25,
-      secure: true, // Use TLS
+      secure: false, // Don't use TLS
       tls: {rejectUnauthorized: false}
     };
-
-    
-
-  // var transportConfiguration = smtpTransport({
-  //   host: process.env.RELAY_HOST,
-  //   port: 25
-  // });
-
-  // var transportConfiguration = {
-  //   host: 'smtp.gmail.com', // e.g. smtp.gmail.com
-  //   auth: {
-  //     user: process.env.USER,
-  //     pass: process.env.PASS
-  //   }
-  // }
 }
 
-console.log('Creating mailtransporter')
 var mailTransporter = nodemailer.createTransport(transportConfiguration)
-console.log('Created mailtransporter')
 
 mailTransporter.verify((error, success) => {
   if (error) {
