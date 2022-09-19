@@ -1,15 +1,19 @@
 // This script configures the backend server that is used for sending the 
 // user-submitted metadata to the ebrains curation team
 
+//  This script requires the following environment variables to be set:
+//  - EMAIL_ADRESS_SENDER
+//  - EMAIL_ADDRESS_CURATION_SUPPORT
+
 // Get installed node modules that are needed for the server
 const express = require('express');        // Express is a framework for creating web apps
 const path = require('path');              // Path is used for creating file paths
 const fileUpload = require('express-fileupload'); // Middleware for uploading file content
 // const bodyparser = require('body-parser'); // Body-parser is needed for parsing incoming request bodies
 
-
 // Get local modules that are needed for the server
 var mailTransporter = require('./mail_setup/MailTransporter');
+const { endianness } = require('os');
 
 // This app is deployed on OpenShift, and containers in OpenShift should bind to
 // any address (which is designated with 0.0.0.0) and use port 8080 by default
@@ -52,24 +56,48 @@ app.get('/api/express_test_connection', (req, res) => {
 });
 
 // Create a POST route for receiving files that should be sent to curation team via email.
-app.post('/api/sendmail', async (req, res) => { // todo: Remove async
-
+app.post('/api/sendmail', (req, res) => { 
   console.log('Received post request')
 
+  let jsonObject = JSON.parse(req.body.jsonData);
+
+  const emailCurationTeam = process.env.EMAIL_ADDRESS_CURATION_SUPPORT;
+  const emailMetadataSubmitter = jsonObject[0]["general"]["custodian"]["email"];
+
+  // Create a string array with email addresses for the curation team and the user submitting metadata.
+  const emailRecipients = [emailCurationTeam, emailMetadataSubmitter];
+
+  let message = createMetadataEmailMessage(jsonObject, req);
+
+  // Send the message to each of the emailRecipients
+  for (let i = 0; i < emailRecipients.length; i++) {
+    sendMetadataEmailMessage(emailRecipients[i], message);
+  }
+});
+
+// Functions for creating and sending email messages
+
+function createMetadataEmailMessage(jsonObject, requestObject) {
+  // Create an email message object but leave the recipient empty for now.
+
+  var message = {
+    from: process.env.EMAIL_ADRESS_SENDER,
+    to: '',
+    subject: writeMailSubject(jsonObject),
+    text: writeMailBody(jsonObject),
+    attachments: prepareMailAttachments(requestObject)
+  };
+
+  return message
+}
+
+function sendMetadataEmailMessage(emailRecipient, emailMessage) {
+  // Send the email message to the emailRecipient
   try {
-
-    let jsonObject = JSON.parse(req.body.jsonData);
-    //console.log('jsonObject', jsonObject)
-
-    var message = {
-      from: 'Metadata Wizard',
-      to: jsonObject[0]["general"]["custodian"]["email"],
-      subject: writeMailSubject(jsonObject),
-      text: writeMailBody(jsonObject),
-      attachments: prepareMailAttachments(req)
-    };
+    // Change the recipient of the email message
+    emailMessage.to = emailRecipient;
   
-    mailTransporter.sendMail(message, function(error, info){
+    mailTransporter.sendMail(emailMessage, function(error, info){
       if (error) {
         console.log(error)
         res.status(500).send(err)
@@ -83,7 +111,8 @@ app.post('/api/sendmail', async (req, res) => { // todo: Remove async
       console.log('Failed to send email')
       res.status(500).send(err);
   }
-});
+}
+
 
 
 // Define utility functions
@@ -101,14 +130,13 @@ function writeMailBody(jsonObject) {
   
     // Todo use contact person if available
 
-
   const dsTitle = jsonObject[0]["general"]["datasetinfo"]["datasetTitle"];
   const contactFirstName = jsonObject[0]["general"]["custodian"]["firstName"];
   const contactLastName = jsonObject[0]["general"]["custodian"]["lastName"];
   const contactEmail = jsonObject[0]["general"]["custodian"]["email"];
   
   let mailBodyStr = `Dataset information:
-  
+
 Contact Person: ${contactFirstName + ' ' + contactLastName}
 Contact Person Email: ${contactEmail}
 Dataset Title: ${dsTitle}
