@@ -1,7 +1,9 @@
 // This script creates a transport object which can be used to send emails
 
+//  This script requires the following environment variables to be set:
+//  - RELAY_HOST
+
 const nodemailer = require('nodemailer');  // Nodemailer is used for sending emails
-// const smtpTransport = require('nodemailer-smtp-transport');
 
 // Define the smtp server to use and the user credentials
 
