@@ -15,7 +15,6 @@ const atob = require('atob');              // atob is needed for decoding base64
 
 // Get local modules that are needed for the server
 var mailTransporter = require('./mail_setup/MailTransporter');
-const { endianness } = require('os');
 
 // This app is deployed on OpenShift, and containers in OpenShift should bind to
 // any address (which is designated with 0.0.0.0) and use port 8080 by default
@@ -67,8 +66,7 @@ app.post('/api/sendmail', (req, res) => {
   const emailMetadataSubmitter = jsonObject[0]["general"]["custodian"]["email"];
 
   // Create a string array with email addresses for the curation team and the user submitting metadata.
-  //const emailRecipients = [emailCurationTeam, emailMetadataSubmitter];
-  const emailRecipients = [emailMetadataSubmitter];
+  const emailRecipients = [emailCurationTeam, emailMetadataSubmitter];
 
   let message = createMetadataEmailMessage(jsonObject, req);
 
