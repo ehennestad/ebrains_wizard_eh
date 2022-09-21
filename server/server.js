@@ -8,10 +8,8 @@
 // Get installed node modules that are needed for the server
 const express = require('express');        // Express is a framework for creating web apps
 const path = require('path');              // Path is used for creating file paths
-const fileUpload = require('express-fileupload'); // Middleware for uploading file content
+const fileUpload = require('express-fileupload'); // Middleware for uploading file content / parsing multiform data in requests
 const atob = require('atob');              // atob is needed for decoding base64 encoded strings
-
-// const bodyparser = require('body-parser'); // Body-parser is needed for parsing incoming request bodies
 
 // Get local modules that are needed for the server
 var mailTransporter = require('./mail_setup/MailTransporter');
@@ -35,9 +33,6 @@ app.set('view engine', 'ejs'); //Necessary??
 app.set('views', path.join(__dirname, '..', '/build'));  //Necessary??
 app.use(express.static(path.join(__dirname, '..', '/build')));
 
-//app.use(bodyparser.json({ limit: '50mb' }));
-//app.use(bodyparser.urlencoded({ limit: '50mb', extended: false }));
-
 // console.log that the server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
@@ -58,7 +53,7 @@ app.get('/api/express_test_connection', (req, res) => {
 
 // Create a POST route for receiving files that should be sent to curation team via email.
 app.post('/api/sendmail', (req, res) => { 
-  console.log('Received post request')
+  console.log('Received submission post request from client')
 
   let jsonObject = JSON.parse(req.body.jsonData);
 
@@ -153,7 +148,7 @@ function writeMailSubject(jsonObject) {
 function writeMailBody(jsonObject) {
   // Add some key information to a mail body string
   
-    // Todo use contact person if available
+    // TODO: use contact person if available
 
   const dsTitle = jsonObject[0]["general"]["datasetinfo"]["datasetTitle"];
   const contactFirstName = jsonObject[0]["general"]["custodian"]["firstName"];
