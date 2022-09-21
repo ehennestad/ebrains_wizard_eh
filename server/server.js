@@ -69,11 +69,21 @@ app.post('/api/sendmail', (req, res) => {
   const emailRecipients = [emailCurationTeam, emailMetadataSubmitter];
 
   let message = createMetadataEmailMessage(jsonObject, req);
+  let mailResponse = [];
 
   // Send the message to each of the emailRecipients
   for (let i = 0; i < emailRecipients.length; i++) {
-    sendMetadataEmailMessage(emailRecipients[i], message);
+    mailResponse[i] = sendMetadataEmailMessage(emailRecipients[i], message);
   }
+
+  // Send the response to the client (only the first response is sent)
+  // This is because the client only needs to know if the email was sent to the curation team.
+  if (mailResponse[0].ok) {
+    res.send({status: true, message: 'Email is sent'})
+  } else {
+    res.status(500).send(mailResponse[0].error)
+  }
+
 });
 
 // Functions for creating and sending email messages
@@ -94,24 +104,31 @@ function createMetadataEmailMessage(jsonObject, requestObject) {
 
 function sendMetadataEmailMessage(emailRecipient, emailMessage) {
   // Send the email message to the emailRecipient
+  
+  let mailResponse = {ok: false, error: null};
+
   try {
     // Change the recipient of the email message
-    emailMessage.to = emailRecipient;
-  
-    mailTransporter.sendMail(emailMessage, function(error, info){
+    let concreteMessage = {};
+    Object.assign(concreteMessage, emailMessage);
+    concreteMessage.to = emailRecipient;
+    
+    mailTransporter.sendMail(concreteMessage, function(error, info){
       if (error) {
         console.log(error)
-        res.status(500).send(err)
+        mailResponse.error = error;
       } else {
-        console.log('Email sent: ' + info.response)
-        res.send({status: true, message: 'Email is sent'})
+        console.log(`Email sent: ${concreteMessage.to}` + info.response)
+        mailResponse.ok = true;
       }
     });
 
   } catch (err) {
       console.log('Failed to send email')
-      res.status(500).send(err);
+      console.log(err)
+      mailResponse.error = err;
   }
+  return mailResponse
 }
 
 
