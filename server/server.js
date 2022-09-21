@@ -140,6 +140,13 @@ function writeMailSubject(jsonObject) {
   const dsTitle = jsonObject[0]["general"]["datasetinfo"]["datasetTitle"];
   let mailSubjectStr = `[Wizard Metadata Submission] ${dsTitle}`;
 
+  let ticketNumber = jsonObject[0]["general"]["ticketNumber"];
+
+  if (ticketNumber) {
+    ticketNumber = cleanTicketNumber(ticketNumber);
+    mailSubjectStr = mailSubjectStr + ` [Ticket#${ticketNumber}]`;
+  }
+
   return mailSubjectStr
 }
 
@@ -206,3 +213,23 @@ function convertExcelDataUrlToByteArray(excelString) {
   var uint8Array = new Uint8Array(ab);
   return uint8Array
 }
+
+function cleanTicketNumber(ticketNumber) {
+  // Remove square brackets from ticket number
+  let cleanedTicketNumber = ticketNumber.replace('[', '');
+  cleanedTicketNumber = cleanedTicketNumber.replace(']', '');
+
+  // Remove ticket from ticket number
+  cleanedTicketNumber = cleanedTicketNumber.replace('Ticket', '');
+
+  // Remove whitespace from ticket number
+  cleanedTicketNumber = cleanedTicketNumber.replace(' ', '');
+  
+  // Remove number symbol from ticket number
+  cleanedTicketNumber = cleanedTicketNumber.replace('#', '');
+
+  return cleanedTicketNumber
+}
+
+
+
