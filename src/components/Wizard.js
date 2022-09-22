@@ -7,6 +7,7 @@ import FundingAndAffiliationWizard from './Wizard/FundingAndAffiliationWizard';
 import ContributorsWizard from './Wizard/ContributorsWizard';
 import ExperimentWizard from './Wizard/ExperimentWizard.js';
 import SubmissionCompletedWizard from './Wizard/SubmissionCompletedWizard.js';
+import SubmissionFailedWizard from './Wizard/SubmissionFailedWizard.js';
 
 //import SubjectGroupWizard from './Wizard/SubjectGroupWizard';
 //import SubjectTemplateWizard from './Wizard/SubjectTemplateWizard';
@@ -33,10 +34,13 @@ import {
 import * as fundingAndAffiliationModule from '../schemas/fundingAndAffiliation.json';
 import * as contributorsModule from '../schemas/contributors.json';
 import * as submissionModule from '../schemas/submissionSchema.json';
+import * as submissionFailedModule from '../schemas/submissionFailedSchema.json';
 
 const fundingAndAffiliationSchema = fundingAndAffiliationModule.default;
 const contributorsSchema = contributorsModule.default;
 const submissionSchema = submissionModule.default;
+const submissionFailedSchema = submissionFailedModule.default;
+
 
 const STUDY_TOPIC_SUBJECT_VALUE = "Subject";
 const STUDY_TOPIC_TISSUE_SAMPLE_VALUE = "Tissue sample";
@@ -54,6 +58,8 @@ const WIZARD_STEP_TISSUE_SAMPLE_GROUP = "WIZARD_STEP_TISSUE_SAMPLE_GROUP";
 const WIZARD_STEP_TISSUE_SAMPLE_TEMPLATE = "WIZARD_STEP_TISSUE_SAMPLE_TEMPLATE";
 const WIZARD_STEP_TISSUE_SAMPLES = "WIZARD_STEP_TISSUE_SAMPLES";
 const WIZARD_END = "WIZARD_END";
+const WIZARD_FAILED = "WIZARD_FAILED";
+
 class Wizard extends React.Component {
   constructor(props) {
     super(props);
@@ -146,18 +152,17 @@ class Wizard extends React.Component {
     formData.append('jsonData', jsonData) // Json data is in the form of a string
     formData.append('excelData', subjectExcelData) // Excel data is in the form of a dataURL
     
-    // Route the POST request with files+data to api/sendmail
-    axios.post('/api/sendmail', formData)
-
     this.setState(prevState => ({
       dataset: {"general": {...prevState.general}, "datasetinfo": {...prevState.datasetinfo}, "fundingAndAffiliation": {...prevState.fundingAndAffiliation}, "contributors": {...prevState.contributors}, "experiment": {...data}}, 
       experiment: data,
       result: res,
-      wizardStep: WIZARD_END,
-      schema: submissionSchema
     }));
 
-    window.scrollTo(0, 0);
+    // Route the POST request with files+data to api/sendmail
+    // axios.post('/api/sendmail', formData)
+    axios.post('/api/sendmail', formData)
+      .then( response => {console.log(response); this.goToSubmissionCompletedPage() } )
+      .catch( error => {console.log(error); this.goToSubmissionFailedPage() } );
 
   }
 
@@ -210,7 +215,27 @@ class Wizard extends React.Component {
     window.scrollTo(0, 0);
 
   }
+  
+  goToSubmissionCompletedPage = () => {
+    this.setState({
+      schema: submissionSchema,
+      wizardStep: WIZARD_END
+    });
 
+    window.scrollTo(0, 0);
+
+  }
+
+  goToSubmissionFailedPage = () => {
+    this.setState({
+      schema: submissionFailedSchema,
+      wizardStep: WIZARD_FAILED
+    });
+
+    window.scrollTo(0, 0);
+
+  }
+  
   handleGoBackToPreviousStepWizard = () => {
     const dataset = this.state.dataset;
     const studyTopic = getStudyTopic(dataset);
@@ -350,6 +375,10 @@ class Wizard extends React.Component {
       case WIZARD_END:
           return (
             <SubmissionCompletedWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.experiment} transformErrors={this.transformErrors} result={this.state.result} dataset={this.state.dataset} onReset={this.handleReset}/>
+          );
+      case WIZARD_FAILED:
+          return (
+            <SubmissionFailedWizard schema={schema} uiSchema={this.state.uiSchema} formData={this.state.experiment} transformErrors={this.transformErrors} result={this.state.result} dataset={this.state.dataset} onReset={this.handleReset}/>
           );
 
       default:

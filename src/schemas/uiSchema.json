@@ -197,6 +197,10 @@
     
     "submissionText": {
         "ui:widget": "richtext"
+    },
+
+    "submissionFailedText": {
+        "ui:widget": "richtext"
     }
 
 }

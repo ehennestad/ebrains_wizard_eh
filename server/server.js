@@ -64,19 +64,24 @@ app.post('/api/sendmail', (req, res) => {
   const emailRecipients = [emailCurationTeam, emailMetadataSubmitter];
 
   let message = createMetadataEmailMessage(jsonObject, req);
-  let mailResponse = [];
 
-  // Send the message to each of the emailRecipients
+  // Send the message to each of the emailRecipients. NOTE: The sendResponseToClient function is called after each email has been sent, 
+  // but the response will only be sent to the client for the first email. This is fine, because it is only important for the client to know
+  // that the email has been sent to the curation team, but it is not important for the client to know if the email has been sent to the user.
+  // This could be handled better in the future.
   for (let i = 0; i < emailRecipients.length; i++) {
-    mailResponse[i] = sendMetadataEmailMessage(emailRecipients[i], message);
+    sendMetadataEmailMessage(emailRecipients[i], message, sendResponseToClient)
   }
 
-  // Send the response to the client (only the first response is sent)
-  // This is because the client only needs to know if the email was sent to the curation team.
-  if (mailResponse[0].ok) {
-    res.send({status: true, message: 'Email is sent'})
-  } else {
-    res.status(500).send(mailResponse[0].error)
+  // Function that sends the response to the client
+  function sendResponseToClient(mailResponse) {
+    console.log('Sending response to client')
+
+    if (mailResponse.ok) {
+      res.send({status: true, message: 'Email is sent'})
+    } else {
+      res.status(500).send(mailResponse.error.message)
+    }
   }
 
 });
@@ -97,7 +102,7 @@ function createMetadataEmailMessage(jsonObject, requestObject) {
   return message
 }
 
-function sendMetadataEmailMessage(emailRecipient, emailMessage) {
+function sendMetadataEmailMessage(emailRecipient, emailMessage, sendResponseToClientFunction) {
   // Send the email message to the emailRecipient
   
   let mailResponse = {ok: false, error: null};
@@ -107,25 +112,24 @@ function sendMetadataEmailMessage(emailRecipient, emailMessage) {
     let concreteMessage = {};
     Object.assign(concreteMessage, emailMessage);
     concreteMessage.to = emailRecipient;
-    
+
     mailTransporter.sendMail(concreteMessage, function(error, info){
       if (error) {
-        console.log(error)
+        console.log(`Failed to send mail with following error:\n`, error)
         mailResponse.error = error;
       } else {
         console.log(`Email sent: ${concreteMessage.to}` + info.response)
         mailResponse.ok = true;
       }
+      sendResponseToClientFunction(mailResponse)
     });
 
   } catch (err) {
-      console.log('Failed to send email')
-      console.log(err)
+      console.log('Failed to send the message via email with the following error:\n', err)  
       mailResponse.error = err;
+      sendResponseToClientFunction(mailResponse)
   }
-  return mailResponse
 }
-
 
 
 // Define utility functions
