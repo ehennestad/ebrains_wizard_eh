@@ -195,7 +195,7 @@
         }      
     },     
     
-    "submissionText": {
+    "submissionCompletedText": {
         "ui:widget": "richtext"
     },
 

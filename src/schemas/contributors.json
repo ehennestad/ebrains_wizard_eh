@@ -8,6 +8,8 @@
       "description": "Please list all authors who have contributed to the dataset, in the order you would like them to appear on the data publication. Please note that the list of contributors may be different for this data publication as compared to a journal article based on the data.",
       "items": {
         "type": "object",
+        "required": ["firstName", "lastName", "email", "affiliation"],
+
         "properties": {
           "firstName": {
             "type": "string",
