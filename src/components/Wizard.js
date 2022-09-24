@@ -73,14 +73,12 @@ class Wizard extends React.Component {
   };
 
   componentDidMount = () => {
-    console.log("Hello World!")
-    let jsonstr = cookies.get('wizardData', {doNotParse:true} );
+    let jsonStr = cookies.get('wizardData', {doNotParse:true} );
     
-    let formStates = JSON.parse(jsonstr);  
-    console.log('formstates', formStates)
-
-    this.loadState(formStates);
-
+    if (jsonStr !== undefined) {
+      let formStates = JSON.parse(jsonStr);  
+      this.loadState(formStates);
+    }
     this.isInitialized = true;
   };
 
@@ -137,7 +135,6 @@ class Wizard extends React.Component {
       let dataset = Object.fromEntries(this.formData) // convert formData Map to object
       const jsonData = JSON.stringify(dataset);
       cookies.set('wizardData', jsonData, { path: '/' })
-      console.log('saved cookie', jsonData)
     }
   }
 
