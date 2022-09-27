@@ -139,7 +139,6 @@ function sendMetadataEmailMessage(emailRecipient, emailMessage, sendResponseToCl
   }
 }
 
-
 // Define utility functions
 // - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -211,6 +210,7 @@ If you have any further questions, please contact the curation team at ${process
 
 Best regards,
 The curation team
+
 `;
 return mailBodyStr
 }
