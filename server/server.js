@@ -2,7 +2,7 @@
 // user-submitted metadata to the ebrains curation team
 
 //  This script requires the following environment variables to be set:
-//  - EMAIL_ADRESS_SENDER
+//  - EMAIL_ADDRESS_SENDER
 //  - EMAIL_ADDRESS_CURATION_SUPPORT
 
 // Get installed node modules that are needed for the server
@@ -58,7 +58,7 @@ app.post('/api/sendmail', (req, res) => {
   let jsonObject = JSON.parse(req.body.jsonData);
 
   const emailCurationTeam = process.env.EMAIL_ADDRESS_CURATION_SUPPORT;
-  const emailMetadataSubmitter = jsonObject[0]["general"]["custodian"]["email"];
+  const emailMetadataSubmitter = getContactPersonEmailAddress(jsonObject);
 
   // Create a string array with email addresses for the curation team and the user submitting metadata.
   const emailRecipients = [emailCurationTeam, emailMetadataSubmitter];
@@ -92,7 +92,7 @@ function createMetadataEmailMessage(jsonObject, requestObject) {
   // Create an email message object but leave the recipient empty for now.
 
   var message = {
-    from: process.env.EMAIL_ADRESS_SENDER,
+    from: process.env.EMAIL_ADDRESS_SENDER,
     to: '',
     subject: writeMailSubject(jsonObject),
     text: writeMailBody(jsonObject),
@@ -135,6 +135,20 @@ function sendMetadataEmailMessage(emailRecipient, emailMessage, sendResponseToCl
 // Define utility functions
 // - - - - - - - - - - - - - - - - - - - - - - - - 
 
+function getContactPersonEmailAddress(jsonObject) {
+
+  console.log(jsonObject[0]["general"])
+
+  let emailAddress = undefined;
+
+  if (jsonObject[0]["general"]["contactperson"]["same"]) {
+    emailAddress = jsonObject[0]["general"]["custodian"]["email"];
+  } else {
+    emailAddress = jsonObject[0]["general"]["contactperson"]["contactinfo"]["email"];
+  }
+  return emailAddress;
+}
+
 function writeMailSubject(jsonObject) {
   const dsTitle = jsonObject[0]["general"]["datasetinfo"]["datasetTitle"];
   let mailSubjectStr = `[Wizard Metadata Submission] ${dsTitle}`;
@@ -155,14 +169,14 @@ function writeMailBody(jsonObject) {
     // TODO: use contact person if available
 
   const dsTitle = jsonObject[0]["general"]["datasetinfo"]["datasetTitle"];
-  const contactFirstName = jsonObject[0]["general"]["custodian"]["firstName"];
-  const contactLastName = jsonObject[0]["general"]["custodian"]["lastName"];
-  const contactEmail = jsonObject[0]["general"]["custodian"]["email"];
+  const custodianFirstName = jsonObject[0]["general"]["custodian"]["firstName"];
+  const custodianLastName = jsonObject[0]["general"]["custodian"]["lastName"];
+  const custodianEmail = jsonObject[0]["general"]["custodian"]["email"];
   
   let mailBodyStr = `Dataset information:
 
-Contact Person: ${contactFirstName + ' ' + contactLastName}
-Contact Person Email: ${contactEmail}
+Dataset Custodian: ${custodianFirstName + ' ' + custodianLastName}
+Dataset Custodian Email: ${custodianEmail}
 Dataset Title: ${dsTitle}
     
 Attachments:
