@@ -63,14 +63,15 @@ app.post('/api/sendmail', (req, res) => {
   // Create a string array with email addresses for the curation team and the user submitting metadata.
   const emailRecipients = [emailCurationTeam, emailMetadataSubmitter];
 
-  let message = createMetadataEmailMessage(jsonObject, req);
+  let message = [createMetadataEmailMessage(jsonObject, req)];
+  message.push( rewriteMailBodyForContactPerson(message[0], jsonObject) )
 
   // Send the message to each of the emailRecipients. NOTE: The sendResponseToClient function is called after each email has been sent, 
   // but the response will only be sent to the client for the first email. This is fine, because it is only important for the client to know
   // that the email has been sent to the curation team, but it is not important for the client to know if the email has been sent to the user.
   // This could be handled better in the future.
   for (let i = 0; i < emailRecipients.length; i++) {
-    sendMetadataEmailMessage(emailRecipients[i], message, sendResponseToClient)
+    sendMetadataEmailMessage(emailRecipients[i], message[i], sendResponseToClient)
   }
 
   // Function that sends the response to the client
@@ -102,6 +103,15 @@ function createMetadataEmailMessage(jsonObject, requestObject) {
   return message
 }
 
+function rewriteMailBodyForContactPerson(emailMessage, jsonObject) {
+  let rewrittenMessage = {};
+  Object.assign(rewrittenMessage, emailMessage);
+
+  rewrittenMessage.text = writeMailBodyConfirmation(jsonObject)
+
+  return rewrittenMessage
+}
+
 function sendMetadataEmailMessage(emailRecipient, emailMessage, sendResponseToClientFunction) {
   // Send the email message to the emailRecipient
   
@@ -109,16 +119,14 @@ function sendMetadataEmailMessage(emailRecipient, emailMessage, sendResponseToCl
 
   try {
     // Change the recipient of the email message
-    let concreteMessage = {};
-    Object.assign(concreteMessage, emailMessage);
-    concreteMessage.to = emailRecipient;
+    emailMessage.to = emailRecipient;
 
-    mailTransporter.sendMail(concreteMessage, function(error, info){
+    mailTransporter.sendMail(emailMessage, function(error, info){
       if (error) {
         console.log(`Failed to send mail with following error:\n`, error)
         mailResponse.error = error;
       } else {
-        console.log(`Email sent: ${concreteMessage.to}` + info.response)
+        console.log(`Email sent: ${emailMessage.to}` + info.response)
         mailResponse.ok = true;
       }
       sendResponseToClientFunction(mailResponse)
@@ -136,8 +144,6 @@ function sendMetadataEmailMessage(emailRecipient, emailMessage, sendResponseToCl
 // - - - - - - - - - - - - - - - - - - - - - - - - 
 
 function getContactPersonEmailAddress(jsonObject) {
-
-  console.log(jsonObject[0]["general"])
 
   let emailAddress = undefined;
 
@@ -183,7 +189,31 @@ Attachments:
   
 `;
   return mailBodyStr
+}
+
+function writeMailBodyConfirmation(jsonObject) {
+
+  let contactPersonName = undefined;
+
+  if (jsonObject[0]["general"]["contactperson"]["same"]) {
+    contactPersonName = jsonObject[0]["general"]["custodian"]["firstName"];
+  } else {
+    contactPersonName = jsonObject[0]["general"]["contactperson"]["contactinfo"]["firstName"];
   }
+
+  let mailBodyStr = `Dear ${contactPersonName},
+
+Thank you for submitting metadata for the dataset "${jsonObject[0]["general"]["datasetinfo"]["datasetTitle"]}". We will review the metadata and get back to you as soon as possible.
+
+The attached file(s) are the metadata you submitted. The json file contains the metadata in a machine-readable format. If you at some point need to make changes to the metadata, you can upload it in the wizard, make modifications and resubmit.
+
+If you have any further questions, please contact the curation team at ${process.env.EMAIL_ADDRESS_CURATION_SUPPORT}.
+
+Best regards,
+The curation team
+`;
+return mailBodyStr
+}
 
 function prepareMailAttachments(requestObject) {
 
