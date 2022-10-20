@@ -50,7 +50,7 @@ class Wizard extends React.Component {
 
     this.formData = this.initializeFormDataMap(); // formdata for each wizard step in a Map
     this.jsonStr = null;                          // json string of the whole formdata
-
+    this.ticketNumber = null;                     // ticket number of the submission
     this.state = { 
       currentStep: WIZARD_STEPS_LIST[0],
     }
@@ -74,11 +74,26 @@ class Wizard extends React.Component {
 
   componentDidMount = () => {
     let jsonStr = cookies.get('wizardData', {doNotParse:true} );
+    //let jsonStr2 = localStorage.getItem('wizardData2')
     
-    if (jsonStr !== undefined) {
-      let formStates = JSON.parse(jsonStr);  
-      this.loadState(formStates);
+    const queryString = window.location.search;
+    const ticketNumber = new URLSearchParams(queryString).get('TicketNumber');
+    
+    // Check if ticketnumber is empty
+    if (ticketNumber !== null && ticketNumber !== undefined) {
+      this.ticketNumber = ticketNumber;
     }
+
+    if (jsonStr !== undefined) {
+      let formStates = JSON.parse(jsonStr);
+      this.loadState(formStates);
+    } 
+
+    // Update the general form with ticketnumber from URL
+    var generalForm = this.formData.get('general');
+    generalForm.ticketNumber = ticketNumber;
+    this.formData.set('general', generalForm);
+
     this.isInitialized = true;
   };
 
@@ -134,7 +149,17 @@ class Wizard extends React.Component {
     if (this.isInitialized) {
       let dataset = Object.fromEntries(this.formData) // convert formData Map to object
       const jsonData = JSON.stringify(dataset);
+
+      var startTime = performance.now()
       cookies.set('wizardData', jsonData, { path: '/' })
+      var endTime = performance.now()
+      console.log(`Saving to cookie took: ${endTime - startTime} milliseconds`)
+
+      startTime = performance.now()
+      localStorage.setItem('wizardData2', jsonData)
+      endTime = performance.now()
+      console.log(`Saving to local storage took: ${endTime - startTime} milliseconds`)
+
     }
   }
 
