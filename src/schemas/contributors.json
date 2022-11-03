@@ -6,9 +6,10 @@
       "type": "array",
       "title": "Dataset contributors",
       "description": "Please list all authors who have contributed to the dataset, in the order you would like them to appear on the data publication. Please note that the list of contributors may be different for this data publication as compared to a journal article based on the data.",
+      "minItems": 1, 
       "items": {
         "type": "object",
-        "required": ["firstName", "lastName", "email", "affiliation"],
+        "required": ["firstName", "lastName"],
 
         "properties": {
           "firstName": {
@@ -23,16 +24,100 @@
             "type": "string",
             "title": "ORCID"
           },
-          "email": {
+          "affiliation": {
             "type": "string",
-            "format": "email",
-            "title": "E-mail address"
+            "title": "Affiliation"
+          },
+          "emailMissing":{
+            "type": "boolean",
+            "title": "This author does not have an email address",
+            "default": false
+          }
+        },
+        "dependencies":{
+          "emailMissing":{
+            "oneOf":[
+              {
+                "required": ["email"],
+                "properties":{
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "title": "E-mail address"
+                  },
+                  "emailMissing": {
+                    "const": false
+                  }
+                }
+              },
+              {
+                "properties":{
+                  "emailMissing": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "otherContributors": {
+      "type": "array",
+      "title": "Other contributors",
+      "description": "Please list all other contributers to this dataset. This could be technicians, data managers, etc.",
+      "items": {
+        "type": "object",
+        "required": ["firstName", "lastName"],
+
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "title": "First name"
+          },
+          "lastName": {
+            "type": "string",
+            "title": "Last name"
+          },
+          "orcid": {
+            "type": "string",
+            "title": "ORCID"
           },
           "affiliation": {
             "type": "string",
             "title": "Affiliation"
+          },
+          "emailMissing":{
+            "type": "boolean",
+            "title": "This author does not have an email address",
+            "default": false
           }
-
+        },
+        "dependencies":{
+          "emailMissing":{
+            "oneOf":[
+              {
+                "required": ["email"],
+                "properties":{
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "title": "E-mail address"
+                  },
+                  "emailMissing": {
+                    "const": false
+                  }
+                }
+              },
+              {
+                "properties":{
+                  "emailMissing": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          }
         }
       }
     },
