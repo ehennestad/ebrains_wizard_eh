@@ -204,12 +204,13 @@ function writeMailBodyConfirmation(jsonObject) {
 
 Thank you for submitting metadata for the dataset "${jsonObject[0]["general"]["datasetinfo"]["datasetTitle"]}". We will review the metadata and get back to you as soon as possible.
 
-The attached file(s) are the metadata you submitted. The json file contains the metadata in a machine-readable format. If you at some point need to make changes to the metadata, you can upload it in the wizard, make modifications and resubmit.
+The attached file(s) are the metadata you submitted. The json file contains the metadata in a machine-readable format and if you at some point need to make changes to the metadata, you can upload it to the wizard, make modifications and resubmit.
 
 If you have any further questions, please contact the curation team at ${process.env.EMAIL_ADDRESS_CURATION_SUPPORT}.
 
 Best regards,
-The curation team
+EBRAINS Curation Service
+curation-support@ebrains.eu
 
 `;
 return mailBodyStr

@@ -205,7 +205,7 @@ class Wizard extends React.Component {
 
   saveState = () => {
     const blob = new Blob([this.jsonStr], {type: "data:text/json;charset=utf-8"});
-    saveAs(blob, "result.json")
+    saveAs(blob, "ebrains_wizard_metadata.json")
   };
 
   render() {    
