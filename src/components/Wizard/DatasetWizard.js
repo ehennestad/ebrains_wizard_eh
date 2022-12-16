@@ -10,6 +10,7 @@ const DatasetWizard = React.memo(({ schema, formData, onSubmit, onChange, goBack
 
   const handleOnChange = ( {formData} ) => onChange(formData);
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
+  console.log(formData)
 
   return (
     <Form widgets={{img: ImageWidget, richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} >

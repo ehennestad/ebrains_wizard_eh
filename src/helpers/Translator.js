@@ -298,7 +298,7 @@ const createDatasetDocument = (documents, source) => {
         }
     }
 
-    setProperty(dataset, "dataCollectionFinished", source.dataCollection);
+    setProperty(dataset, "dataCollectionFinished", source.datasetStatus.dataCollection);
     setProperty(dataset, "embargo", source.embargo.embargo);
     setProperty(dataset, "embargoEndDate", source.embargo.releaseDate);
     setPropertyWithLinks(dataset, "license", source.license);

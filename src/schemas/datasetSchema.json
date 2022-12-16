@@ -50,6 +50,61 @@
                     ]
                 }
             }            
+        },
+        "datasetStatus": {
+            "type": "object",
+            "required": ["dataCollection"],
+            "properties": {
+                "dataCollection": {
+                    "type": "boolean",
+                    "title": "Data collection status",
+                    "description": "Are you finished collecting data for the study the dataset is related to?",
+                    "oneOf": [{
+                            "title": "Yes, we are finished collecting data for this dataset",
+                            "const": true
+                        },
+                        {
+                            "title": "No, we are not finished. We may wish to add more data to this dataset later on (e.g. more subjects, updates to analysis scripts etc.)",
+                            "const": false
+                        }
+                    ]
+                }
+            }, 
+            "dependencies":{
+                "dataCollection":{
+                    "oneOf":[
+                        {
+                            "properties":{
+                                "dataCollection":{
+                                    "const": false
+                                },
+                                "dataSharing": {
+                                    "type": "boolean",
+                                    "title": "Data sharing status",
+                                    "description": "Are you ready to share data for the study the dataset is related to?",
+                                    "oneOf": [{
+                                        "title": "No, we are not ready to publish a first version of the dataset yet",
+                                        "const": false
+                                    },
+                                    {
+                                        "title": "Yes, a first verision might already be published (e.g. we might add more subjects, updates to analysis scripts etc.)",
+                                        "const": true
+                                    }
+                                ]
+                                }
+                            },
+                            "required": ["dataCollection", "dataSharing"]
+                        },
+                        {
+                            "properties":{
+                                "dataCollection":{
+                                    "const":true
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
         }
     },
     "properties": {
@@ -76,16 +131,15 @@
                     "const": true
                 },
                 {
-                    "title": "No, we are not finished and cannot publish a first version of the dataset yet",
-                    "const": true
-                },
-                {
-                    "title": "No, we are not finished, but a first version may already be released (e.g. we might add more subjects, update analysis scripts etc.)",
+                    "title": "No, we are not finished. We may wish to add more data to this dataset later on (e.g. more subjects, updates to analysis scripts etc.)",
                     "const": false
                 }
             ]
-
         },
+        "datasetStatus": {
+            "title": "",
+            "$ref": "#/definitions/datasetStatus"
+        },   
         "embargo": {
             "title": "",
             "$ref": "#/definitions/embargo"
@@ -106,6 +160,5 @@
             "citation": "<a href='https://foter.com/blog/how-to-attribute-creative-commons-photos/'>Creative Commons Licenses, Foter.com, CC BY-SA 3.0</a>",
             "style": {"textAlign":"right", "marginRight":30, "marginTop":-25}
         }
-
-    }    
+    }
 }

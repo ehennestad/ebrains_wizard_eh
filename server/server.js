@@ -13,6 +13,7 @@ const atob = require('atob');              // atob is needed for decoding base64
 
 // Get local modules that are needed for the server
 var mailTransporter = require('./mail_setup/MailTransporter');
+var TICKET_NUMBER = null // Global variable that stores the ticket number which might be given as a query parameter
 
 // This app is deployed on OpenShift, and containers in OpenShift should bind to
 // any address (which is designated with 0.0.0.0) and use port 8080 by default
@@ -31,10 +32,27 @@ app.use( fileUpload(uploadOptions) );
 // Configure the renderer.
 app.set('view engine', 'ejs'); //Necessary??
 app.set('views', path.join(__dirname, '..', '/build'));  //Necessary??
-app.use(express.static(path.join(__dirname, '..', '/build')));
+//app.use(express.static(path.join(__dirname, '..', '/build')));
+
+app.use('/', function (req, res, next) {
+    
+  // for example, get a parameter:
+  const ticketNumber = req.query.TicketNumber;
+  if (ticketNumber !== null && ticketNumber !== undefined) {
+    TICKET_NUMBER = ticketNumber;
+  }
+  express.static(path.join(__dirname, '..', '/build'))(req,res,next)
+})
+
 
 // console.log that the server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+function intervalFunc() {
+  console.log('Cant stop me now!');
+}
+
+setInterval(intervalFunc, 5000);
 
 
 // Define routes for the express app
@@ -47,6 +65,7 @@ app.get('/', function(req, res) {
 
 // Create a GET route for testing if express server is online
 app.get('/api/express_test_connection', (req, res) => {
+  console.log(TICKET_NUMBER)
   console.log("Express server is connected.")
   res.send({ message: 'Express server says hello' });
 });
@@ -158,10 +177,10 @@ function writeMailSubject(jsonObject) {
   const dsTitle = jsonObject[0]["general"]["datasetinfo"]["datasetTitle"];
   let mailSubjectStr = `[Wizard Metadata Submission] ${dsTitle}`;
 
-  let ticketNumber = jsonObject[0]["general"]["ticketNumber"];
-
+  //let ticketNumber = jsonObject[0]["general"]["ticketNumber"];
+  let ticketNumber = TICKET_NUMBER
   if (ticketNumber) {
-    ticketNumber = cleanTicketNumber(ticketNumber);
+    //ticketNumber = cleanTicketNumber(ticketNumber);
     mailSubjectStr = mailSubjectStr + ` [Ticket#${ticketNumber}]`;
   }
 

@@ -63,6 +63,14 @@
             "ui:widget": "radio"
         }    
     },
+    "datasetStatus": {
+        "dataCollection": {
+            "ui:widget": "radio"
+        },        
+        "dataSharing": {
+            "ui:widget": "radio"
+        }    
+    },
     "licenseImage": {
         "ui:widget": "img"
     },
@@ -78,6 +86,9 @@
         }
     },
     "dataCollection": {
+        "ui:widget": "radio"
+    },
+    "dataSharing": {
         "ui:widget": "radio"
     },
     "affiliation": {
@@ -201,6 +212,11 @@
 
     "submissionFailedText": {
         "ui:widget": "richtext"
+    },
+    "previewImage": {
+        "ui:widget": "file",
+        "ui:options": {
+            "accept": ".png, .jpg, .jpeg, .gif"
+      }
     }
-
 }
