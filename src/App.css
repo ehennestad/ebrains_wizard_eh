@@ -47,7 +47,7 @@
   margin-top: 50px;
   margin-bottom: 50px;
   padding: 40px 60px 60px 60px;
-  background-color: #ebebeb;
+  background-color: #F5F7FA;  /* ebebeb */
   border-radius: 20px;
 }
 
@@ -55,20 +55,72 @@
   padding-bottom: 10px;
 }
 
+/* Styles for the next button */
+.btn {
+  font-size:medium;
+  font-weight: 700;
+  border-width: 2px;
+}
+
+/* Styles for the next button */
+.btn-next {
+  min-width: 140px;
+  background-color: #45b07c;
+  border-color: #45b07c;
+}
+.btn-next:hover {
+  background-color: #419b6f;
+  border-color: #419b6f;
+}
+.btn-next:active{
+  background-color: #117E79;
+  border-color: #117E79;
+}
+.btn-next:hover:active{
+  background-color: #117E79;
+  border-color: #117E79;
+}
+
+/* Styles for the previous button */
+.btn-prev {
+  min-width: 140px;
+  color: #1F2933;
+  background-color: #F5F7FA;
+  border-color: #117E79;
+}
+.btn-prev:hover {
+  color: #ffffff;
+  background-color: #117e79;
+  border-color: #117e79;
+}
+.btn-prev:active{
+  color: #ffffff;
+  background-color: #117E79;
+  border-color: #117E79;
+}
+.btn-prev:hover:active{
+  color: #ffffff;
+  background-color: #117E79;
+  border-color: #117E79;
+}
+
+
 .download-btn {
   margin-right: 10px;
 }
 
 .loaddata-btn {
+  color: #1F2933;
+  font-size:medium;
+  font-weight: 700;
   margin-right: 10px;
-  background-color: #ff8e24;
-  border-color: #f09527;
-
+  background-color: #85AC54;
+  border-color: #85AC54;
 }
 
 .loaddata-btn:hover {
-  background-color: #ff7f00;
-  border-color: #e97502;
+  background-color: #85AC54;
+  border-color: #85AC54;
 }
 
 .upload-btn {
@@ -100,7 +152,8 @@
 }
 
 .app-footer {
-  background-color:#cae3e1;
+  color: #ffffff;
+  background-color:#1F2933;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -108,6 +161,11 @@
 }
 
 .footer-container {
+  color: #ffffff;
   margin: 0;
   padding-top: 5px;
+}
+
+.text-muted {
+  color: #CCCED0;
 }

@@ -11,10 +11,10 @@ const FundingAndAffiliationWizard = React.memo(({ schema, formData, onSubmit, on
     <Form schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange}>
       <div className="footer">
         <div className="col-xs-5 back-panel">
-          <button type="submit" className="btn btn-info" onClick={goBack}>Back</button>
+          <button type="submit" className="btn btn-info btn-prev" onClick={goBack}>Previous Page</button>
         </div>
         <div className="col-xs-5 col-xs-offset-2 submit-panel">
-          <button type="submit" className="btn btn-info">Next</button></div>
+          <button type="submit" className="btn btn-info btn-next">Next Page</button></div>
       </div>
     </Form>
   );

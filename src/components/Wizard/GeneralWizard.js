@@ -40,7 +40,7 @@ const GeneralWizard = React.memo(({schema, formData, onSubmit, onChange, loadSta
           <button type="button" className="btn btn-info loaddata-btn" onClick={loadJson}>Load previous metadata</button>
         </div>
         <div className="col-xs-5 col-xs-offset-2 submit-panel">
-          <button type="submit" className="btn btn-info" name="next">Next</button></div>
+          <button type="submit" className="btn btn-info btn-next" name="next">Next Page</button></div>
       </div>
     </Form>
   );

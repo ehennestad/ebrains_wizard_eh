@@ -8,7 +8,7 @@ const Result = React.memo(({result, dataset, subjectExcelFile, onBack, onReset, 
 
   const downloadJson = () => {
     const blob = new Blob([JSON.stringify([dataset, result])], {type: "data:text/json;charset=utf-8"});
-    saveAs(blob, "result.json")
+    saveAs(blob, "ebrains_wizard_metadata.json")
   };
 
   const onSubmitMetadataButtonClicked = () => {
