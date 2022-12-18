@@ -1,50 +1,62 @@
-const axios = require('axios');        // Express is a framework for creating web apps
+//const axios = require('axios');
 const fetch = require("node-fetch")
-//import esm fetch
 
+// Token for kg authorization
+const token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJfNkZVSHFaSDNIRmVhS0pEZDhXcUx6LWFlZ3kzYXFodVNJZ1RXaTA1U2k0In0.eyJleHAiOjE2NzE0MDM0MzgsImlhdCI6MTY3MTQwMTYzOCwiYXV0aF90aW1lIjoxNjcxMTk2NzgxLCJqdGkiOiJmYTQ3YTdjNy01NGE4LTQ5MTItYjVhOS1kZWU1YjFhM2FiMDQiLCJpc3MiOiJodHRwczovL2lhbS5lYnJhaW5zLmV1L2F1dGgvcmVhbG1zL2hicCIsImF1ZCI6WyJqdXB5dGVyaHViIiwidHV0b3JpYWxPaWRjQXBpIiwieHdpa2kiLCJqdXB5dGVyaHViLWpzYyIsInRlYW0iLCJwbHVzIiwiZ3JvdXAiXSwic3ViIjoiODAwZjUzZTItMzc2Yi00MTA3LWE3OWMtNGFlNzgxMDkzZmI5IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoia2ciLCJub25jZSI6ImUwMjdjMDVlLTdmZWEtNGM2Ny05Y2JhLTc5MmE0ZWFhZmI5NCIsInNlc3Npb25fc3RhdGUiOiIxYTU2MjY5ZC1lMWE0LTQ0Y2YtYjJlNy1jMjQ0NWYzZTRmMWEiLCJhY3IiOiIwIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSByb2xlcyBlbWFpbCBncm91cCBjbGIud2lraS5yZWFkIHRlYW0iLCJzaWQiOiIxYTU2MjY5ZC1lMWE0LTQ0Y2YtYjJlNy1jMjQ0NWYzZTRmMWEiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkVpdmluZCBIZW5uZXN0YWQiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJlaXZpbmQiLCJnaXZlbl9uYW1lIjoiRWl2aW5kIiwiZmFtaWx5X25hbWUiOiJIZW5uZXN0YWQiLCJlbWFpbCI6ImVpdmluZC5oZW5uZXN0YWRAbWVkaXNpbi51aW8ubm8ifQ.vKKgcwjZDUJgaH3WDO5M1Z1aZWChj5SrmczGjAKHJ_lewOzWluSveKT3OiaPQv2OhzD5qmf2ujEOTObSGbMn_YGvWqWe_purYfYkjw8jFqvL9iw-NvBq6zDB484aOmU_hOVxzD4g3QD5IxpfgqaVymeZTi56wVi4Yr27X2rmDpP4wkGZcsuRDziIZOCPZ6r7YboYcFGtHhlBVrPfOkhQ8PutCs7kjt93LRvuSirL8PMLGXfRPfFqg4o79tORS5wUdRQz0RpwV8bI-r-vEk39qHcu5WWZcORs131OdTtcXPf-Bof7scj6HFK_aT5wMmIxFJjJ5ovDQ1y2IFnrPmzZXg";
 
+// Create request header with authorization and options
+const requestOptions = getRequestOptions(token);
 
+// Define some api constants
+const API_BASE_URL = "https://core.kg.ebrains.eu/";
+const API_ENDPOINT = "v3/instances";
+const QUERY_PARAMS = ["stage=RELEASED", "space=controlled", "type=https://openminds.ebrains.eu/controlledTerms/"];
 
-const baseurl = "https://core.kg.ebrains.eu/v3-beta/queries/";
-let queryUrl = 'https://core.kg.ebrains.eu/v3-beta/queries/52ded04b-6e3a-47d8-a60d-beb00ab99454'
+// List of controlled terms to fetch instances for
+CONTROLLED_TERMS = ["PreparationType", "Technique"];
 
-queryUrl = queryUrl 
+// Loop through controlled terms and fetch them
+for (let i = 0; i < CONTROLLED_TERMS.length; i++){
 
-// Axios get request with authorization in header:
+    // Assemble Query URL
+    let queryUrl = API_BASE_URL + API_ENDPOINT + "?" + QUERY_PARAMS.join("&") + CONTROLLED_TERMS[i];
 
-const token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJfNkZVSHFaSDNIRmVhS0pEZDhXcUx6LWFlZ3kzYXFodVNJZ1RXaTA1U2k0In0.eyJleHAiOjE2NzA1ODM5NTcsImlhdCI6MTY3MDU4MjE1NywiYXV0aF90aW1lIjoxNjcwNTExNTA2LCJqdGkiOiJlOWVjM2IxNC05MTllLTQ4OTQtYWViNy1mOTUxZDgwNmYwYjYiLCJpc3MiOiJodHRwczovL2lhbS5lYnJhaW5zLmV1L2F1dGgvcmVhbG1zL2hicCIsImF1ZCI6WyJqdXB5dGVyaHViIiwidHV0b3JpYWxPaWRjQXBpIiwieHdpa2kiLCJqdXB5dGVyaHViLWpzYyIsInRlYW0iLCJwbHVzIiwiZ3JvdXAiXSwic3ViIjoiODAwZjUzZTItMzc2Yi00MTA3LWE3OWMtNGFlNzgxMDkzZmI5IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoia2ciLCJzZXNzaW9uX3N0YXRlIjoiZWQyN2FiMGYtYWIyZS00MmYyLTg2NTktZDlmMWUwZmJhN2E0IiwiYWNyIjoiMCIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgcm9sZXMgZW1haWwgZ3JvdXAgY2xiLndpa2kucmVhZCB0ZWFtIiwic2lkIjoiZWQyN2FiMGYtYWIyZS00MmYyLTg2NTktZDlmMWUwZmJhN2E0IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJFaXZpbmQgSGVubmVzdGFkIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZWl2aW5kIiwiZ2l2ZW5fbmFtZSI6IkVpdmluZCIsImZhbWlseV9uYW1lIjoiSGVubmVzdGFkIiwiZW1haWwiOiJlaXZpbmQuaGVubmVzdGFkQG1lZGlzaW4udWlvLm5vIn0.gkRQsOIAkpLPQtzIWumLqYS-bolt94zzH6kdgrZhow84wkjVIYZyi6SQbMTou-KxXZApqG0qg_MMO6FLEUPU7kP0zfBG4fqNs0P0H50yj3ecLA-buOoFUiDWhU_FV4LbjJnxINjNWmalTx9AzLUTf-geEfk9kin4jTSORxsPuWUfOpTkzyu_lNhWbEJIFyFFT9GNnz95BLeOazJYGb8Xp7jWsakhA0TfoBtaXm1HykZAboGff_MWgPYuHkaDSxRcrzNDalOYPQY4rT8buHN8ObMzUCskddfx6-vXZK9viZSsP4NR2BRBiaURHgtx7R9mBx_UEQQbze9z3z73DqyrOg";
-const requestHeader = { Accept: "*/*", Authorization: "Bearer " + token, 'User-Agent': "python-requests/2.25.0", "Accept-Encoding": "gzip, deflate", 'Connection': 'keep-alive' }
-const requestOptions = {headers: requestHeader};
-fetch(queryUrl, requestOptions)
-    .then( response => console.log(response) )
-    .catch( error => console.log(error) )
-// console.log(queryUrl)
-// axios( {method: 'get', url: queryUrl, header: requestHeader} )
-//     .then( response => console.log(response.response.status) )
-//     .catch( error => {console.log(error.response.status)} )
-
-// axios.get( queryUrl, requestOptions)
-//     .then( response => console.log(response) )
-//     .catch( error => console.log(error) )
-
-
-// let response = fetch( queryUrl )
-// .then( response => {console.log(response);  } )
-// .catch( error => {console.log(error); } );
-
-
-function getData(apiurl, headers, scope) {
-    url = apiurl + "?stage=" + scope
-    resp = rq.get(url, headers=headers)
-    
-    axios.get(url)
-    .then( response => {console.log(response);  } )
-    .catch( error => {console.log(error); } );
-    data = resp.json()
-    return(data)
+    // Fetch instances
+    fetchInstance(queryUrl, requestOptions)
 }
 
+// function to get controlled terms instances from api
+function fetchInstance(apiQueryUrl, requestOptions) {
+    
+    fetch(apiQueryUrl, requestOptions)
+        .then( response => response.json() )             // Get response promise
+            .then( data => parseAndSaveData(data) )
+        .catch( error => console.log(error.status) )
+}
 
+// function to parse data from api and save to json file
+function parseAndSaveData(data) {
+    
+    // loop through each instance in data and create array with id and name
+    console.log(data);
+    // create file path for json file
+
+    // save data to json file
+
+}
+
+// Function to assemble request options including header with token authorization
+function getRequestOptions(token) {
+    const requestHeader = { 
+        Accept: "*/*", 
+        Authorization: "Bearer " + token, 
+        'User-Agent': "python-requests/2.25.0", 
+        "Accept-Encoding": "gzip, deflate", 
+        'Connection': 'keep-alive' };
+        
+    const requestOptions = {headers: requestHeader};
+    return requestOptions;
+}
 
 
 // - - - Simple api query using axios
