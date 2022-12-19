@@ -3,6 +3,7 @@ const fetch = require("node-fetch")
 const fs = require('fs');//&&added by Archana&&//
 const path = require('path');//&&added by Archana&&//
 const math = require('mathjs');//&&added by Archana&&//
+const {exec} = require('child_process');
 
 let ctFetcher = () => {
 
@@ -30,6 +31,7 @@ let ctFetcher = () => {
         //fetchInstance(queryUrl, requestOptions)
         fetchInstance(queryUrl, requestOptions, instanceName) //&&modified by Archana&&//
     }
+    exec('npm run build')
 }
 
 // function to get controlled terms instances from api

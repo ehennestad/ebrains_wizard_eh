@@ -50,8 +50,10 @@ app.use('/', function (req, res, next) {
 // console.log that the server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-// Run timer that fetches controlled terms instances from openMINDS
-const timerInterval = 10 * 1000; // 10 seconds
+// Run timer that fetches controlled terms instances from openMINDS every 24 hours
+//const timerInterval = 24 * 60 * 60 * 1000;
+
+const timerInterval = 30 * 1000;
 setInterval(ctFetcher, timerInterval);
 
 // Define routes for the express app
@@ -102,7 +104,6 @@ app.post('/api/sendmail', (req, res) => {
       res.status(500).send(mailResponse.error.message)
     }
   }
-
 });
 
 // Functions for creating and sending email messages
