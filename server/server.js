@@ -13,6 +13,8 @@ const atob = require('atob');              // atob is needed for decoding base64
 
 // Get local modules that are needed for the server
 var mailTransporter = require('./mail_setup/MailTransporter');
+var ctFetcher = require('./ct_fetcher/fetchControlledTerms');
+
 var TICKET_NUMBER = null // Global variable that stores the ticket number which might be given as a query parameter
 
 // This app is deployed on OpenShift, and containers in OpenShift should bind to
@@ -48,12 +50,9 @@ app.use('/', function (req, res, next) {
 // console.log that the server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-function intervalFunc() {
-  console.log('Cant stop me now!');
-}
-
-setInterval(intervalFunc, 5000);
-
+// Run timer that fetches controlled terms instances from openMINDS
+const timerInterval = 10 * 1000; // 10 seconds
+setInterval(ctFetcher, timerInterval);
 
 // Define routes for the express app
 // - - - - - - - - - - - - - - - - - - - - - - - - 
