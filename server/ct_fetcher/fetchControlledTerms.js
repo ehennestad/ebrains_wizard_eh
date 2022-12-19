@@ -75,7 +75,7 @@ function parseAndSaveData(data, instanceName) {
     const jsonStr = JSON.stringify(resultforjson, null, 2);
 
     saveFolder = process.cwd() + "/src" + "/controlledTerms/";
-    const filePath = path.join(saveFolder, instanceName+'2.json');
+    const filePath = path.join(saveFolder, instanceName+'.json');
     
     fs.writeFile(filePath, jsonStr, (err) => {
         if (err) {
