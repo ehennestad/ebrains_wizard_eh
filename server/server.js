@@ -53,7 +53,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 // Run timer that fetches controlled terms instances from openMINDS every 24 hours
 //const timerInterval = 24 * 60 * 60 * 1000;
 
-const timerInterval = 30 * 1000;
+const timerInterval = 60 * 10 * 1000;
 setInterval(ctFetcher, timerInterval);
 
 // Define routes for the express app

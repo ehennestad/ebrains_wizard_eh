@@ -5,10 +5,13 @@ const path = require('path');//&&added by Archana&&//
 const math = require('mathjs');//&&added by Archana&&//
 const {exec} = require('child_process');
 
-let ctFetcher = () => {
+let ctFetcher = async () => {
+
+    // Get token using a service account
+    const token = await getTokenFromServiceAccount();
 
     // Token for kg authorization
-    const token = process.env.KG_TOKEN;
+    //const token = process.env.KG_TOKEN;
     // Create request header with authorization and options
     const requestOptions = getRequestOptions(token);
 
@@ -99,6 +102,24 @@ function getRequestOptions(token) {
         
     const requestOptions = {headers: requestHeader};
     return requestOptions;
+}
+
+async function getTokenFromServiceAccount() {
+
+    let endpointURL = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/token";
+    let secret = process.env.OIDC_CLIENT_SECRET;
+    
+    let body = "grant_type=client_credentials&client_id=ebrains-wizard-dev&client_secret=" + secret + "&scope=email%20profile%20team%20group";
+    
+    let requestOptions = {
+	    method: 'post',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+	    body: body
+    };
+
+    let result = await fetch(endpointURL, requestOptions)
+    jsonData = await result.json();
+    return jsonData.access_token;
 }
 
 module.exports = ctFetcher;
