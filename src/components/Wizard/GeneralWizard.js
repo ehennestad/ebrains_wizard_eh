@@ -8,6 +8,7 @@ const GeneralWizard = React.memo(({schema, formData, onSubmit, onChange, loadSta
   const handleOnChange = ( {formData} ) => onChange(formData);
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
 
+  // todo: move to wizard class
   const loadJson = () => {
 
     let input = document.createElement("input");
@@ -35,12 +36,12 @@ const GeneralWizard = React.memo(({schema, formData, onSubmit, onChange, loadSta
   return (
     <Form widgets={{richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} >
       <div className="footer">
-        <div className="col-xs-5 back-panel">
-          <button type="button" className="btn btn-info download-btn" onClick={onReset}>Reset</button>
-          <button type="button" className="btn btn-info loaddata-btn" onClick={loadJson}>Load previous metadata</button>
+        <div className="col-xs-8 back-panel">
+          <button type="button" className="btn btn-info btn-default" onClick={onReset}>Reset</button>
+          <button type="button" className="btn btn-info btn-default" onClick={loadJson}>Load previous metadata</button>
         </div>
-        <div className="col-xs-5 col-xs-offset-2 submit-panel">
-          <button type="submit" className="btn btn-info btn-next" name="next">Next Page</button></div>
+        <div className="col-xs-4 submit-panel">
+          <button type="submit" className="btn btn-info btn-primary" name="next">Next Page</button></div>
       </div>
     </Form>
   );

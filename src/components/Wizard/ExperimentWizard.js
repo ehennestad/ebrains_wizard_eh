@@ -15,10 +15,10 @@ const ExperimentWizard = React.memo(({ schema, formData,  onSubmit, onChange, go
     <Form widgets={{richtext: RichTextWidget}} fields={{table: TableField}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange}>
       <div className="footer">
         <div className="col-xs-5 back-panel">
-          <button type="submit" className="btn btn-info btn-prev" onClick={goBack}>Previous Page</button>
+          <button type="submit" className="btn btn-info btn-default" onClick={goBack}>Previous Page</button>
         </div>
         <div className="col-xs-5 col-xs-offset-2 submit-panel">
-          <button type="submit" className="btn btn-success">Submit Metadata</button></div>
+          <button type="submit" className="btn btn-info btn-primary">Submit Metadata</button></div>
       </div>
     </Form>
   );
