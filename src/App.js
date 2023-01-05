@@ -1,4 +1,6 @@
 import Wizard from './components/Wizard';
+import PrivacyNotice from './components/PrivacyNotice';
+
 import './App.css';
 
 const App = () => (
@@ -9,6 +11,7 @@ const App = () => (
       </div>
     </header>
     <div className="gradient"></div>
+    <PrivacyNotice />
     <div className="container container-form">
       <Wizard />
     </div>

@@ -1,6 +1,6 @@
 /* Add some variables containing theme colors and page layout */
 :root{
-  --form-background-color: #ffffff; /* original: ebebeb alternative: F5F7FA*/
+  --form-background-color: #F5F7FA; /* original: ebebeb alternative: F5F7FA ffffff */ 
 
   --ebrains-color-light: #9CE142;
   --ebrains-color-medium: #00C959;
@@ -8,10 +8,18 @@
 
   /* Color variations are obtained by inserting the main color in 
   Ant Design's theme editor https://ant.design/theme-editor */
-  --button-color-primary: #00a595;
+
+  /* Color on buttons on official ebrains page: */
+  --button-color-primary: #45b07c; 
+  --button-color-primary-hover: #68bd91;
+  --button-color-primary-active-hover: #2f8a61;
+  --button-color-primary-active: #2f8a61e0;
+
+  /* Using the ebrains-color-dark: */
+  /* --button-color-primary: #00a595;
   --button-color-primary-hover: #1db39f;
   --button-color-primary-active-hover: #008077;
-  --button-color-primary-active: #008077e0;
+  --button-color-primary-active: #008077e0; */
 
   --button-color-secondary: #00c959;
   --button-color-secondary-hover: #22d66d;
@@ -28,6 +36,9 @@
   --button-color-error-hover: #b56864;
   --button-color-error-active-hover: #822c2e;
   --button-color-error-active: #822c2ee0;
+
+  --input-focus-color: #686868;
+  --input-tick-color: var(--button-color-primary);
 
   --max-content-width: 980px;  
 }
@@ -71,6 +82,18 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.notice {
+  background-color: var(--form-background-color);
+}
+.notice-content {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px 60px 5px 60px;
+  max-width: var(--max-content-width);
 }
 
 .App-link {
@@ -132,23 +155,51 @@ a {
 } */
 
 .form-control:focus { 
-  border-color: var(--ebrains-color-light);
-  outline-color: var(--ebrains-color-light);
-  box-shadow: 0 0 3px var(--ebrains-color-light);
+  border-color: var(--input-focus-color);
+  outline-color: var(--input-focus-color);
+  box-shadow: 0 0 3px var(--input-focus-color);
   outline-offset: 0px;
   outline: none;
 }
 
 input[type=checkbox] {
-  accent-color: var(--ebrains-color-medium);
+  accent-color: var(--input-tick-color);
 }
 input[type=radio] {
-  accent-color: var(--ebrains-color-medium);
+  accent-color: var(--input-tick-color);
 }
 
 .result .react-json-view {
   padding-bottom: 10px;
 }
+
+.ant-steps-item-process{
+  border-color: var(--button-color-primary);
+}
+.ant-steps .ant-steps-item-process .ant-steps-item-icon >.ant-steps-icon .ant-steps-icon-dot {
+  background: var(--button-color-primary);
+}
+.ant-steps .ant-steps-item-process .ant-steps-item-icon {
+  border-color: var(--button-color-primary);
+}
+
+/* 
+.ant-steps-icon-dot {
+  background: var(--button-color-primary);
+}
+.ant-steps-item-icon {
+  background: var(--button-color-primary);
+  border-color: var(--button-color-primary);
+}
+.ant-steps-item-tail {
+  background-color: var(--button-color-primary);
+}
+.ant-steps-item-tail::after {
+  background-color: var(--button-color-primary);
+} 
+*/
+
+
 
 /* General style for all buttons */
 .btn {
@@ -193,6 +244,7 @@ input[type=radio] {
 
 .btn-default {
   color: var(--button-color-primary);
+  background-color: #ffffff;
   border-color: var(--button-color-primary);
   background-color: var(--form-background-color);
 }
@@ -210,6 +262,23 @@ input[type=radio] {
   color: var(--button-color-primary-active-hover);
   border-color: var(--button-color-primary-active-hover);
   background-color: var(--form-background-color);
+}
+
+.link-button {
+  padding: 0px 0px 0px 0px;
+  border-width: 0px;
+  font-size: small;
+  font-weight: 600;
+  color: var(--button-color-primary);
+  background-color: transparent;
+  padding-right: 15px;
+  background: url(./icons/up_arrow.svg) no-repeat;
+  background: url(./icons/down_arrow.svg) no-repeat;
+  background-position: 100% 50%;
+}
+
+.link-button:hover {
+  text-decoration: underline;
 }
 
 /* Buttons in the array list */
@@ -293,6 +362,7 @@ input[type=radio] {
 }
 .container-form .footer button.btn-default {
   margin-right: 10px;
+  background-color: #ffffff;
 }
 
 .container-form .footer .back-panel {
