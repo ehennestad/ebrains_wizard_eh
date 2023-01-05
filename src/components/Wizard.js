@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Cookies from 'universal-cookie'
+import ProgressBar from './ProgressBar';
 
 import GeneralWizard from './Wizard/GeneralWizard';
 import DatasetWizard from './Wizard/DatasetWizard';
@@ -214,14 +215,26 @@ class Wizard extends React.Component {
     const formName = STEP_MAP.get(this.state.currentStep).name;
 
     const currentFormData = this.formData.get(formName);
-
+    const stepNum = WIZARD_STEPS_LIST.indexOf(this.state.currentStep);
+    console.log(stepNum)
     switch (this.state.currentStep) {
 
       case WIZARD_STEP_GENERAL:
-        return ( <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} loadState={this.loadState} onReset={this.handleReset} /> );
-      
+        return ( 
+          <>
+            <ProgressBar step ={stepNum} />
+            <div style={{"margin-top":"30px"}}></div>
+            <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} loadState={this.loadState} onReset={this.handleReset} /> 
+          </>
+        );
       case WIZARD_STEP_DATASET: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
-        return ( <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} goBack={this.goBack}/> );
+        return ( 
+          <>
+            <ProgressBar step ={stepNum} />
+            <div style={{"margin-top":"30px"}}></div>
+            <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} goBack={this.goBack}/> 
+          </>
+        );
       
       case WIZARD_SUCCEEDED: case WIZARD_FAILED:
         return ( <WizardComponent schema={schema} onReset={this.handleReset} onSave={this.saveState}/> );

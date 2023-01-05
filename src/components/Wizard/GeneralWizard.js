@@ -37,8 +37,8 @@ const GeneralWizard = React.memo(({schema, formData, onSubmit, onChange, loadSta
     <Form widgets={{richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} >
       <div className="footer">
         <div className="col-xs-8 back-panel">
-          <button type="button" className="btn btn-info btn-default" onClick={onReset}>Reset</button>
-          <button type="button" className="btn btn-info btn-default" onClick={loadJson}>Load previous metadata</button>
+          <button type="button" className="btn btn-default" onClick={onReset}>Reset</button>
+          <button type="button" className="btn btn-default" onClick={loadJson}>Load previous metadata</button>
         </div>
         <div className="col-xs-4 submit-panel">
           <button type="submit" className="btn btn-info btn-primary" name="next">Next Page</button></div>
