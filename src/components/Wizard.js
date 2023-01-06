@@ -216,14 +216,14 @@ class Wizard extends React.Component {
 
     const currentFormData = this.formData.get(formName);
     const stepNum = WIZARD_STEPS_LIST.indexOf(this.state.currentStep);
-    console.log(stepNum)
+
     switch (this.state.currentStep) {
 
       case WIZARD_STEP_GENERAL:
         return ( 
           <>
             <ProgressBar step ={stepNum} />
-            <div style={{"margin-top":"30px"}}></div>
+            <div style={{"marginTop":"30px"}}></div>
             <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} loadState={this.loadState} onReset={this.handleReset} /> 
           </>
         );

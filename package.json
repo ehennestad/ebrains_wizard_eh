@@ -30,6 +30,7 @@
     "react-json-view": "^1.21.3",
     "react-jsonschema-form": "^1.8.1",
     "react-jsonschema-form-extras": "^0.9.67",
+    "react-router-dom": "^6.6.1",
     "react-rte": "^0.15.0",
     "react-scripts": "4.0.3",
     "save": "^2.5.0",

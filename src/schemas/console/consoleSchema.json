@@ -1,0 +1,63 @@
+{
+  "title": "Welcome to the EBRAINS Metadata Console!",
+  "type": "object",
+  "definitions": {
+    "welcomeText": {
+      "title": " ",
+      "type": "string",
+      "text": ""
+    },
+
+    "ticketNumber": {
+      "title": "Ticket number",
+      "type": "string",
+      "description": "Please enter the zammad ticket number, e.g for the ticked id 'Ticket#4815613', the ticket number is 4815613."
+    },
+
+    "wizardLink": {
+      "title": "Wizard link",
+      "type": "string",
+      "description": ""
+    },
+    "contactinfo": {
+      "title": "",
+      "type": "object",
+      "required": [
+        "firstName",
+        "email"
+      ],    
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "title": "First name"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "title": "E-mail address"
+        }
+      }
+    },
+    "emailMessage": {
+      "type": "string",
+      "title": "Email message",
+      "description": "Message that will be sent to data provider",
+      "rows": 5
+    }
+  },
+
+  "properties": {
+    "welcomeText": {
+      "$ref": "#/definitions/welcomeText"
+    },
+    "ticketNumber": {
+      "$ref": "#/definitions/ticketNumber"
+    },
+    "contactinfo": {
+      "$ref": "#/definitions/contactinfo"
+    },
+    "emailMessage": {
+      "$ref": "#/definitions/emailMessage"
+    }
+  }
+}
