@@ -29,8 +29,10 @@ const uploadOptions = { limits: { fileSize: 10 * 1024 * 1024 } } // restrict siz
 app.use( fileUpload(uploadOptions) );
 
 // Configure the renderer.
-app.set('view engine', 'ejs'); //Necessary??
-app.set('views', path.join(__dirname, '..', '/build'));  //Necessary??
+//app.set('view engine', 'ejs'); //Necessary??
+//app.set('views', path.join(__dirname, '..', '/build'));  //Necessary??
+
+// This specifies that the root directory for serving the files are the build folder (Important!)
 app.use(express.static(path.join(__dirname, '..', '/build')));
 
 // console.log that the server is up and running
@@ -41,8 +43,9 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 // - - - - - - - - - - - - - - - - - - - - - - - - 
 
 // Serve the react app on the default (/) route
-app.get('/', function(req, res) {
-  res.render('index.html')
+app.get('/*', function(req, res) {
+  //res.render( 'index.html' );
+  res.sendFile( path.join(__dirname, '..', '/build', '/index.html' ) );
 });
 
 // Create a GET route for testing if express server is online
@@ -74,7 +77,7 @@ app.post('/api/sendmail', (req, res) => {
     sendMetadataEmailMessage(emailRecipients[i], message[i], sendResponseToClient)
   }
 
-  // Function that sends the response to the client
+  // Function that sends the response to the frontend client
   function sendResponseToClient(mailResponse) {
     console.log('Sending response to client')
 
@@ -86,6 +89,32 @@ app.post('/api/sendmail', (req, res) => {
   }
 
 });
+
+app.post('/api/sendwizardlink', (req, res) => {
+  console.log('Received wizard link post request from client')
+
+  let jsonObject = JSON.parse(req.body.jsonData);
+
+  let emailMessage = {
+    from: process.env.EMAIL_ADDRESS_SENDER,
+    to: jsonObject.emailRecipient,
+    subject: 'test',
+    text: jsonObject.emailMessage,
+  };
+
+  mailTransporter.sendMail(emailMessage, function(error, info){
+    if (error) {
+      console.log(`Failed to send mail with following error:\n`, error)
+      mailResponse.error = error;
+    } else {
+      console.log(`Email sent: ${emailMessage.to}` + info.response)
+      mailResponse.ok = true;
+    }
+  });
+});
+
+
+
 
 // Functions for creating and sending email messages
 

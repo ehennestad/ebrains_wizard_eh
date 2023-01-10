@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import RichTextWidget from './customWidgets';
+import axios from 'axios';
 
 import * as consoleModule from '../schemas/console/consoleSchema.json';
 import * as consoleComponentModule from '../schemas/console/consoleComponentSchema.json';
@@ -77,6 +78,26 @@ curation-support@ebrains.eu
         this.setState({ update: true } );
     }
 
+    handleFinalSubmit = () => {
+        // Route the POST request with data to api/sendmail
+
+        let jsonData = {
+            'emailRecipient': this.formData.contactinfo.email, 
+            'emailMessage': this.formData.emailMessage
+        }
+
+        let jsonString = JSON.stringify(jsonData); // Convert the form data to a json string
+
+        // Create a FormData object in order to send data to the backend server
+        let formData = new FormData();
+        formData.append('jsonData', jsonString) // Json data is in the form of a string
+
+        axios.post('/api/sendwizardlink', formData)
+
+        // .then( response => {console.log(response); this.goToWizardStep(WIZARD_SUCCEEDED) } )
+        // .catch( error => {console.log(error); this.goToWizardStep(WIZARD_FAILED) } );
+    }
+
     render() {   
         const handleOnChange = ( {formData} ) => this.onFormChanged(formData);
 
@@ -84,7 +105,7 @@ curation-support@ebrains.eu
         console.log('on render', formData.wizardLink)
  
         return ( 
-            <Form widgets={{richtext: RichTextWidget}} schema={consoleSchema} uiSchema={uiSchema} formData={this.formData} onChange={handleOnChange} >
+            <Form widgets={{richtext: RichTextWidget}} schema={consoleSchema} uiSchema={uiSchema} formData={this.formData} onChange={handleOnChange} onSubmit={this.handleFinalSubmit}>
                 <span className="wizardLink">{formData.wizardLink}</span>
                 
                 <div className="footer">
