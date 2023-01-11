@@ -231,7 +231,7 @@ class Wizard extends React.Component {
         return ( 
           <>
             <ProgressBar step ={stepNum} />
-            <div style={{"margin-top":"30px"}}></div>
+            <div style={{"marginTop":"30px"}}></div>
             <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} goBack={this.goBack}/> 
           </>
         );
