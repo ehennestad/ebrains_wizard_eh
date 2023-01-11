@@ -26,7 +26,7 @@ const port = process.env.PORT || 8080;
 
 const app = express()
 
-const uploadOptions = { limits: { fileSize: 10 * 1024 * 1024 } } // restrict size of uploaded files to 10 MB
+const uploadOptions = { limits: { fileSize: 50 * 1024 * 1024 } } // restrict size of uploaded files to 50 MB
 app.use( fileUpload(uploadOptions) );
 
 // Configure the renderer.
