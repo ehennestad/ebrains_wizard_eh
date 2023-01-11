@@ -58,6 +58,7 @@ const ImageUpload = ({oldFileList, onImageUploadedFcn}) => {
         <ImgCrop rotate>
           <Upload
             action=""
+            accept=".png,.jpg"
             listType="picture"
             fileList={fileList}
             beforeUpload={beforeUpload}

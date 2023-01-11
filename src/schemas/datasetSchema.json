@@ -154,7 +154,7 @@
         "previewImage": {
             "title": "",
             "type": "string",
-            "text": "<p> Please upload a preview image for your dataset. This image will be displayed on the dataset landing page and should give a general overview of the dataset."
+            "text": "<p> Please upload a preview image for your dataset. This image will be displayed on the dataset landing page and should give a general overview of the dataset. The image should be stored as a .jpg or a .png file and preferrably be at least 500x500 pixels in size. </p>"
         }
     },
     "properties": {
