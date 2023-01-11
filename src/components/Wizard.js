@@ -51,7 +51,7 @@ class Wizard extends React.Component {
 
     this.formData = this.initializeFormDataMap(); // formdata for each wizard step in a Map
     this.jsonStr = null;                          // json string of the whole formdata
-
+    this.previewImage = [];                       // image for preview of dataset
     this.state = { 
       currentStep: WIZARD_STEPS_LIST[0],
     }
@@ -167,6 +167,11 @@ class Wizard extends React.Component {
       subjectExcelData = [];
     }
 
+    let previewImageFile = [];
+    if (this.previewImage !== undefined && this.previewImage.length > 0) {
+      previewImageFile = this.previewImage[0].originFileObj;
+    }
+
     // Add data to the formData map (after excel data has been removed)
     this.updateFormData(this.state.currentStep, data)
 
@@ -185,7 +190,8 @@ class Wizard extends React.Component {
     let formData = new FormData();
     formData.append('jsonData', jsonData) // Json data is in the form of a string
     formData.append('excelData', subjectExcelData) // Excel data is in the form of a dataURL
-    
+    formData.append('previewImage', previewImageFile)
+
     // Route the POST request with data to api/sendmail
     axios.post('/api/sendmail', formData)
       .then( response => {console.log(response); this.goToWizardStep(WIZARD_SUCCEEDED) } )
@@ -195,6 +201,7 @@ class Wizard extends React.Component {
   handleReset = () => {
     this.formData = this.initializeFormDataMap();
     this.jsonStr = null;
+    this.previewImage = [];
     this.saveFormDatasInCookie();
     this.goToWizardStep( WIZARD_STEPS_LIST[0] )
   };
@@ -209,6 +216,10 @@ class Wizard extends React.Component {
     saveAs(blob, "ebrains_wizard_metadata.json")
   };
 
+  onImageUploaded = (imageFileList) => {
+    this.previewImage = imageFileList;
+  };
+
   render() {    
     const schema = STEP_MAP.get(this.state.currentStep).schema;
     const WizardComponent = STEP_MAP.get(this.state.currentStep).wizard;
@@ -217,22 +228,42 @@ class Wizard extends React.Component {
     const currentFormData = this.formData.get(formName);
     const stepNum = WIZARD_STEPS_LIST.indexOf(this.state.currentStep);
 
+    let wizardPageProps = {
+      schema: schema,
+      formData: currentFormData,
+      onSubmit: this.handleSubmit,
+      onChange: this.onFormChanged
+    }
+
+    switch (this.state.currentStep) {
+      case WIZARD_STEP_GENERAL:
+        wizardPageProps.loadState = this.loadState;
+        wizardPageProps.onReset = this.handleReset;
+        break;
+
+      case WIZARD_STEP_DATASET:
+        wizardPageProps.imageFileList = this.previewImage;
+        wizardPageProps.imageUploadedFcn = this.onImageUploaded;
+        wizardPageProps.goBack = this.goBack;
+        break;
+
+      case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
+        wizardPageProps.goBack = this.goBack;
+        break;
+
+      default:
+        break;
+    };
+
+
     switch (this.state.currentStep) {
 
-      case WIZARD_STEP_GENERAL:
-        return ( 
+      case WIZARD_STEP_GENERAL: case WIZARD_STEP_DATASET: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
+        return (
           <>
-            <ProgressBar step ={stepNum} />
-            <div style={{"marginTop":"30px"}}></div>
-            <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} loadState={this.loadState} onReset={this.handleReset} /> 
-          </>
-        );
-      case WIZARD_STEP_DATASET: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
-        return ( 
-          <>
-            <ProgressBar step ={stepNum} />
-            <div style={{"marginTop":"30px"}}></div>
-            <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} goBack={this.goBack}/> 
+            <ProgressBar step={stepNum} />
+            <WizardComponent {...wizardPageProps} /> 
+            {/* <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} goBack={this.goBack} />  */}
           </>
         );
       

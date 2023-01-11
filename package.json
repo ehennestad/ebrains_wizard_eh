@@ -8,6 +8,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "antd": "^5.1.2",
+    "antd-img-crop": "^4.5.2",
     "atob": "^2.1.2",
     "axios": "^0.27.2",
     "bootstrap": "4.6.0",

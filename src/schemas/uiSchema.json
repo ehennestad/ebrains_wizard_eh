@@ -66,6 +66,9 @@
     "licenseImage": {
         "ui:widget": "img"
     },
+    "previewImage": {
+        "ui:widget": "richtext"
+    },
     "versions": {
         "versions": {
             "ui:widget": "radio"

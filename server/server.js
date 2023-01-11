@@ -10,6 +10,7 @@ const express = require('express');        // Express is a framework for creatin
 const path = require('path');              // Path is used for creating file paths
 const fileUpload = require('express-fileupload'); // Middleware for uploading file content / parsing multiform data in requests
 const atob = require('atob');              // atob is needed for decoding base64 encoded strings
+const fs = require('fs');                  // fs is needed for reading files from the file system
 
 // Get local modules that are needed for the server
 var mailTransporter = require('./mail_setup/MailTransporter');
@@ -256,6 +257,8 @@ function prepareMailAttachments(requestObject) {
   mailAttachmentArray.push(jsonAttachment)
   
   if (requestObject.body.excelData) { // push excel data to the attachment list if it is present
+    console.log('excel_file', requestObject.body.excelData)
+
     let excelAttachment = {
       filename:'subject_data.xlsx',
       content: convertExcelDataUrlToByteArray(requestObject.body.excelData), 
@@ -267,6 +270,23 @@ function prepareMailAttachments(requestObject) {
   } else {  
     // No excel file was provided, thats fine.
   }
+
+  if (requestObject.files !== null) {
+    if (requestObject.files.previewImage) { // push image file to the attachment list if it is present
+      //console.log('preview image', requestObject.body.previewImage)
+      //console.log('type of preview image', typeof requestObject.body.previewImage)
+      console.log(requestObject.files.previewImage)
+      let previewImageAttachment = {
+        filename: requestObject.files.previewImage.name,
+        content: requestObject.files.previewImage.data,
+        contentType: requestObject.files.previewImage.mimetype
+      };
+      mailAttachmentArray.push(previewImageAttachment)
+    }
+  } else {  
+    // No preview image file was provided, thats fine.
+  }
+
 
   return mailAttachmentArray
 }

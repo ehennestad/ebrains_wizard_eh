@@ -150,6 +150,11 @@
                     ]
                 }
             }            
+        },
+        "previewImage": {
+            "title": "",
+            "type": "string",
+            "text": "<p> Please upload a preview image for your dataset. This image will be displayed on the dataset landing page and should give a general overview of the dataset."
         }
     },
     "properties": {
@@ -209,6 +214,10 @@
             "width": "850",
             "citation": "<a href='https://foter.com/blog/how-to-attribute-creative-commons-photos/'>Creative Commons Licenses, Foter.com, CC BY-SA 3.0</a>",
             "style": {"textAlign":"right", "marginRight":30, "marginTop":-25}
+        }, 
+        "previewImage" : {
+            "title": "Dataset Preview Image",
+            "$ref": "#/definitions/previewImage"
         }
 
     }    

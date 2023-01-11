@@ -134,6 +134,8 @@
 
 .container-footer {
   margin: 0;
+  margin-left: 20px;
+  margin-right: 20px;
   padding-top: 5px;
   color: #ffffff;
 }
@@ -376,5 +378,12 @@ input[type=radio] {
 
 /* Text in page footer */
 .text-muted {
+  color: #CCCED0;
+}
+
+.container-footer a {
+  color: var(--button-color-primary);
+}
+.container-footer a:hover {
   color: #CCCED0;
 }
