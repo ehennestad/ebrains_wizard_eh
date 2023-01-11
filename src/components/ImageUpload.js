@@ -32,13 +32,14 @@ const ImageUpload = ({oldFileList, onImageUploadedFcn}) => {
     if (!isJpgOrPng) {
       message.error('You can only upload JPG/PNG file!');
     }
-    console.log(file.size / 1024 / 1024)
-    const isLt2M = file.size / 1024 / 1024 < 1;
-    console.log(isLt2M)
+    
+    const isLt2M = file.size / 1024 / 1024 < 5;
     if (!isLt2M) {
-      message.error('Image must smaller than 1MB!');
+      message.error('Image must smaller than 5MB!');
     }
-    return isJpgOrPng && isLt2M;
+    // return isJpgOrPng && isLt2M;
+    // Note: If the return value is true, there is an error in te web app...
+    return false;
   };
 
   const uploadButton = (
