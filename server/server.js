@@ -275,6 +275,7 @@ function prepareMailAttachments(requestObject) {
     if (requestObject.files.previewImage) { // push image file to the attachment list if it is present
       //console.log('preview image', requestObject.body.previewImage)
       //console.log('type of preview image', typeof requestObject.body.previewImage)
+      console.log('image size', requestObject.files.previewImage.size / 1024 / 1024, 'MB')
       console.log(requestObject.files.previewImage)
       let previewImageAttachment = {
         filename: requestObject.files.previewImage.name,

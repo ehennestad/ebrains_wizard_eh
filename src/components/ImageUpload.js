@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ConfigProvider, Button, Upload } from 'antd';
+import { ConfigProvider, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
 
@@ -27,6 +27,20 @@ const ImageUpload = ({oldFileList, onImageUploadedFcn}) => {
     imgWindow?.document.write(image.outerHTML);
   };
 
+  const beforeUpload = (file) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    console.log(file.size / 1024 / 1024)
+    const isLt2M = file.size / 1024 / 1024 < 1;
+    console.log(isLt2M)
+    if (!isLt2M) {
+      message.error('Image must smaller than 1MB!');
+    }
+    return isJpgOrPng && isLt2M;
+  };
+
   const uploadButton = (
     <Button icon={<UploadOutlined />}>Upload</Button>
   );
@@ -45,6 +59,7 @@ const ImageUpload = ({oldFileList, onImageUploadedFcn}) => {
             action=""
             listType="picture"
             fileList={fileList}
+            beforeUpload={beforeUpload}
             onChange={onChange}
             onPreview={onPreview}
             className="upload-list-inline"
