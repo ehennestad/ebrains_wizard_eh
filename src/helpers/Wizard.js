@@ -1,6 +1,7 @@
 import * as generalSchemaModule from '../schemas/generalSchema.json';
 import * as datasetSchemaModule from '../schemas/datasetSchema.json';
 import * as experimentSchemaModule from '../schemas/experimentSchema.json';
+import * as contributorsModule from '../schemas/contributors.json';
 
 import * as uiSchemaModule from '../schemas/uiSchema.json'
 
@@ -9,13 +10,15 @@ import * as techniqueModule from '../controlledTerms/technique.json'
 import * as preparationTypeModule from '../controlledTerms/preparationType.json'
 import * as semanticDataTypeModule from '../controlledTerms/semanticDataType.json'
 import * as datasetLicenseModule from '../controlledTerms/datasetLicense.json'; 
+import * as contributionTypeModule from '../controlledTerms/contributionType.json'; 
 
 const controlledTerms = {
   experimentalApproach: experimentalApproachModule.default,
   technique: techniqueModule.default,
   preparationType: preparationTypeModule.default,
   datasetLicense: datasetLicenseModule.default,
-  semanticDataType: semanticDataTypeModule.default
+  semanticDataType: semanticDataTypeModule.default,
+  contributionType: contributionTypeModule.default
 };
 
 export const uiSchema = uiSchemaModule.default;
@@ -73,6 +76,8 @@ export const getSubjectStateEnum = (subject, subjectState) => `${subject.lookupL
 export const generalSchema = populateSchemaWithControlledTerms(generalSchemaModule.default);
 export const datasetSchema = populateSchemaWithControlledTerms(datasetSchemaModule.default);
 export const experimentSchema = populateSchemaWithControlledTerms(experimentSchemaModule.default);
+export const contributorsSchema = populateSchemaWithControlledTerms(contributorsModule.default);
+
 // export const subjectSchema = populateSchemaWithControlledTerms(subjectSchemaModule.default);
 // export const tissueSampleSchema = populateSchemaWithControlledTerms(tissueSampleSchemaModule.default);
 

@@ -57,7 +57,6 @@ app.use(express.static(path.join(__dirname, '..', '/build')));
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // Run timer that fetches controlled terms instances from openMINDS every 24 hours
-ctFetcher()
 const timerInterval = 24 * 60 * 60 * 1000; // 24 hours
 setInterval(ctFetcher, timerInterval);
 

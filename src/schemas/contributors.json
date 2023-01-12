@@ -68,7 +68,7 @@
       "description": "Please list all other contributers to this dataset. This could be technicians, data managers, etc.",
       "items": {
         "type": "object",
-        "required": ["firstName", "lastName"],
+        "required": ["firstName", "lastName", "contributionType"],
 
         "properties": {
           "firstName": {
@@ -86,6 +86,13 @@
           "affiliation": {
             "type": "string",
             "title": "Affiliation"
+          },
+          "contributionType":{
+            "type": "string",
+            "title": "Contribution type",
+            "controlledTerm": "contributionType",
+            "examples": [],
+            "exampleIDs": []
           },
           "emailMissing":{
             "type": "boolean",

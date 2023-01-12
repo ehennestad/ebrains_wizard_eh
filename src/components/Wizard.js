@@ -12,17 +12,17 @@ import ExperimentWizard from './Wizard/ExperimentWizard.js';
 import SubmissionCompletedWizard from './Wizard/SubmissionCompletedWizard.js';
 
 import { generateDocumentsFromDataset }  from '../helpers/Translator';
-import { generalSchema, datasetSchema, experimentSchema } from '../helpers/Wizard';
+import { generalSchema, datasetSchema, experimentSchema, contributorsSchema } from '../helpers/Wizard';
 
 import * as fundingAndAffiliationModule from '../schemas/funding.json';
 import * as dataset2Module from '../schemas/dataset2.json';
-import * as contributorsModule from '../schemas/contributors.json';
+//import * as contributorsModule from '../schemas/contributors.json';
 import * as submissionSuccededModule from '../schemas/submissionSucceededSchema.json';
 import * as submissionFailedModule from '../schemas/submissionFailedSchema.json';
 
 const fundingAndAffiliationSchema = fundingAndAffiliationModule.default;
 const dataset2Schema = dataset2Module.default;
-const contributorsSchema = contributorsModule.default;
+//const contributorsSchema = contributorsModule.default;
 const submissionSuccededSchema = submissionSuccededModule.default;
 const submissionFailedSchema = submissionFailedModule.default;
 

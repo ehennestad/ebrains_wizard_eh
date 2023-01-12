@@ -19,6 +19,8 @@ let ctFetcher = async () => {
     const QUERY_PARAMS = ["stage=RELEASED", "space=controlled", "type=https://openminds.ebrains.eu/controlledTerms/"];
 
     // List of controlled terms to fetch instances for (Todo: get this from import)
+    // IMPORTANT: DatasetLicense should not be a part of this list because it is a manual
+    // entry that does not correspond with any openMINDS schema.
     const CONTROLLED_TERMS = ["PreparationType", "Technique", "ContributionType", 
                               "SemanticDataType", "ExperimentalApproach"];
 

@@ -108,7 +108,13 @@
             "orderable": false
           }   
     },
-
+    "otherContributors":{
+        "contributionType": {
+            "ui:options":  {
+                "orderable": false
+            }
+        }
+    },
     "subjectExpMetadata": {
 
         "subjectsExist": {
