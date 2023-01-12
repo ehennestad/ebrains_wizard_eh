@@ -55,6 +55,28 @@ app.get('/api/express_test_connection', (req, res) => {
   res.send({ message: 'Express server says hello' });
 });
 
+app.post('/api/mockupload', (req, res) => {
+  console.log('Received mock upload post request from client')
+
+  console.log(req.files.file)
+
+  fs.writeFile( path.join(__dirname, '..', "/tmp", "/upload", req.files.file.name), req.files.file.data, (err) => {
+    if (err)
+      console.log(err);
+    else {
+      console.log("File written successfully\n");
+    }
+  });
+
+  let mockResponse = {
+    "name": req.files.file.name,
+    "status": "done",
+    "url": "",
+    "thumbUrl": ""
+  };
+  res.send( mockResponse );
+});
+
 // Create a POST route for receiving files that should be sent to curation team via email.
 app.post('/api/sendmail', (req, res) => { 
   console.log('Received submission post request from client')
