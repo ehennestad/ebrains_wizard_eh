@@ -7,12 +7,9 @@ const {exec} = require('child_process');
 
 let ctFetcher = async () => {
 
-    // Get token using a service account
+    // Get token for kg authorization using a service account
     const token = await getTokenFromServiceAccount();
 
-    console.log('token', token)
-    // Token for kg authorization
-    //const token = process.env.KG_TOKEN;
     // Create request header with authorization and options
     const requestOptions = getRequestOptions(token);
 
@@ -21,8 +18,8 @@ let ctFetcher = async () => {
     const API_ENDPOINT = "v3/instances";
     const QUERY_PARAMS = ["stage=RELEASED", "space=controlled", "type=https://openminds.ebrains.eu/controlledTerms/"];
 
-    // List of controlled terms to fetch instances for
-    const CONTROLLED_TERMS = ["PreparationType", "Technique", "ContributionType", "DatasetLicense", 
+    // List of controlled terms to fetch instances for (Todo: get this from import)
+    const CONTROLLED_TERMS = ["PreparationType", "Technique", "ContributionType", 
                               "SemanticDataType", "ExperimentalApproach"];
 
     // Loop through controlled terms and fetch them
@@ -33,14 +30,12 @@ let ctFetcher = async () => {
         instanceName = CONTROLLED_TERMS[i];
 
         // Fetch instances
-        //fetchInstance(queryUrl, requestOptions)
         fetchInstance(queryUrl, requestOptions, instanceName) //&&modified by Archana&&//
     }
-    //exec('npm run build')
+    exec('npm run build') // Redo the build in order for the updated terms to be used by the frontend
 }
 
 // function to get controlled terms instances from api
-//function fetchInstance(apiQueryUrl, requestOptions) { 
 function fetchInstance(apiQueryUrl, requestOptions, instanceName) { //&&modified by Archana&&//
     
     fetch(apiQueryUrl, requestOptions)
@@ -52,7 +47,6 @@ function fetchInstance(apiQueryUrl, requestOptions, instanceName) { //&&modified
 //&&Archana's awesome function to parse data from api and save to json file
 function parseAndSaveData(data, instanceName) {
     const resultforjson=[];
-    console.log('parsing')
     for (let datainstance of data.data){
 
         for (const i in datainstance){
@@ -104,8 +98,6 @@ async function getTokenFromServiceAccount() {
     let endpointURL = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/token";
     let secret = process.env.OIDC_CLIENT_SECRET;
 
-    console.log('secret', secret)
-    
     let body = "grant_type=client_credentials&client_id=ebrains-wizard-dev&client_secret=" + secret + "&scope=email%20profile%20team%20group";
     
     let requestOptions = {
