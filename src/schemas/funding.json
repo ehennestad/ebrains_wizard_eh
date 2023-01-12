@@ -1,0 +1,28 @@
+{
+  "title": "Funding - Step 3 of 5",
+  "type": "object",
+  "properties": {
+    "contributors": {
+      "type": "array",
+      "title": "Funding information",
+      "description": "Please list all funding sources for this project.",
+      "items": {
+        "type": "object",
+        "required": ["funder"],
+  
+        "properties": {
+          "funder": {
+            "type": "string",
+            "title": "Funding Information - Funder name",
+            "description": "Please state the full name of the funder you received funding from for the data you want to share (no abbreviations)."
+          },
+          "grantID": {
+            "type": "string",
+            "title": "Funding Information - Grant ID",
+            "description": "Please state the grant ID for the funding you have received."
+          }
+        }
+      }
+    }
+  }
+}

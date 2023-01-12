@@ -14,29 +14,33 @@ import SubmissionCompletedWizard from './Wizard/SubmissionCompletedWizard.js';
 import { generateDocumentsFromDataset }  from '../helpers/Translator';
 import { generalSchema, datasetSchema, experimentSchema } from '../helpers/Wizard';
 
-import * as fundingAndAffiliationModule from '../schemas/fundingAndAffiliation.json';
+import * as fundingAndAffiliationModule from '../schemas/funding.json';
+import * as dataset2Module from '../schemas/dataset2.json';
 import * as contributorsModule from '../schemas/contributors.json';
 import * as submissionSuccededModule from '../schemas/submissionSucceededSchema.json';
 import * as submissionFailedModule from '../schemas/submissionFailedSchema.json';
 
 const fundingAndAffiliationSchema = fundingAndAffiliationModule.default;
+const dataset2Schema = dataset2Module.default;
 const contributorsSchema = contributorsModule.default;
 const submissionSuccededSchema = submissionSuccededModule.default;
 const submissionFailedSchema = submissionFailedModule.default;
 
 const WIZARD_STEP_GENERAL = "WIZARD_STEP_GENERAL";
 const WIZARD_STEP_DATASET = "WIZARD_STEP_DATASET";
+const WIZARD_STEP_DATASET2 = "WIZARD_STEP_DATASET2";
 const WIZARD_STEP_FUNDING = "WIZARD_STEP_FUNDING";
 const WIZARD_STEP_CONTRIBUTORS = "WIZARD_STEP_CONTRIBUTORS";
 const WIZARD_STEP_EXPERIMENT = "WIZARD_STEP_EXPERIMENT";
 const WIZARD_SUCCEEDED = "WIZARD_SUCCEEDED";
 const WIZARD_FAILED = "WIZARD_FAILED";
 
-const WIZARD_STEPS_LIST = [ WIZARD_STEP_GENERAL, WIZARD_STEP_DATASET, WIZARD_STEP_FUNDING, WIZARD_STEP_CONTRIBUTORS, WIZARD_STEP_EXPERIMENT ];
+const WIZARD_STEPS_LIST = [ WIZARD_STEP_GENERAL, WIZARD_STEP_DATASET, WIZARD_STEP_DATASET2, WIZARD_STEP_FUNDING, WIZARD_STEP_CONTRIBUTORS, WIZARD_STEP_EXPERIMENT ];
 
 const STEP_MAP = new Map();
 STEP_MAP.set(WIZARD_STEP_GENERAL, {schema: generalSchema, wizard: GeneralWizard, name: "general"});
 STEP_MAP.set(WIZARD_STEP_DATASET, {schema: datasetSchema, wizard: DatasetWizard, name: "datasetinfo"});
+STEP_MAP.set(WIZARD_STEP_DATASET2, {schema: dataset2Schema, wizard: DatasetWizard , name: "dataset2info"});
 STEP_MAP.set(WIZARD_STEP_FUNDING, {schema: fundingAndAffiliationSchema, wizard: FundingAndAffiliationWizard, name: "fundingAndAffiliation"});
 STEP_MAP.set(WIZARD_STEP_CONTRIBUTORS, {schema: contributorsSchema, wizard: ContributorsWizard, name: "contributors"});
 STEP_MAP.set(WIZARD_STEP_EXPERIMENT, {schema: experimentSchema, wizard: ExperimentWizard, name: "experiment"});
@@ -48,7 +52,7 @@ const cookies = new Cookies();
 class Wizard extends React.Component {
   constructor(props) {
     super(props);
-
+    this.ticketNumber = "";                       // ticket number of the submission
     this.formData = this.initializeFormDataMap(); // formdata for each wizard step in a Map
     this.jsonStr = null;                          // json string of the whole formdata
     this.previewImage = [];                       // image for preview of dataset
@@ -75,11 +79,27 @@ class Wizard extends React.Component {
 
   componentDidMount = () => {
     let jsonStr = cookies.get('wizardData', {doNotParse:true} );
+    //let jsonStr2 = localStorage.getItem('wizardData2')
     
-    if (jsonStr !== undefined) {
-      let formStates = JSON.parse(jsonStr);  
-      this.loadState(formStates);
+    const queryString = window.location.search;
+    let ticketNumber = new URLSearchParams(queryString).get('TicketNumber');
+    
+    // Check if ticketnumber is empty
+    if (ticketNumber === null || ticketNumber === undefined) {
+      ticketNumber = "";
     }
+    this.ticketNumber = ticketNumber;
+
+    if (jsonStr !== undefined) {
+      let formStates = JSON.parse(jsonStr);
+      this.loadState(formStates);
+    } 
+
+    // Update the general form with ticketnumber from URL
+    var generalForm = this.formData.get('general');
+    generalForm.ticketNumber = ticketNumber;
+    this.formData.set('general', generalForm);
+
     this.isInitialized = true;
   };
 
@@ -135,7 +155,17 @@ class Wizard extends React.Component {
     if (this.isInitialized) {
       let dataset = Object.fromEntries(this.formData) // convert formData Map to object
       const jsonData = JSON.stringify(dataset);
+
+      //var startTime = performance.now()
       cookies.set('wizardData', jsonData, { path: '/' })
+      //var endTime = performance.now()
+      //console.log(`Saving to cookie took: ${endTime - startTime} milliseconds`)
+
+      //startTime = performance.now()
+      //localStorage.setItem('wizardData2', jsonData)
+      //endTime = performance.now()
+      //console.log(`Saving to local storage took: ${endTime - startTime} milliseconds`)
+
     }
   }
 
@@ -241,13 +271,13 @@ class Wizard extends React.Component {
         wizardPageProps.onReset = this.handleReset;
         break;
 
-      case WIZARD_STEP_DATASET:
+      case WIZARD_STEP_DATASET2:
         wizardPageProps.imageFileList = this.previewImage;
         wizardPageProps.imageUploadedFcn = this.onImageUploaded;
         wizardPageProps.goBack = this.goBack;
         break;
 
-      case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
+        case WIZARD_STEP_DATASET: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
         wizardPageProps.goBack = this.goBack;
         break;
 
@@ -256,9 +286,11 @@ class Wizard extends React.Component {
     };
 
 
+    //console.log(currentFormData)
+
     switch (this.state.currentStep) {
 
-      case WIZARD_STEP_GENERAL: case WIZARD_STEP_DATASET: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
+      case WIZARD_STEP_GENERAL: case WIZARD_STEP_DATASET: case WIZARD_STEP_DATASET2: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
         return (
           <>
             <ProgressBar step={stepNum} />

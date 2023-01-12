@@ -14,6 +14,9 @@ const fs = require('fs');                  // fs is needed for reading files fro
 
 // Get local modules that are needed for the server
 var mailTransporter = require('./mail_setup/MailTransporter');
+var ctFetcher = require('./ct_fetcher/fetchControlledTerms');
+
+var TICKET_NUMBER = null // Global variable that stores the ticket number which might be given as a query parameter
 
 // This app is deployed on OpenShift, and containers in OpenShift should bind to
 // any address (which is designated with 0.0.0.0) and use port 8080 by default
@@ -29,16 +32,34 @@ const app = express()
 const uploadOptions = { limits: { fileSize: 50 * 1024 * 1024, debug:true, useTempFiles:true } } // restrict size of uploaded files to 50 MB
 app.use( fileUpload(uploadOptions) );
 
-// Configure the renderer.
-//app.set('view engine', 'ejs'); //Necessary??
-//app.set('views', path.join(__dirname, '..', '/build'));  //Necessary??
-
 // This specifies that the root directory for serving the files are the build folder (Important!)
 app.use(express.static(path.join(__dirname, '..', '/build')));
+
+
+// Possible alternative to serving the app where the ticket number is read from a query parameter
+//
+// app.set('view engine', 'ejs'); //Necessary??
+// app.set('views', path.join(__dirname, '..', '/build'));  //Necessary??
+// //app.use(express.static(path.join(__dirname, '..', '/build')));
+
+// app.use('/', function (req, res, next) {
+    
+//   // for example, get a parameter:
+//   const ticketNumber = req.query.TicketNumber;
+//   if (ticketNumber !== null && ticketNumber !== undefined) {
+//     TICKET_NUMBER = ticketNumber;
+//   }
+//   express.static(path.join(__dirname, '..', '/build'))(req,res,next)
+// })
+
 
 // console.log that the server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
+// Run timer that fetches controlled terms instances from openMINDS every 24 hours
+ctFetcher()
+const timerInterval = 24 * 60 * 60 * 1000; // 24 hours
+setInterval(ctFetcher, timerInterval);
 
 // Define routes for the express app
 // - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -51,16 +72,18 @@ app.get('/*', function(req, res) {
 
 // Create a GET route for testing if express server is online
 app.get('/api/express_test_connection', (req, res) => {
+  //console.log(TICKET_NUMBER)
   console.log("Express server is connected.")
   res.send({ message: 'Express server says hello' });
 });
 
 app.post('/api/mockupload', (req, res) => {
   console.log('Received mock upload post request from client')
+  //console.log(req.files.file)
 
-  console.log(req.files.file)
-
-  fs.writeFile( path.join(__dirname, '..', "/tmp", "/upload", req.files.file.name), req.files.file.data, (err) => {
+  let savePath = path.join(__dirname, '..', "/tmp", "/upload")
+  fs.mkdirSync(savePath, { recursive: true })
+  fs.writeFile( path.join(savePath, req.files.file.name), req.files.file.data, (err) => {
     if (err)
       console.log(err);
     else {
@@ -110,9 +133,9 @@ app.post('/api/sendmail', (req, res) => {
       res.status(500).send(mailResponse.error.message)
     }
   }
-
 });
 
+// Tentative route for sending a wizard link to the user from a curator dashboard / console
 app.post('/api/sendwizardlink', (req, res) => {
   console.log('Received wizard link post request from client')
 
@@ -211,7 +234,7 @@ function writeMailSubject(jsonObject) {
   let mailSubjectStr = `[Wizard Metadata Submission] ${dsTitle}`;
 
   let ticketNumber = jsonObject[0]["general"]["ticketNumber"];
-
+  //let ticketNumber = TICKET_NUMBER
   if (ticketNumber) {
     ticketNumber = cleanTicketNumber(ticketNumber);
     mailSubjectStr = mailSubjectStr + ` [Ticket#${ticketNumber}]`;

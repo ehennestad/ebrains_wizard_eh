@@ -7,15 +7,21 @@ import {uiSchema} from '../../helpers/Wizard';
 
 import {transformErrors} from '../../helpers/ErrorTransformer';
 
+
 //const DatasetWizard = React.memo(({ schema, formData, onSubmit, onChange, goBack}) => {
 const DatasetWizard = ({ schema, formData, onSubmit, onChange, goBack, imageFileList, imageUploadedFcn}) => {
 
   const handleOnChange = ( {formData} ) => onChange(formData);
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
-
+  
+  let imageUploader = (
+    <ImageUpload oldFileList = {imageFileList} onImageUploadedFcn = {imageUploadedFcn}/>
+  );
+  
   return (
     <Form widgets={{img: ImageWidget, richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} >
-      <ImageUpload oldFileList = {imageFileList} onImageUploadedFcn = {imageUploadedFcn}/>
+      
+      {imageFileList === undefined ? null : imageUploader}
       <div className="footer">
         <div className="col-xs-5 back-panel">
           <button type="button" className="btn btn-info btn-default" onClick={goBack}>Previous Page</button>

@@ -63,6 +63,14 @@
             "ui:widget": "radio"
         }    
     },
+    "datasetStatus": {
+        "dataCollection": {
+            "ui:widget": "radio"
+        },        
+        "dataSharing": {
+            "ui:widget": "radio"
+        }    
+    },
     "licenseImage": {
         "ui:widget": "img"
     },
@@ -81,6 +89,9 @@
         }
     },
     "dataCollection": {
+        "ui:widget": "radio"
+    },
+    "dataSharing": {
         "ui:widget": "radio"
     },
     "affiliation": {
@@ -205,5 +216,4 @@
     "submissionFailedText": {
         "ui:widget": "richtext"
     }
-
 }
