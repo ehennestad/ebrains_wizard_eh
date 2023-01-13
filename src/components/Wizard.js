@@ -41,7 +41,7 @@ const WIZARD_FAILED = "WIZARD_FAILED";
 
 const WIZARD_STEPS_LIST = [ WIZARD_STEP_GENERAL, WIZARD_STEP_DATASET, WIZARD_STEP_DATASET2, WIZARD_STEP_FUNDING, WIZARD_STEP_CONTRIBUTORS, WIZARD_STEP_EXPERIMENT ];
 
-const STEP_MAP = new Map();
+const STEP_MAP = new Map(); // Rename to pageMap
 STEP_MAP.set(WIZARD_STEP_GENERAL, {schema: generalSchema, wizard: GeneralWizard, name: "general"});
 STEP_MAP.set(WIZARD_STEP_DATASET, {schema: datasetSchema, wizard: DatasetWizard, name: "datasetinfo"});
 STEP_MAP.set(WIZARD_STEP_DATASET2, {schema: dataset2Schema, wizard: DatasetWizard , name: "dataset2info"});
@@ -128,6 +128,9 @@ class Wizard extends React.Component {
   };
 
   goToWizardStep = (nextWizardStep) => {
+    if (typeof nextWizardStep === "number") {
+      nextWizardStep = WIZARD_STEPS_LIST[nextWizardStep];
+    }
     this.setState({ currentStep: nextWizardStep });
     window.scrollTo(0, 0);
   };
@@ -262,7 +265,7 @@ class Wizard extends React.Component {
 
     const currentFormData = this.formData.get(formName);
     const stepNum = WIZARD_STEPS_LIST.indexOf(this.state.currentStep);
-
+    
     let wizardPageProps = {
       schema: schema,
       formData: currentFormData,
@@ -290,7 +293,6 @@ class Wizard extends React.Component {
         break;
     };
 
-
     //console.log(currentFormData)
 
     switch (this.state.currentStep) {
@@ -298,7 +300,7 @@ class Wizard extends React.Component {
       case WIZARD_STEP_GENERAL: case WIZARD_STEP_DATASET: case WIZARD_STEP_DATASET2: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
         return (
           <>
-            <ProgressBar step={stepNum} />
+            <ProgressBar step={stepNum} onChanged={this.goToWizardStep} />
             <WizardComponent {...wizardPageProps} /> 
             {/* <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} goBack={this.goBack} />  */}
           </>

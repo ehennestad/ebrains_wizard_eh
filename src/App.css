@@ -175,7 +175,7 @@ input[type=radio] {
   padding-bottom: 10px;
 }
 
-.ant-steps-item-process{
+.ant-steps-item-process {
   border-color: var(--button-color-primary);
 }
 .ant-steps .ant-steps-item-process .ant-steps-item-icon >.ant-steps-icon .ant-steps-icon-dot {
@@ -227,11 +227,15 @@ input[type=radio] {
   background-color: var(--button-color-primary-hover);
   border-color: var(--button-color-primary-hover);
 }
-.btn-primary:active{
+.btn-primary:active {
   background-color: var(--button-color-primary-active);
   border-color: var(--button-color-primary-active);
 }
-.btn-primary:hover:active{
+.btn-primary:hover:active {
+  background-color: var(--button-color-primary-active-hover);
+  border-color: var(--button-color-primary-active-hover);
+}
+.btn-primary:hover:disabled {
   background-color: var(--button-color-primary-active-hover);
   border-color: var(--button-color-primary-active-hover);
 }
@@ -255,12 +259,12 @@ input[type=radio] {
   border-color: var(--button-color-primary-hover);
   background-color: var(--form-background-color);
 }
-.btn-default:active{
+.btn-default:active {
   color: var(--button-color-primary-active);
   border-color: var(--button-color-primary-active);
   background-color: var(--form-background-color);
 }
-.btn-default:hover:active{
+.btn-default:hover:active {
   color: var(--button-color-primary-active-hover);
   border-color: var(--button-color-primary-active-hover);
   background-color: var(--form-background-color);
@@ -300,12 +304,12 @@ input[type=radio] {
   border-color: var(--button-color-primary-hover);
   background-color: var(--form-background-color);
 }
-.array-item-add .btn-add:active{
+.array-item-add .btn-add:active {
   color: var(--button-color-primary-active);
   border-color: var(--button-color-primary-active);
   background-color: var(--form-background-color);
 }
-.array-item-add .btn-add:hover:active{
+.array-item-add .btn-add:hover:active {
   color: var(--button-color-primary-active-hover);
   border-color: var(--button-color-primary-active-hover);
   background-color: var(--form-background-color);
@@ -333,12 +337,12 @@ input[type=radio] {
   border-color: var(--button-color-error-hover);
   background-color: var(--form-background-color);
 }
-.array-item-toolbox .btn-danger:active{
+.array-item-toolbox .btn-danger:active {
   color: var(--button-color-error-active);
   border-color: var(--button-color-error-active);
   background-color: var(--form-background-color);
 }
-.array-item-toolbox .btn-danger:hover:active{
+.array-item-toolbox .btn-danger:hover:active {
   color: var(--button-color-error-active-hover);
   border-color: var(--button-color-error-active-hover);
   background-color: var(--form-background-color);
