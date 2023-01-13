@@ -1,22 +1,12 @@
 // This script configures the backend server that is used for sending the 
 // user-submitted metadata to the ebrains curation team
 
-//  This script requires the following environment variables to be set:
-//  - EMAIL_ADDRESS_SENDER
-//  - EMAIL_ADDRESS_CURATION_SUPPORT
-
 // Get installed node modules that are needed for the server
 const express = require('express');        // Express is a framework for creating web apps
 const path = require('path');              // Path is used for creating file paths
-const fileUpload = require('express-fileupload'); // Middleware for uploading file content / parsing multiform data in requests
-const atob = require('atob');              // atob is needed for decoding base64 encoded strings
-const fs = require('fs');                  // fs is needed for reading files from the file system
+const sceduledUpdater = require('./internal/update'); // Module that is used for updating the controlled terms
 
-// Get local modules that are needed for the server
-var mailTransporter = require('./mail_setup/MailTransporter');
-var ctFetcher = require('./ct_fetcher/fetchControlledTerms');
-
-var TICKET_NUMBER = null // Global variable that stores the ticket number which might be given as a query parameter
+const STATIC_DIR = path.join(__dirname, '..', '/build'); // Path to the static files that are served by the server
 
 // This app is deployed on OpenShift, and containers in OpenShift should bind to
 // any address (which is designated with 0.0.0.0) and use port 8080 by default
@@ -29,345 +19,44 @@ const port = process.env.PORT || 8080;
 
 const app = express()
 
-const uploadOptions = { limits: { fileSize: 50 * 1024 * 1024, debug:true, useTempFiles:true } } // restrict size of uploaded files to 50 MB
-app.use( fileUpload(uploadOptions) );
+// Define "api" routes for the frontend client
+const submissionRouter = require('./routes/submission');
+app.use('/api/submission', submissionRouter);
 
-// This specifies that the root directory for serving the files are the build folder (Important!)
-app.use(express.static(path.join(__dirname, '..', '/build')));
+const uploadRouter = require('./routes/upload');
+app.use('/api/upload', uploadRouter);
+
+const consoleRouter = require('./routes/console');
+app.use('/api/console', consoleRouter);
 
 
-// Possible alternative to serving the app where the ticket number is read from a query parameter
-//
-// app.set('view engine', 'ejs'); //Necessary??
-// app.set('views', path.join(__dirname, '..', '/build'));  //Necessary??
-// //app.use(express.static(path.join(__dirname, '..', '/build')));
+// This specifies that the root directory for serving the files are the 
+// build folder (Important!)
+app.use(express.static(STATIC_DIR));
 
-// app.use('/', function (req, res, next) {
-    
-//   // for example, get a parameter:
-//   const ticketNumber = req.query.TicketNumber;
-//   if (ticketNumber !== null && ticketNumber !== undefined) {
-//     TICKET_NUMBER = ticketNumber;
-//   }
-//   express.static(path.join(__dirname, '..', '/build'))(req,res,next)
-// })
-
+// Serve the react app on the default (/) route. Use /* to allow for
+// frontend routing to work.
+app.get('/*', function(req, res) {
+    let indexFile = path.join(STATIC_DIR, '/index.html' )
+    res.sendFile( indexFile, err => { onIndexFileSent(err, res) } )
+});
 
 // console.log that the server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-// Run timer that fetches controlled terms instances from openMINDS every 24 hours
-const timerInterval = 24 * 60 * 60 * 1000; // 24 hours
-setInterval(ctFetcher, timerInterval);
+// Start the scheduled updater which updates the controlled terms every 24 hours
+sceduledUpdater()
 
-// Define routes for the express app
-// - - - - - - - - - - - - - - - - - - - - - - - - 
-
-// Serve the react app on the default (/) route
-app.get('/*', function(req, res) {
-  //res.render( 'index.html' );
-  res.sendFile( path.join(__dirname, '..', '/build', '/index.html' ) );
-});
-
-// Create a GET route for testing if express server is online
-app.get('/api/express_test_connection', (req, res) => {
-  //console.log(TICKET_NUMBER)
-  console.log("Express server is connected.")
-  res.send({ message: 'Express server says hello' });
-});
-
-app.post('/api/mockupload', (req, res) => {
-  console.log('Received mock upload post request from client')
-  //console.log(req.files.file)
-
-  let savePath = path.join(__dirname, '..', "/tmp", "/upload")
-  fs.mkdirSync(savePath, { recursive: true })
-  fs.writeFile( path.join(savePath, req.files.file.name), req.files.file.data, (err) => {
-    if (err)
-      console.log(err);
-    else {
-      console.log("File written successfully\n");
-    }
-  });
-
-  let mockResponse = {
-    "name": req.files.file.name,
-    "status": "done",
-    "url": "",
-    "thumbUrl": ""
-  };
-  res.send( mockResponse );
-});
-
-// Create a POST route for receiving files that should be sent to curation team via email.
-app.post('/api/sendmail', (req, res) => { 
-  console.log('Received submission post request from client')
-
-  let jsonObject = JSON.parse(req.body.jsonData);
-
-  const emailCurationTeam = process.env.EMAIL_ADDRESS_CURATION_SUPPORT;
-  const emailMetadataSubmitter = getContactPersonEmailAddress(jsonObject);
-
-  // Create a string array with email addresses for the curation team and the user submitting metadata.
-  const emailRecipients = [emailCurationTeam, emailMetadataSubmitter];
-
-  let message = [createMetadataEmailMessage(jsonObject, req)];
-  message.push( rewriteMailBodyForContactPerson(message[0], jsonObject) )
-
-  // Send the message to each of the emailRecipients. NOTE: The sendResponseToClient function is called after each email has been sent, 
-  // but the response will only be sent to the client for the first email. This is fine, because it is only important for the client to know
-  // that the email has been sent to the curation team, but it is not important for the client to know if the email has been sent to the user.
-  // This could be handled better in the future.
-  for (let i = 0; i < emailRecipients.length; i++) {
-    sendMetadataEmailMessage(emailRecipients[i], message[i], sendResponseToClient)
-  }
-
-  // Function that sends the response to the frontend client
-  function sendResponseToClient(mailResponse) {
-    console.log('Sending response to client')
-
-    if (mailResponse.ok) {
-      res.send({status: true, message: 'Email is sent'})
+// Function that is called when the index.html file has been sent to the client
+function onIndexFileSent(err, res) {
+  if (err) {
+    if (err.code === 'ENOENT') {
+      res.send('Server is updating. Please try again in about 10 seconds.')
     } else {
-      res.status(500).send(mailResponse.error.message)
+      res.send('Internal server error.')
     }
-  }
-});
-
-// Tentative route for sending a wizard link to the user from a curator dashboard / console
-app.post('/api/sendwizardlink', (req, res) => {
-  console.log('Received wizard link post request from client')
-
-  let jsonObject = JSON.parse(req.body.jsonData);
-
-  let emailMessage = {
-    from: process.env.EMAIL_ADDRESS_SENDER,
-    to: jsonObject.emailRecipient,
-    subject: 'test',
-    text: jsonObject.emailMessage,
-  };
-
-  mailTransporter.sendMail(emailMessage, function(error, info){
-    if (error) {
-      console.log(`Failed to send mail with following error:\n`, error)
-      mailResponse.error = error;
-    } else {
-      console.log(`Email sent: ${emailMessage.to}` + info.response)
-      mailResponse.ok = true;
-    }
-  });
-});
-
-
-
-
-// Functions for creating and sending email messages
-
-function createMetadataEmailMessage(jsonObject, requestObject) {
-  // Create an email message object but leave the recipient empty for now.
-
-  var message = {
-    from: process.env.EMAIL_ADDRESS_SENDER,
-    to: '',
-    subject: writeMailSubject(jsonObject),
-    text: writeMailBody(jsonObject),
-    attachments: prepareMailAttachments(requestObject)
-  };
-
-  return message
-}
-
-function rewriteMailBodyForContactPerson(emailMessage, jsonObject) {
-  let rewrittenMessage = {};
-  Object.assign(rewrittenMessage, emailMessage);
-
-  rewrittenMessage.text = writeMailBodyConfirmation(jsonObject)
-
-  return rewrittenMessage
-}
-
-function sendMetadataEmailMessage(emailRecipient, emailMessage, sendResponseToClientFunction) {
-  // Send the email message to the emailRecipient
-  
-  let mailResponse = {ok: false, error: null};
-
-  try {
-    // Change the recipient of the email message
-    emailMessage.to = emailRecipient;
-
-    mailTransporter.sendMail(emailMessage, function(error, info){
-      if (error) {
-        console.log(`Failed to send mail with following error:\n`, error)
-        mailResponse.error = error;
-      } else {
-        console.log(`Email sent: ${emailMessage.to}` + info.response)
-        mailResponse.ok = true;
-      }
-      sendResponseToClientFunction(mailResponse)
-    });
-
-  } catch (err) {
-      console.log('Failed to send the message via email with the following error:\n', err)  
-      mailResponse.error = err;
-      sendResponseToClientFunction(mailResponse)
-  }
-}
-
-// Define utility functions
-// - - - - - - - - - - - - - - - - - - - - - - - - 
-
-function getContactPersonEmailAddress(jsonObject) {
-
-  let emailAddress = undefined;
-
-  if (jsonObject[0]["general"]["contactperson"]["same"]) {
-    emailAddress = jsonObject[0]["general"]["custodian"]["email"];
+    console.log(err)
   } else {
-    emailAddress = jsonObject[0]["general"]["contactperson"]["contactinfo"]["email"];
+    console.log('Sent index.html')
   }
-  return emailAddress;
 }
-
-function writeMailSubject(jsonObject) {
-  const dsTitle = jsonObject[0]["general"]["datasetinfo"]["datasetTitle"];
-  let mailSubjectStr = `[Wizard Metadata Submission] ${dsTitle}`;
-
-  let ticketNumber = jsonObject[0]["general"]["ticketNumber"];
-  //let ticketNumber = TICKET_NUMBER
-  if (ticketNumber) {
-    ticketNumber = cleanTicketNumber(ticketNumber);
-    mailSubjectStr = mailSubjectStr + ` [Ticket#${ticketNumber}]`;
-  }
-
-  return mailSubjectStr
-}
-
-function writeMailBody(jsonObject) {
-  // Add some key information to a mail body string
-  
-    // TODO: use contact person if available
-
-  const dsTitle = jsonObject[0]["general"]["datasetinfo"]["datasetTitle"];
-  const custodianFirstName = jsonObject[0]["general"]["custodian"]["firstName"];
-  const custodianLastName = jsonObject[0]["general"]["custodian"]["lastName"];
-  const custodianEmail = jsonObject[0]["general"]["custodian"]["email"];
-  
-  let mailBodyStr = `Dataset information:
-
-Dataset Custodian: ${custodianFirstName + ' ' + custodianLastName}
-Dataset Custodian Email: ${custodianEmail}
-Dataset Title: ${dsTitle}
-    
-Attachments:
-  
-`;
-  return mailBodyStr
-}
-
-function writeMailBodyConfirmation(jsonObject) {
-
-  let contactPersonName = undefined;
-
-  if (jsonObject[0]["general"]["contactperson"]["same"]) {
-    contactPersonName = jsonObject[0]["general"]["custodian"]["firstName"];
-  } else {
-    contactPersonName = jsonObject[0]["general"]["contactperson"]["contactinfo"]["firstName"];
-  }
-
-  let mailBodyStr = `Dear ${contactPersonName},
-
-Thank you for submitting metadata for the dataset "${jsonObject[0]["general"]["datasetinfo"]["datasetTitle"]}". We will review the metadata and get back to you as soon as possible.
-
-The attached file(s) are the metadata you submitted. The json file contains the metadata in a machine-readable format and if you at some point need to make changes to the metadata, you can upload it to the wizard, make modifications and resubmit.
-
-If you have any further questions, please contact the curation team at ${process.env.EMAIL_ADDRESS_CURATION_SUPPORT}.
-
-Best regards,
-EBRAINS Curation Service
-curation-support@ebrains.eu
-
-`;
-return mailBodyStr
-}
-
-function prepareMailAttachments(requestObject) {
-
-  let mailAttachmentArray = []; // Initialize an empty list for attachments
-
-  let jsonAttachment = { // utf-8 string as an attachment
-    filename: 'metadata.json',
-    content: requestObject.body.jsonData
-  };
-  mailAttachmentArray.push(jsonAttachment)
-  
-  if (requestObject.body.excelData) { // push excel data to the attachment list if it is present
-    console.log('excel_file', requestObject.body.excelData)
-
-    let excelAttachment = {
-      filename:'subject_data.xlsx',
-      content: convertExcelDataUrlToByteArray(requestObject.body.excelData), 
-      contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-    };
-    
-    mailAttachmentArray.push(excelAttachment)
-
-  } else {  
-    // No excel file was provided, thats fine.
-  }
-
-  if (requestObject.files !== null) {
-    if (requestObject.files.previewImage) { // push image file to the attachment list if it is present
-      //console.log('preview image', requestObject.body.previewImage)
-      //console.log('type of preview image', typeof requestObject.body.previewImage)
-      console.log('image size', requestObject.files.previewImage.size / 1024 / 1024, 'MB')
-      console.log(requestObject.files.previewImage)
-      let previewImageAttachment = {
-        filename: requestObject.files.previewImage.name,
-        content: requestObject.files.previewImage.data,
-        contentType: requestObject.files.previewImage.mimetype
-      };
-      mailAttachmentArray.push(previewImageAttachment)
-    }
-  } else {  
-    // No preview image file was provided, thats fine.
-  }
-
-
-  return mailAttachmentArray
-}
-
-function convertExcelDataUrlToByteArray(excelString) {
-  
-  var byteString = atob(excelString.split(',')[1])
-
-  // write the bytes of the string to an ArrayBuffer
-  var ab = new ArrayBuffer(byteString.length);
-  var dw = new DataView(ab);
-  for(var i = 0; i < byteString.length; i++) {
-    dw.setUint8(i, byteString.charCodeAt(i));
-  }
-
-  //convert bytestring from string to uint8array
-  var uint8Array = new Uint8Array(ab);
-  return uint8Array
-}
-
-function cleanTicketNumber(ticketNumber) {
-  // Remove square brackets from ticket number
-  let cleanedTicketNumber = ticketNumber.replace('[', '');
-  cleanedTicketNumber = cleanedTicketNumber.replace(']', '');
-
-  // Remove ticket from ticket number
-  cleanedTicketNumber = cleanedTicketNumber.replace('Ticket', '');
-
-  // Remove whitespace from ticket number
-  cleanedTicketNumber = cleanedTicketNumber.replace(' ', '');
-  
-  // Remove number symbol from ticket number
-  cleanedTicketNumber = cleanedTicketNumber.replace('#', '');
-
-  return cleanedTicketNumber
-}
-
-
-

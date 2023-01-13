@@ -20,6 +20,10 @@ import * as dataset2Module from '../schemas/dataset2.json';
 import * as submissionSuccededModule from '../schemas/submissionSucceededSchema.json';
 import * as submissionFailedModule from '../schemas/submissionFailedSchema.json';
 
+
+// Path for posting submission to the backend
+const SUBMISSION_PATH = "/api/submission/send_email";
+
 const fundingAndAffiliationSchema = fundingAndAffiliationModule.default;
 const dataset2Schema = dataset2Module.default;
 //const contributorsSchema = contributorsModule.default;
@@ -83,6 +87,7 @@ class Wizard extends React.Component {
     
     const queryString = window.location.search;
     let ticketNumber = new URLSearchParams(queryString).get('TicketNumber');
+    console.log(ticketNumber)
     
     // Check if ticketnumber is empty
     if (ticketNumber === null || ticketNumber === undefined) {
@@ -223,7 +228,7 @@ class Wizard extends React.Component {
     formData.append('previewImage', previewImageFile)
 
     // Route the POST request with data to api/sendmail
-    axios.post('/api/sendmail', formData)
+    axios.post(SUBMISSION_PATH, formData)
       .then( response => {console.log(response); this.goToWizardStep(WIZARD_SUCCEEDED) } )
       .catch( error => {console.log(error); this.goToWizardStep(WIZARD_FAILED) } );
   }

@@ -39,13 +39,18 @@
     "react-router-dom": "^6.6.1",
     "react-rte": "^0.15.0",
     "react-scripts": "4.0.3",
+    "require-all": "^3.0.0",
     "save": "^2.5.0",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^1.1.2"
   },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
   "scripts": {
     "build": "react-scripts build",
-    "postinstall": "npm run build",
+    "postinstall": "node setup.js",
+    "devstart": "nodemon server/server.js",
     "start": "node server/server.js",
     "dev": "react-scripts start",
     "test": "react-scripts test",

@@ -92,7 +92,7 @@ curation-support@ebrains.eu
         let formData = new FormData();
         formData.append('jsonData', jsonString) // Json data is in the form of a string
 
-        axios.post('/api/sendwizardlink', formData)
+        axios.post('/api/console/sendwizardlink', formData)
 
         // .then( response => {console.log(response); this.goToWizardStep(WIZARD_SUCCEEDED) } )
         // .catch( error => {console.log(error); this.goToWizardStep(WIZARD_FAILED) } );

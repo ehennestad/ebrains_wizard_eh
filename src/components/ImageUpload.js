@@ -82,7 +82,7 @@ const ImageUpload = ({oldFileList, onImageUploadedFcn}) => {
       <div style={{"marginBottom":"30px"}}>
         <ImgCrop quality={1} grid>
           <Upload
-            action='/api/mockupload'
+            action='/api/upload/previewImage'
             accept=".png,.jpg"
             listType="picture"
             fileList={fileList}

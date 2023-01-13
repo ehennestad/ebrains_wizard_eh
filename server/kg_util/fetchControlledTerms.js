@@ -3,9 +3,8 @@ const fetch = require("node-fetch")
 const fs = require('fs');//&&added by Archana&&//
 const path = require('path');//&&added by Archana&&//
 const math = require('mathjs');//&&added by Archana&&//
-const {exec} = require('child_process');
 
-let ctFetcher = async () => {
+let fetchControlledTerms = async () => {
 
     // Get token for kg authorization using a service account
     const token = await getTokenFromServiceAccount();
@@ -34,7 +33,6 @@ let ctFetcher = async () => {
         // Fetch instances
         fetchInstance(queryUrl, requestOptions, instanceName) //&&modified by Archana&&//
     }
-    exec('npm run build') // Redo the build in order for the updated terms to be used by the frontend
 }
 
 // function to get controlled terms instances from api
@@ -113,7 +111,8 @@ async function getTokenFromServiceAccount() {
     return jsonData.access_token;
 }
 
-module.exports = ctFetcher;
+
+module.exports = fetchControlledTerms;
 
 // - - - Simple api query using axios
 // apiURL = "https://api.github.com/repos/HumanBrainProject/openMINDS/commits/documentation";
