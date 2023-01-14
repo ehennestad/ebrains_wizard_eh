@@ -48,8 +48,8 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "build": "node setup.js",
-    "postinstall": "npm run build",
+    "build": "react-scripts build",
+    "postinstall": "node setup.js",
     "devstart": "nodemon server/server.js",
     "start": "node server/server.js",
     "dev": "react-scripts start",
