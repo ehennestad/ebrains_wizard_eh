@@ -32,26 +32,34 @@ class Console extends React.Component {
     onFormChanged = (formData) => {
         // Update formData for current wizard step        
         
-        let wizardLink = this.getWizardLink(formData.ticketNumber);
-        
-        console.log('wizlink', wizardLink)
+        let wizardLink = this.getWizardLink(formData);
 
         if (wizardLink !== '') {
             formData.wizardLink = wizardLink;
             this.formData = formData;
             this.setState({ update: true } );
-            console.log(formData)
         }
     }
 
-    getWizardLink = (ticketNumber) => {
+    getWizardLink = (formData) => {
         let wizardLink = '';
+        let queryParams = {};
 
-        if (ticketNumber === undefined || ticketNumber === '') {
-            wizardLink = "https://metadata-wizard.apps.hbp.eu";
-        } else if (ticketNumber !== undefined) {
-            wizardLink = "https://metadata-wizard.apps.hbp.eu/?TicketNumber=" + ticketNumber;
-            };
+        if (formData.ticketNumber !== undefined && formData.ticketNumber !== '') {
+            queryParams.TicketNumber = formData.ticketNumber;
+        };
+
+        if (formData.datasetId !== undefined && formData.datasetId !== '') {
+            queryParams.DatasetID = formData.datasetId;
+        };
+
+        // Create the query string
+        let queryString = Object.keys(queryParams).map(key => key + '=' + queryParams[key]).join('&');
+        if (queryString !== '') {
+            queryString = '?' + queryString;
+        }
+        wizardLink = "https://metadata-wizard.apps.hbp.eu/" + queryString;
+
         return wizardLink;
     }
 
@@ -91,7 +99,6 @@ curation-support@ebrains.eu
         // Create a FormData object in order to send data to the backend server
         let formData = new FormData();
         formData.append('jsonData', jsonString) // Json data is in the form of a string
-
         axios.post('/api/console/sendwizardlink', formData)
 
         // .then( response => {console.log(response); this.goToWizardStep(WIZARD_SUCCEEDED) } )

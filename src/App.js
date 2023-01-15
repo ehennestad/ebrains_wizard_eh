@@ -21,9 +21,8 @@ const App = () => (
         <Route path="/console" element={
           <div className="container container-form">
             <Console /> 
-            </div> 
-            }
-            />
+          </div> 
+        } />
         
         <Route path="/" element={ 
           <div>
