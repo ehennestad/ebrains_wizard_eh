@@ -12,7 +12,7 @@ var mailTransporter = require('../mail_setup/MailTransporter');
 // Create a router to handle requests
 const router = express.Router();            
 
-const uploadOptions = { limits: { fileSize: 50 * 1024 * 1024 }, debug:true, useTempFiles:true } // restrict size of uploaded files to 50 MB
+const uploadOptions = { limits: { fileSize: 50 * 1024 * 1024 } } // restrict size of uploaded files to 50 MB
 router.use( fileUpload(uploadOptions) );
 
 

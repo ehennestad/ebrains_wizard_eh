@@ -2,11 +2,12 @@
 // user-submitted metadata to the ebrains curation team
 
 // Get installed node modules that are needed for the server
-const express = require('express');        // Express is a framework for creating web apps
-const path = require('path');              // Path is used for creating file paths
+const express         = require('express');           // Express is a framework for creating web apps
+const path            = require('path');              // Path is used for creating file paths
 const sceduledUpdater = require('./internal/update'); // Module that is used for updating the controlled terms
 
-const STATIC_DIR = path.join(__dirname, '..', '/build'); // Path to the static files that are served by the server
+// Path to the static files that are served by the server
+const STATIC_DIR = path.join(__dirname, '..', '/build');
 
 // This app is deployed on OpenShift, and containers in OpenShift should bind to
 // any address (which is designated with 0.0.0.0) and use port 8080 by default
@@ -19,7 +20,14 @@ const port = process.env.PORT || 8080;
 
 const app = express()
 
-// Define "api" routes for the frontend client
+// Specify that the root directory for serving the files are the 
+// build folder (Important!) When index.html refers to the static files,
+// it will look in the static (in this case /build) folder for them.
+app.use(express.static(STATIC_DIR));
+
+// Define "api" routes for the frontend client. These routes are defined before 
+// the static file serving, so that the static file serving does not override 
+// the api routes
 const submissionRouter = require('./routes/submission');
 app.use('/api/submission', submissionRouter);
 
@@ -29,16 +37,13 @@ app.use('/api/upload', uploadRouter);
 const consoleRouter = require('./routes/console');
 app.use('/api/console', consoleRouter);
 
-
-// This specifies that the root directory for serving the files are the 
-// build folder (Important!)
-app.use(express.static(STATIC_DIR));
+app.get('/test' , (req, res) => { res.send('Ok') }) // Test route
 
 // Serve the react app on the default (/) route. Use /* to allow for
 // frontend routing to work.
 app.get('/*', function(req, res) {
-    let indexFile = path.join(STATIC_DIR, '/index.html' )
-    res.sendFile( indexFile, err => { onIndexFileSent(err, res) } )
+  let indexFile = path.join(STATIC_DIR, '/index.html' )
+  res.sendFile( indexFile, err => { onIndexFileSent(err, res) } )
 });
 
 // console.log that the server is up and running

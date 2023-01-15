@@ -6,10 +6,7 @@ var mailTransporter = require('../mail_setup/MailTransporter');
 
 // Create a router to handle requests
 const router = express.Router();
-router.use(fileUpload)
-
-// Export the router so it can be used in the main app
-module.exports = router;
+router.use(fileUpload())
 
 // Tentative route for sending a wizard link to the user from a curator dashboard / console
 router.post('/sendwizardlink', (req, res) => {
@@ -20,7 +17,7 @@ router.post('/sendwizardlink', (req, res) => {
   let emailMessage = {
     from: process.env.EMAIL_ADDRESS_SENDER,
     to: jsonObject.emailRecipient,
-    subject: 'test',
+    subject: 'Wizard submission link',
     text: jsonObject.emailMessage,
   };
 
@@ -34,3 +31,6 @@ router.post('/sendwizardlink', (req, res) => {
     }
   });
 });
+
+// Export the router so it can be used in the main app
+module.exports = router;

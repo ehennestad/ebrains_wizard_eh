@@ -8,7 +8,7 @@ const fs            = require('fs');                    // fs is needed for read
 // Create a router to handle requests
 const router = express.Router();            
 
-const uploadOptions = { limits: { fileSize: 50 * 1024 * 1024 }, debug:true, useTempFiles:true } // restrict size of uploaded files to 50 MB
+const uploadOptions = { limits: { fileSize: 5 * 1024 * 1024 }, debug:true, useTempFiles:true } // restrict size of uploaded files to 1 MB
 router.use( fileUpload(uploadOptions) );
 
 // Export the router so it can be used in the main app
@@ -16,9 +16,8 @@ module.exports = router;
 
 router.post('/previewImage', (req, res) => {
     console.log('Received post-request for upload of preview image from client')
-    //console.log(req.files.file)
-  
-    let saveDirPath = path.join(__dirname, '..', "/tmp", "/upload")
+
+    let saveDirPath = path.join(__dirname, '..', '..', "/tmp", "/upload")
     let saveFilePath = path.join(saveDirPath, req.files.file.name)
 
     fs.mkdirSync(saveDirPath, { recursive: true })
