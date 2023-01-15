@@ -20,15 +20,26 @@ const customDot = (dot, { status, index }) => (
 const description = '';
 
 const ProgressBar = ({step, onChanged}) => {
+//const ProgressBar = ({step, status, onChanged}) => {
 
   const [current, setCurrent] = useState(0);
+  
   const onChange = (value) => {
-    console.log('onChange:', current);
-    console.log('new:', value);
-
     setCurrent(value);
     onChanged(value);
   };
+
+  let items = [];
+
+  for (let i = 0; i < NUM_STEPS; i++) {
+      let thisItem = {
+          title: WIZARD_STEP_NAMES[i],
+          //status: status[i],
+          description,
+      };
+      items.push(thisItem);
+  }
+
   return (
 
   <ConfigProvider
@@ -41,40 +52,13 @@ const ProgressBar = ({step, onChanged}) => {
      <div style={{"marginBottom":"30px"}}>
       <Steps
           current={step}
+          //status={status[step]}
           onChange={onChange}
           progressDot={customDot}
-
-          //TODO: create this list dynamically from WIZARD_STEPS_LIST
-          items={[
-          {
-              title: WIZARD_STEP_NAMES[0],
-              description,
-          },
-          {
-              title: WIZARD_STEP_NAMES[1],
-              description,
-          },
-          {
-              title: WIZARD_STEP_NAMES[2],
-              description,
-          },
-          {
-              title: 'Affiliation',
-              description,
-          },
-          {
-              title: WIZARD_STEP_NAMES[3],
-              description,
-          },
-          {
-              title: WIZARD_STEP_NAMES[4],
-              description,
-          },
-          ]}
+          items={items}
       />
     </div>
   </ConfigProvider>
   );
 };
-export default ProgressBar
-;
+export default ProgressBar;

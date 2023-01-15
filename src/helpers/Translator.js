@@ -285,42 +285,42 @@ const createDatasetDocument = (documents, source) => {
 
     // Page 2
 
-    setProperty(dataset, "dataType", source.dataType);
+    // setProperty(dataset, "dataType", source.dataType);
 
-    if(source.sharedAlready.sharedAlready === true) {
-        setPropertyWithLinksCreation(documents, dataset, "digitalIdentifier", source.sharedAlready.DOI, createDigitalIdentifierDocument);
-    }
+    // if(source.sharedAlready.sharedAlready === true) {
+    //     setPropertyWithLinksCreation(documents, dataset, "digitalIdentifier", source.sharedAlready.DOI, createDigitalIdentifierDocument);
+    // }
 
-    if(source.versions.versions!=="no"){
-        setProperty(dataset, "alternativeVersion", source.versions.versionDOI);            
-        if(source.versions.versions==="updated"){
-            setProperty(dataset, "versionInnovation", source.versions.versionInnovation);            
-        }
-    }
+    // if(source.versions.versions!=="no"){
+    //     setProperty(dataset, "alternativeVersion", source.versions.versionDOI);            
+    //     if(source.versions.versions==="updated"){
+    //         setProperty(dataset, "versionInnovation", source.versions.versionInnovation);            
+    //     }
+    // }
 
-    setProperty(dataset, "dataCollectionFinished", source.datasetStatus.dataCollection);
+    // setProperty(dataset, "dataCollectionFinished", source.datasetStatus.dataCollection);
     setProperty(dataset, "embargo", source.embargo.embargo);
     setProperty(dataset, "embargoEndDate", source.embargo.releaseDate);
     setPropertyWithLinks(dataset, "license", source.license);
 
     // Page 3
 
-    switch(source.affiliation.affiliation){
-        case "HBP internal":
-            setProperty(dataset, "HBPtaskID", source.affiliation.taskID);
-            setProperty(dataset, "HBPcomponentID", source.affiliation.component);
-            setProperty(dataset, "HBPfundingPhase", [source.affiliation.fundingPhase]);
-            break;
-        case "partnering project":
-            setProperty(dataset, "partneringProject", source.affiliation.partneringProject);
-            break;
-        case "external":
-            setProperty(dataset, "Funder", source.affiliation.funder);
-            setProperty(dataset, "GrantID", source.affiliation.grantID);
-            break;
-        default:
-            break;
-    }
+    // switch(source.affiliation.affiliation){
+    //     case "HBP internal":
+    //         setProperty(dataset, "HBPtaskID", source.affiliation.taskID);
+    //         setProperty(dataset, "HBPcomponentID", source.affiliation.component);
+    //         setProperty(dataset, "HBPfundingPhase", [source.affiliation.fundingPhase]);
+    //         break;
+    //     case "partnering project":
+    //         setProperty(dataset, "partneringProject", source.affiliation.partneringProject);
+    //         break;
+    //     case "external":
+    //         setProperty(dataset, "Funder", source.affiliation.funder);
+    //         setProperty(dataset, "GrantID", source.affiliation.grantID);
+    //         break;
+    //     default:
+    //         break;
+    // }
 
     // Page 4
 
