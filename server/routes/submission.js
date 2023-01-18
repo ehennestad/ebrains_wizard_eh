@@ -5,7 +5,7 @@ const fileUpload    = require('express-fileupload');    // Middleware for upload
 const atob          = require('atob');                  // atob is needed for decoding base64 encoded strings
 
 // Get local modules that are needed for the submission route
-var mailTransporter = require('../mail_setup/MailTransporter');
+var mailTransporter = require('../mail-setup/MailTransporter');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

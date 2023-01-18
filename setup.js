@@ -1,4 +1,4 @@
-var fetchControlledTerms = require('./server/kg_util/fetchControlledTerms');
+var fetchControlledTerms = require('./server/kg-util/fetchControlledTerms');
 const {exec} = require('child_process');
 
 async function setup() {

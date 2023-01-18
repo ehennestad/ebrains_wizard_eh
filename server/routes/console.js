@@ -2,7 +2,7 @@ const express       = require('express');               // Express is a framewor
 const fileUpload    = require('express-fileupload');    // Middleware for uploading file content / parsing multiform data in requests
 
 // Get local modules that are needed for the server
-var mailTransporter = require('../mail_setup/MailTransporter');
+var mailTransporter = require('../mail-setup/MailTransporter');
 
 // Create a router to handle requests
 const router = express.Router();
