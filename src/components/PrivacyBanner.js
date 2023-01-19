@@ -4,16 +4,16 @@ let toggleExpandNotice = function () {
 
   if (container.style.display === "none") {
     container.style.display = "block";
-    button.style.backgroundImage = "url('../icons/up_arrow.svg')";
+    button.style.backgroundImage = "url('./icons/up_arrow.svg')";
     button.innerHTML = 'Hide';
   } else {
     container.style.display = "none";
-    button.style.backgroundImage = "url('../icons/down_arrow.svg')";
+    button.style.backgroundImage = "url('./icons/down_arrow.svg')";
     button.innerHTML = 'Show more';
   }
 }
 
-const PrivacyNotice = () => (
+const PrivacyBanner = () => (
   <div>
     <div className="notice">
       <div className="notice-content">
@@ -33,4 +33,4 @@ const PrivacyNotice = () => (
 </div>
 );
 
-export default PrivacyNotice;
+export default PrivacyBanner;

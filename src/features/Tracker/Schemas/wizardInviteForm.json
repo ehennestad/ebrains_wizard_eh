@@ -1,5 +1,5 @@
 {
-  "title": "Welcome to the EBRAINS Metadata Console!",
+  "title": "Welcome to the EBRAINS Curation Tracker!",
   "type": "object",
   "definitions": {
     "welcomeText": {

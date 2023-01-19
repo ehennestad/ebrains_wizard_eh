@@ -1,15 +1,15 @@
 import React from 'react';
 import Form from '@rjsf/core';
-import RichTextWidget from './customWidgets';
+import RichTextWidget from '../../components/customWidgets';
 import axios from 'axios';
 
-import * as consoleModule from '../schemas/console/consoleSchema.json';
-import * as consoleComponentModule from '../schemas/console/consoleComponentSchema.json';
+import * as wizardInviteForm from './Schemas/wizardInviteForm.json';
+import * as trackerUiSchema from './Schemas/trackerUISchema.json';
 
-const consoleSchema = consoleModule.default;
-const uiSchema = consoleComponentModule.default;
+const formSchema = wizardInviteForm.default;
+const uiSchema = trackerUiSchema.default;
 
-class Console extends React.Component {
+class Main extends React.Component {
     constructor(props) {
         super(props);
         this.isInitialized = false;
@@ -30,7 +30,7 @@ class Console extends React.Component {
 
     // METHODS FOR HANDLING FORM DATA
     onFormChanged = (formData) => {
-        // Update formData for current wizard step        
+        // Update formData for current step        
         
         let wizardLink = this.getWizardLink(formData);
 
@@ -112,7 +112,7 @@ curation-support@ebrains.eu
         console.log('on render', formData.wizardLink)
  
         return ( 
-            <Form widgets={{richtext: RichTextWidget}} schema={consoleSchema} uiSchema={uiSchema} formData={this.formData} onChange={handleOnChange} onSubmit={this.handleFinalSubmit}>
+            <Form widgets={{richtext: RichTextWidget}} schema={formSchema} uiSchema={uiSchema} formData={this.formData} onChange={handleOnChange} onSubmit={this.handleFinalSubmit}>
                 <span className="wizardLink">{formData.wizardLink}</span>
                 
                 <div className="footer">
@@ -128,4 +128,4 @@ curation-support@ebrains.eu
     }
 };
 
-export default Console;
+export default Main;

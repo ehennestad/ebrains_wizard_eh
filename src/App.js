@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Wizard from './components/Wizard';
-import Console from './components/Console';
+import Tracker from './features/Tracker/Main';
 
-import PrivacyNotice from './components/PrivacyNotice';
+import PrivacyBanner from './components/PrivacyBanner';
 
 import './App.css';
 
@@ -18,15 +18,15 @@ const App = () => (
 
     <BrowserRouter>
       <Routes>
-        <Route path="/console" element={
+        <Route path="/tracker" element={
           <div className="container container-form">
-            <Console /> 
+            <Tracker /> 
           </div> 
         } />
         
         <Route path="/" element={ 
           <div>
-            <PrivacyNotice />
+            <PrivacyBanner />
             <div className="container container-form">
               <Wizard />
             </div>

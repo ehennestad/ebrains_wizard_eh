@@ -278,8 +278,8 @@ input[type=radio] {
   color: var(--button-color-primary);
   background-color: transparent;
   padding-right: 15px;
-  background: url(./icons/up_arrow.svg) no-repeat;
-  background: url(./icons/down_arrow.svg) no-repeat;
+  background: url(./components/icons/up_arrow.svg) no-repeat;
+  background: url(./components/icons/down_arrow.svg) no-repeat;
   background-position: 100% 50%;
 }
 

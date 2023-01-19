@@ -68,7 +68,7 @@ class Wizard extends React.Component {
     for (let i = 0; i < WIZARD_STEPS_LIST.length; i++) {
       let iFormName = STEP_MAP.get(WIZARD_STEPS_LIST[i]).name;
       if (formStates === undefined) {
-        formData.set(iFormName, {} )
+        formData.set(iFormName, {})
       } else {
         formData.set(iFormName, formStates[iFormName])
       }
@@ -82,7 +82,7 @@ class Wizard extends React.Component {
     
     const queryString = window.location.search;
     let ticketNumber = new URLSearchParams(queryString).get('TicketNumber');
-
+    
     // Check if ticketnumber is empty
     if (ticketNumber === null || ticketNumber === undefined) {
       ticketNumber = "";
@@ -138,7 +138,6 @@ class Wizard extends React.Component {
     let nextWizardStep = this.getNextWizardStep("next");
     this.goToWizardStep(nextWizardStep);
   }
-
 
   // METHODS FOR HANDLING FORM DATA
   onFormChanged = (formData) => {
@@ -297,9 +296,8 @@ class Wizard extends React.Component {
 
     switch (this.state.currentStep) {
       case WIZARD_STEP_GENERAL:
-        wizardPageProps.loadState = this.loadJson;
         wizardPageProps.onReset = this.handleReset;
-        wizardPageProps.onTest = this.onTest;        
+        wizardPageProps.loadState = this.loadJson;
         break;
 
       case WIZARD_STEP_DATASET2:
@@ -321,6 +319,7 @@ class Wizard extends React.Component {
       case WIZARD_STEP_GENERAL: case WIZARD_STEP_DATASET: case WIZARD_STEP_DATASET2: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
         return (
           <>
+            <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button>
             <ProgressBar step={stepNum} onChanged={this.goToWizardStep} />
             <WizardComponent {...wizardPageProps} /> 
             {/* <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} goBack={this.goBack} />  */}
