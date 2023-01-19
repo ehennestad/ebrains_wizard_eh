@@ -1,7 +1,7 @@
 {
   "title": "Funding Information",
   "type": "object",
-  "properties": {
+  "definitions": {
     "funding": {
       "type": "array",
       "title": "",
@@ -23,6 +23,11 @@
           }
         }
       }
+    }
+  },
+  "properties": {
+    "datasetVersion": {
+      "$ref": "#/definitions/funding"
     }
   }
 }

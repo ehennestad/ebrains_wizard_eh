@@ -73,7 +73,6 @@ class Wizard extends React.Component {
         formData.set(iFormName, formStates[iFormName])
       }
     }
-    console.log('formData', formData)
     return formData;
   };
 
@@ -83,8 +82,7 @@ class Wizard extends React.Component {
     
     const queryString = window.location.search;
     let ticketNumber = new URLSearchParams(queryString).get('TicketNumber');
-    console.log(ticketNumber)
-    
+
     // Check if ticketnumber is empty
     if (ticketNumber === null || ticketNumber === undefined) {
       ticketNumber = "";
@@ -265,7 +263,6 @@ class Wizard extends React.Component {
   };
 
   loadState = formStates => {
-    console.log('formData:', formStates)
     this.formData = this.initializeFormDataMap(formStates);
     this.goToWizardStep( WIZARD_STEPS_LIST[0] )
   };
@@ -318,8 +315,6 @@ class Wizard extends React.Component {
       default:
         break;
     };
-
-    //console.log(currentFormData)
 
     switch (this.state.currentStep) {
 

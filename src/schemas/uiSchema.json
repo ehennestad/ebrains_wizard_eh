@@ -57,7 +57,14 @@
             "ui:options":  {
                 "orderable": false
             }
-        }    
+        },
+        "otherContribution":{
+            "contributionType": {
+                "ui:options":  {
+                    "orderable": false
+                }
+            }
+        }
     },
     "secret": {
         "ui:widget": "hidden"
@@ -119,13 +126,6 @@
         "ui:options":  {
             "orderable": false
           }   
-    },
-    "otherContributors":{
-        "contributionType": {
-            "ui:options":  {
-                "orderable": false
-            }
-        }
     },
     "subjectExpMetadata": {
 
@@ -202,8 +202,6 @@
             "ui:widget": "richtext"
         }
     },
-
-    
     
     "submissionCompletedText": {
         "ui:widget": "richtext"

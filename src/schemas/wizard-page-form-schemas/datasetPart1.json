@@ -2,7 +2,7 @@
     "title": "About your dataset - Step 2 of 5",
     "description": "Please provide some general information about your dataset below.",
     "type": "object",
-    "required": ["dataType", "dataCollection", "license"],    
+    "required": [],    
     "definitions": {
 
         "fullName" : {
@@ -72,7 +72,7 @@
                     {
                         "properties":{
                             "isCopyrighted":{
-                                "const":false
+                                "const": false
                             }
                         }
                     },
@@ -81,7 +81,7 @@
                             "isCopyrighted":{
                                 "const": true
                             },
-                            "copyrightInfo": {
+                            "copyright": {
                                 "$ref": "#/definitions/copyright"
                             }
                         },
