@@ -11,24 +11,17 @@ import ContributorsWizard from './Wizard/ContributorsWizard';
 import ExperimentWizard from './Wizard/ExperimentWizard.js';
 import SubmissionCompletedWizard from './Wizard/SubmissionCompletedWizard.js';
 
-import { generateDocumentsFromDataset }  from '../helpers/Translator';
-import { generalSchema, datasetSchema, experimentSchema, contributorsSchema } from '../helpers/Wizard';
+import testfunc from '../helpers/test/test-doc-generator.js';
 
-import * as fundingAndAffiliationModule from '../schemas/funding.json';
-import * as dataset2Module from '../schemas/dataset2.json';
-//import * as contributorsModule from '../schemas/contributors.json';
-import * as submissionSuccededModule from '../schemas/submissionSucceededSchema.json';
-import * as submissionFailedModule from '../schemas/submissionFailedSchema.json';
+import { generateDocumentsFromDataset }  from '../helpers/form-data-translator';
 
+import { generalSchema, datasetSchema, dataset2Schema, 
+         contributorsSchema, fundingAndAffiliationSchema, experimentSchema,
+         submissionSuccededSchema, submissionFailedSchema } 
+  from '../helpers/FormSchemaProvider';
 
 // Path for posting submission to the backend
 const SUBMISSION_PATH = "/api/submission/send_email";
-
-const fundingAndAffiliationSchema = fundingAndAffiliationModule.default;
-const dataset2Schema = dataset2Module.default;
-//const contributorsSchema = contributorsModule.default;
-const submissionSuccededSchema = submissionSuccededModule.default;
-const submissionFailedSchema = submissionFailedModule.default;
 
 const WIZARD_STEP_GENERAL = "WIZARD_STEP_GENERAL";
 const WIZARD_STEP_DATASET = "WIZARD_STEP_DATASET";
@@ -73,11 +66,12 @@ class Wizard extends React.Component {
     for (let i = 0; i < WIZARD_STEPS_LIST.length; i++) {
       let iFormName = STEP_MAP.get(WIZARD_STEPS_LIST[i]).name;
       if (formStates === undefined) {
-        formData.set(iFormName, undefined)
+        formData.set(iFormName, {} )
       } else {
         formData.set(iFormName, formStates[iFormName])
       }
     }
+    console.log('formData', formData)
     return formData;
   };
 
@@ -258,6 +252,10 @@ class Wizard extends React.Component {
     this.previewImage = imageFileList;
   };
 
+  onTest = () => {
+    testfunc()
+  }
+
   render() {    
     const schema = STEP_MAP.get(this.state.currentStep).schema;
     const WizardComponent = STEP_MAP.get(this.state.currentStep).wizard;
@@ -277,6 +275,7 @@ class Wizard extends React.Component {
       case WIZARD_STEP_GENERAL:
         wizardPageProps.loadState = this.loadState;
         wizardPageProps.onReset = this.handleReset;
+        wizardPageProps.onTest = this.onTest;        
         break;
 
       case WIZARD_STEP_DATASET2:
