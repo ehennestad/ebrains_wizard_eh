@@ -2,7 +2,7 @@ import React from 'react';
 import Form from '@rjsf/core';
 import TableField from "react-jsonschema-form-extras/lib/table";
 import RichTextWidget from '../customWidgets';
-import {uiSchema} from '../../helpers/Wizard';
+import {uiSchema} from '../../helpers/ui-schema-provider';
 
 import {transformErrors} from '../../helpers/ErrorTransformer';
 

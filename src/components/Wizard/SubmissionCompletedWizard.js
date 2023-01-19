@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import RichTextWidget from '../customWidgets';
-import {uiSchema} from '../../helpers/Wizard';
+import {uiSchema} from '../../helpers/ui-schema-provider';
 
 const SubmissionCompletedWizard = React.memo(({ schema, onReset, onSave }) => {
 

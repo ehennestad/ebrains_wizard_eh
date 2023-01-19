@@ -1,0 +1,119 @@
+{
+  "title": "Contributors and related publications",
+  "type": "object",
+  "definitions" : {
+    
+    "email": {
+      "type": "string",
+      "format": "email",
+      "title": "E-mail address"
+    },
+
+    "person": {
+      "type": "object",
+      "required": ["givenName", "familyName"],
+
+      "properties": {
+        "givenName": {
+          "type": "string",
+          "title": "First name"
+        },
+        "familyName": {
+          "type": "string",
+          "title": "Last name"
+        },
+        "digitalIdentifier": {
+          "type": "string",
+          "title": "ORCID"
+        },
+        "affiliation": {
+          "type": "string",
+          "title": "Affiliation"
+        },
+        "emailMissing":{
+          "type": "boolean",
+          "title": "This author does not have an email address",
+          "default": false
+        }
+      },
+      "dependencies":{
+        "emailMissing":{
+          "oneOf":[
+            {
+              "required": ["email"],
+              "properties":{
+                "email": {
+                  "$ref": "#/definitions/email"
+                },
+                "emailMissing": {
+                  "const": false
+                }
+              }
+            },
+            {
+              "properties":{
+                "emailMissing": {
+                  "const": true
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+
+  "properties": {
+    "authors": {
+      "type": "array",
+      "title": "Dataset authors",
+      "description": "Please list all authors who have contributed to the dataset, in the order you would like them to appear on the data publication. Please note that the list of authors may be different for this data publication as compared to a journal article based on the data.",
+      "minItems": 1, 
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "otherContributon": {
+      "type": "array",
+      "title": "Other contributors",
+      "description": "Please list all other contributers to this dataset. This could be technicians, data managers, etc.",
+      "items": {
+        "type": "object",
+        "required": ["contributor", "contributionType"],
+
+        "properties": {
+          "contributor": {
+            "title": "",
+            "$ref": "#/definitions/person"
+          },
+          "contributionType":{
+            "type": "string",
+            "title": "Contribution type",
+            "controlledTerm": "contributionType",
+            "examples": [],
+            "exampleIDs": []
+          }
+        }
+      }
+    },
+    "publications": {
+      "type": "array",
+      "title": "Related publications",
+      "description": "Please list all related publications that report on the dataset itself or on analysis based on the data.",
+      "items": {
+        "type": "object",
+        "required": ["pubTitle", "pubURL"],
+        "properties": {
+          "pubTitle": {
+            "type": "string",
+            "title": "Title"
+          },
+          "pubURL": {
+            "type": "string",
+            "title": "DOI or URL"
+          }
+        }
+      }
+    }
+  }
+}

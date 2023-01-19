@@ -2,35 +2,57 @@
     "title": "About your dataset - Step 2 of 5",
     "description": "Please provide some general information about your dataset below.",
     "type": "object",
-    "required": [],    
-    "properties": {
+    "required": [],
+
+    "definitions": {
         "homePage": {
             "title": "Home page",
             "type": "string",
+            "format": "url",
             "description": "Add the URL to the homepage of this dataset."
         },
-        "copyright": {
-            "title": "Copyright",
-            "type": "string",
-            "description": "Exclusive and assignable legal right of an originator to reproduce, publish, sell, or distribute the matter and form of a creative work for a defined time period."
-          },
         "supportChannel": {
-            "title": "Support Channel",
+            "title": "Support channel",
             "type": "string",
+            "format": "email",
             "description": "Enter all channels through which a user can receive support for handling this research product."
           },
         "howToCite": {
-            "title": "How To Cite",
+            "title": "How to cite",
             "type": "string",
             "description": "Enter the preferred citation text for this research product version. Leave blank if citation text can be extracted from the assigned digital identifier."
         },
         "inputData": {
-            "title": "Input Data",
+            "title": "Input data",
             "type": "string",
             "description": "Add the data that was used as input for this dataset version."
-          },
+        }
+    },
+
+    "properties": {
+        "datasetVersion":{
+            "type": "object",
+            "title": "",
+            "required": [
+            ],    
+            "properties": {
+                "homePage": {
+                    "$ref": "#/definitions/homePage"
+                },
+                "supportChannel": {
+                    "$ref": "#/definitions/supportChannel"
+                },
+                "howToCite": {
+                    "$ref": "#/definitions/howToCite"
+                },
+                "inputData": {
+                    "$ref": "#/definitions/inputData"
+                }
+            }
+        },
+
         "previewImage": {
-            "title": "Dataset Preview Image",
+            "title": "Dataset preview image",
             "description": "Upload a preview image for this dataset version.",
             "type": "string",
             "text": "<p> Please upload a preview image for your dataset. This image will be displayed on the dataset landing page and should give a general overview of the dataset. The image should be stored as a .jpg or a .png file and preferrably be at least 500x500 pixels in size. </p>"

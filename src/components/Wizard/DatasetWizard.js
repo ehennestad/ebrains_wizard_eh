@@ -3,7 +3,7 @@ import Form from '@rjsf/core';
 import {ImageWidget, RichTextWidget} from '../customWidgets';
 import ImageUpload from '../ImageUpload';
 
-import {uiSchema} from '../../helpers/Wizard';
+import {uiSchema} from '../../helpers/ui-schema-provider';
 
 import {transformErrors} from '../../helpers/ErrorTransformer';
 

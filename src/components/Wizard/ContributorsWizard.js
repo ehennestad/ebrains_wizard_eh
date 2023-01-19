@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from '@rjsf/core';
-import {uiSchema} from '../../helpers/Wizard';
+import {uiSchema} from '../../helpers/ui-schema-provider';
 
 import {transformErrors} from '../../helpers/ErrorTransformer';
 

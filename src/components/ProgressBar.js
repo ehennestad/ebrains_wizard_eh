@@ -3,7 +3,7 @@ import { ConfigProvider, Popover, Steps } from 'antd';
 
 // Todo: import these from external file (also do this in Wizard.js)
 //const WIZARD_STEPS_LIST = [ WIZARD_STEP_GENERAL, WIZARD_STEP_DATASET, WIZARD_STEP_FUNDING, WIZARD_STEP_CONTRIBUTORS, WIZARD_STEP_EXPERIMENT ];
-const WIZARD_STEP_NAMES = [ "Introduction", "Dataset", "Dataset2", "Funding", "Contributors", "Experiments" ];
+const WIZARD_STEP_NAMES = [ "Introduction", "Dataset Part 1", "Dataset Part 2", "Funding", "Contributors", "Experiments" ];
 const NUM_STEPS = WIZARD_STEP_NAMES.length;
 
 const customDot = (dot, { status, index }) => (

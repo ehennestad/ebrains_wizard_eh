@@ -11,12 +11,15 @@
             "ui:widget": "select"
         }
     },
-    "datasetinfo": {
+    "datasetVersion": {
         "summary": {
             "ui:widget": "textarea",
             "ui:options": {
                 "rows": 5
             }
+        },
+        "dataType": {
+            "ui:widget": "checkboxes"
         },
         "embargo": {
             "ui:widget": "radio"
@@ -24,12 +27,37 @@
         "placeholder": {
             "ui:placeholder": "This is a placeholder"
         },
+        "copyrightStatus": {
+            "isCopyrighted" : {
+                "ui:widget": "radio"
+            }
+        },
         "color": {
             "ui:widget": "color"
         },
         "multipleChoicesList": {
             "ui:widget": "radio"
-        }
+        },
+        "experimentalApproach": {
+            "ui:options":  {
+                "orderable": false
+            }
+        },
+        "preparationType": {
+            "ui:options":  {
+                "orderable": false
+            }
+        },
+        "technique": {
+            "ui:options":  {
+                "orderable": false
+            }
+        },
+        "keywords": {
+            "ui:options":  {
+                "orderable": false
+            }
+        }    
     },
     "secret": {
         "ui:widget": "hidden"
@@ -50,26 +78,10 @@
             "backgroundColor": "pink"
         }
     },
-    "dataType": {
-        "ui:widget": "checkboxes"
-    },
     "sharedAlready": {
         "sharedAlready": {
             "ui:widget": "radio"
         }
-    },
-    "embargo": {
-        "embargo": {
-            "ui:widget": "radio"
-        }    
-    },
-    "datasetStatus": {
-        "dataCollection": {
-            "ui:widget": "radio"
-        },        
-        "dataSharing": {
-            "ui:widget": "radio"
-        }    
     },
     "licenseImage": {
         "ui:widget": "img"
@@ -191,29 +203,7 @@
         }
     },
 
-    "datasetExpMetadata": {
-        
-        "experimentalApproach": {
-            "ui:options":  {
-                "orderable": false
-            }
-        },
-        "preparationType": {
-            "ui:options":  {
-                "orderable": false
-            }
-        },
-        "technique": {
-            "ui:options":  {
-                "orderable": false
-            }
-        },
-        "keywords": {
-            "ui:options":  {
-                "orderable": false
-            }
-        }      
-    },     
+    
     
     "submissionCompletedText": {
         "ui:widget": "richtext"

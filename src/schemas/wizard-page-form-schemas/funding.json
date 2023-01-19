@@ -1,0 +1,28 @@
+{
+  "title": "Funding Information",
+  "type": "object",
+  "properties": {
+    "funding": {
+      "type": "array",
+      "title": "",
+      "description": "Please list all funding sources for this project.",
+      "items": {
+        "type": "object",
+        "required": ["funder"],
+  
+        "properties": {
+          "funder": {
+            "type": "string",
+            "title": "Funder name",
+            "description": "Please state the full name of the funder you received funding from for the data you want to share (no abbreviations)."
+          },
+          "awardNumber": {
+            "type": "string",
+            "title": "Grant ID / Award number",
+            "description": "Please state the grant ID for the funding you have received."
+          }
+        }
+      }
+    }
+  }
+}
