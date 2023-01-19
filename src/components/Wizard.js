@@ -20,6 +20,8 @@ import { generalSchema, datasetSchema, dataset2Schema,
          submissionSuccededSchema, submissionFailedSchema } 
   from '../helpers/FormSchemaProvider';
 
+// Todo: Bug when reseting form. Ticket number will not be updated from query parameter
+
 // Path for posting submission to the backend
 const SUBMISSION_PATH = "/api/submission/send_email";
 
@@ -212,10 +214,11 @@ class Wizard extends React.Component {
       return {...value, ...dataset[key]}; // flatten object
     }, []);
 
-    const res = generateDocumentsFromDataset(datasetFlattened);
+    // const res = generateDocumentsFromDataset(datasetFlattened);
 
-    // Create a json string from data which user has entered.
-    const jsonData = JSON.stringify([dataset, res]);
+    // // Create a json string from data which user has entered.
+    // const jsonData = JSON.stringify([dataset, res]);
+    const jsonData = JSON.stringify(dataset, null, 2);
     this.jsonStr = jsonData;
 
     // Create a FormData object in order to send data to the backend server
@@ -238,7 +241,31 @@ class Wizard extends React.Component {
     this.goToWizardStep( WIZARD_STEPS_LIST[0] )
   };
 
+  loadJson = () => { // Consider moving this to a separate file (e.g. utils.js
+    let input = document.createElement("input");
+    input.type = "file";
+    input.accept=".json,application/json";
+    input.onchange = _ => {
+
+      let selected = input.files;
+      if(selected.length === 1){
+        const file = selected[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+          let data = JSON.parse(reader.result);
+          let formStates = data;
+          this.loadState(formStates);
+        }, false);        
+
+        reader.readAsText(file);
+      }
+    };
+    input.click();
+  };
+
   loadState = formStates => {
+    console.log('formData:', formStates)
     this.formData = this.initializeFormDataMap(formStates);
     this.goToWizardStep( WIZARD_STEPS_LIST[0] )
   };
@@ -273,7 +300,7 @@ class Wizard extends React.Component {
 
     switch (this.state.currentStep) {
       case WIZARD_STEP_GENERAL:
-        wizardPageProps.loadState = this.loadState;
+        wizardPageProps.loadState = this.loadJson;
         wizardPageProps.onReset = this.handleReset;
         wizardPageProps.onTest = this.onTest;        
         break;
