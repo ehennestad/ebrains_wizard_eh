@@ -7,6 +7,9 @@ import * as semanticDataTypeModule from '../controlledTerms/semanticDataType.jso
 import * as datasetLicenseModule from '../controlledTerms/datasetLicense.json'; 
 import * as contributionTypeModule from '../controlledTerms/contributionType.json'; 
 
+// Should this be on the backend? 
+// Only need to do this once every time controlled terms are updated.
+
 const controlledTerms = {
   experimentalApproach: experimentalApproachModule.default,
   technique: techniqueModule.default,

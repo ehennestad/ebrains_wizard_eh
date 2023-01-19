@@ -7,72 +7,85 @@ import {setProperty, setPropertyWithLinks, setPropertyWithLinksCreation, createD
 
 const OPENMINDS_VOCAB = "https://openminds.ebrains.eu/vocab/";
 
-// Rename to 
-export const generateDocumentsFromDataset = dataset => {
-    const documents = {ids: {}, keys: {}};
-    generateDocuments(documents, dataset, null, () => null);
-    return Object.values(documents.ids);
+export const generateDocumentsFromFormData = formData => {
+    let documents = generateDocuments(formData, null, () => null); //hmmm...
+    return Object.values(documents.ids); // return array of documents
 };
 
-export const generateDocuments = (documents, dataset, studiedSpecimen, studiedSpecimenDocumentGenerator) =>  {
-    const datasetDocId = createDatasetDocument(documents, dataset);
+export const generateDocuments = (formData, studiedSpecimen, studiedSpecimenDocumentGenerator) =>  {
+    const documents = {ids: {}, keys: {}};
+
+    const datasetDocId = createDatasetVersionDocument(documents, formData);
     const datasetDoc = documents.ids[datasetDocId];
     setPropertyWithLinksCreation(documents, datasetDoc, "studiedSpecimen", studiedSpecimen, studiedSpecimenDocumentGenerator);
+
+    return documents;
 };
 
 
-const createDatasetDocument = (documents, source) => {
+const createDatasetVersionDocument = (documents, source) => {
     
-    const datasetId = createDocument(documents, "https://openminds.ebrains.eu/core/DatasetVersion", source.datasetinfo.datasetTitle);  // `${OPENMINDS_VOCAB}DatasetVersion`
+    const datasetDocumentId = createDocument(documents, "https://openminds.ebrains.eu/core/DatasetVersion", source.datasetVersion.fullName);  // `${OPENMINDS_VOCAB}DatasetVersion`
     
     console.log('documents:', documents)
     
-    const dataset = documents.ids[datasetId];
+    const dataset = documents.ids[datasetDocumentId];
 
     // Page 1
     console.log('dataset',  dataset)
-    setProperty(dataset, "fullName", source.datasetinfo.datasetTitle);
-    setProperty(dataset, "description", source.datasetinfo.summary);
-    setPropertyWithLinksCreation(documents, dataset, "custodian", source.custodian, createPersonDocument);
-    setPropertyWithLinksCreation(documents, dataset, "contactperson", source.contactperson.contactinfo, createPersonDocument);
+    console.log('source',  source)
 
-    // Page 2
-
-    setProperty(dataset, "dataType", source.dataType);
-
-
-    // setProperty(dataset, "dataCollectionFinished", source.datasetStatus.dataCollection);
-    setProperty(dataset, "embargo", source.embargo.embargo);
-    setProperty(dataset, "embargoEndDate", source.embargo.releaseDate);
-    setPropertyWithLinks(dataset, "license", source.license);
-
-    // Page 3
-
-
-    // Page 4
-
-    setPropertyWithLinksCreation(documents, dataset, "contributors", source.contributors, createPersonDocument);
-    setPropertyWithLinksCreation(documents, dataset, "relatedPublication", source.publications, createRelatedPublicationDocument);
-
-    // Page 5
-
-    var experimentalApproachIDs = [];
-    for(let key in source.datasetExpMetadata.experimentalApproach){
-        experimentalApproachIDs.push(experimentalApproachModule.default.find(term=>term.name===source.datasetExpMetadata.experimentalApproach[key]).identifier);
+    for (let key in source.datasetVersion) {
+        if (typeof source.datasetVersion[key] !== "object") {
+            setProperty(dataset, key, source.datasetVersion[key]);
+        } else {
+            console.log('key', key)
+            console.log('source.datasetVersion[key]', source.datasetVersion[key])
+        }
     }
-    setPropertyWithLinks(dataset, "experimentalApproach", experimentalApproachIDs);
-    
-    setPropertyWithLinks(dataset, "preparationDesign", source.datasetExpMetadata.preparationType);
 
-    var techniqueIDs = [];
-    for(let key in source.datasetExpMetadata.technique){
-        techniqueIDs.push(techniqueModule.default.find(term=>term.name===source.datasetExpMetadata.technique[key]).identifier);
-    }
-    setPropertyWithLinks(dataset, "technique", techniqueIDs);
+    // setProperty(dataset, "fullName", source.datasetVersion.fullName);
+    // setProperty(dataset, "description", source.datasetinfo.summary);
+    // setPropertyWithLinksCreation(documents, dataset, "custodian", source.custodian, createPersonDocument);
+    // setPropertyWithLinksCreation(documents, dataset, "contactperson", source.contactperson.contactinfo, createPersonDocument);
+
+    // // Page 2
+
+    // setProperty(dataset, "dataType", source.dataType);
+
+
+    // // setProperty(dataset, "dataCollectionFinished", source.datasetStatus.dataCollection);
+    // setProperty(dataset, "embargo", source.embargo.embargo);
+    // setProperty(dataset, "embargoEndDate", source.embargo.releaseDate);
+    // setPropertyWithLinks(dataset, "license", source.license);
+
+    // // Page 3
+
+
+    // // Page 4
+
+    // setPropertyWithLinksCreation(documents, dataset, "contributors", source.contributors, createPersonDocument);
+    // setPropertyWithLinksCreation(documents, dataset, "relatedPublication", source.publications, createRelatedPublicationDocument);
+
+    // // Page 5
+
+    // var experimentalApproachIDs = [];
+    // for(let key in source.datasetExpMetadata.experimentalApproach){
+    //     experimentalApproachIDs.push(experimentalApproachModule.default.find(term=>term.name===source.datasetExpMetadata.experimentalApproach[key]).identifier);
+    // }
+    // setPropertyWithLinks(dataset, "experimentalApproach", experimentalApproachIDs);
     
-    setProperty(dataset, "keyword", source.datasetExpMetadata.keywords);
+    // setPropertyWithLinks(dataset, "preparationDesign", source.datasetExpMetadata.preparationType);
+
+    // var techniqueIDs = [];
+    // for(let key in source.datasetExpMetadata.technique){
+    //     techniqueIDs.push(techniqueModule.default.find(term=>term.name===source.datasetExpMetadata.technique[key]).identifier);
+    // }
+    // setPropertyWithLinks(dataset, "technique", techniqueIDs);
     
-    return datasetId;
+    // setProperty(dataset, "keyword", source.datasetExpMetadata.keywords);
+    
+    return datasetDocumentId;
 };
 
 const createPersonDocument = (documents, author) => {

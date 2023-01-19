@@ -3,6 +3,7 @@ import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Cookies from 'universal-cookie'
 import ProgressBar from './ProgressBar';
+import ReactJson from 'react-json-view';
 
 import GeneralWizard from './Wizard/GeneralWizard';
 import DatasetWizard from './Wizard/DatasetWizard';
@@ -34,6 +35,8 @@ const WIZARD_STEP_EXPERIMENT = "WIZARD_STEP_EXPERIMENT";
 const WIZARD_SUCCEEDED = "WIZARD_SUCCEEDED";
 const WIZARD_FAILED = "WIZARD_FAILED";
 
+const TEST = "TEST";
+
 const WIZARD_STEPS_LIST = [ WIZARD_STEP_GENERAL, WIZARD_STEP_DATASET, WIZARD_STEP_DATASET2, WIZARD_STEP_FUNDING, WIZARD_STEP_CONTRIBUTORS, WIZARD_STEP_EXPERIMENT ];
 
 const STEP_MAP = new Map(); // Rename to pageMap
@@ -55,6 +58,7 @@ class Wizard extends React.Component {
     this.formData = this.initializeFormDataMap(); // formdata for each wizard step in a Map
     this.jsonStr = null;                          // json string of the whole formdata
     this.previewImage = [];                       // image for preview of dataset
+    this.openMindsDocument = null;                // openMinds document for the dataset
     this.state = { 
       currentStep: WIZARD_STEPS_LIST[0],
     }
@@ -276,10 +280,22 @@ class Wizard extends React.Component {
   };
 
   onTest = () => {
-    testfunc()
+    let formDataObject = Object.fromEntries(this.formData)
+    this.openMindsDocument = testfunc(formDataObject);
+    this.goToWizardStep(TEST);
   }
 
-  render() {    
+  render() {
+
+    switch (this.state.currentStep) {
+      case TEST:
+        return (
+          <div className="col-md-12">
+          <ReactJson collapsed={10} name={false} src={this.openMindsDocument} />
+          </div>
+        );
+    }
+
     const schema = STEP_MAP.get(this.state.currentStep).schema;
     const WizardComponent = STEP_MAP.get(this.state.currentStep).wizard;
     const formName = STEP_MAP.get(this.state.currentStep).name;

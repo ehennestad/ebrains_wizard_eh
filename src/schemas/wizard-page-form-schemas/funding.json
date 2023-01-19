@@ -27,7 +27,13 @@
   },
   "properties": {
     "datasetVersion": {
-      "$ref": "#/definitions/funding"
+      "type": "object",
+      "title": "",
+      "properties": {
+        "funding": {
+          "$ref": "#/definitions/funding"
+        }
+      }
     }
   }
 }
