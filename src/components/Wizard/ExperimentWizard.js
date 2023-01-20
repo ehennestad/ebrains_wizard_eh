@@ -5,6 +5,13 @@ import RichTextWidget from '../customWidgets';
 import {uiSchema} from '../../helpers/ui-schema-provider';
 
 import {transformErrors} from '../../helpers/ErrorTransformer';
+import CascadeSelector from '../CascadeSelector';
+
+const studyTargetTerms = require('../../../server/kg-util/constants');
+const getControlledTerms = require('../../../server/kg-util/getControlledTerms');
+
+const controlledTerms = getControlledTerms(studyTargetTerms)
+
 
 const ExperimentWizard = React.memo(({ schema, formData,  onSubmit, onChange, goBack }) => {
 
@@ -13,6 +20,7 @@ const ExperimentWizard = React.memo(({ schema, formData,  onSubmit, onChange, go
 
   return (
     <Form widgets={{richtext: RichTextWidget}} fields={{table: TableField}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange}>
+      <CascadeSelector/>
       <div className="footer">
         <div className="col-xs-5 back-panel">
           <button type="submit" className="btn btn-info btn-default" onClick={goBack}>Previous Page</button>

@@ -7,7 +7,24 @@ import {setProperty, setPropertyWithLinks, setPropertyWithLinksCreation, createD
 
 const OPENMINDS_VOCAB = "https://openminds.ebrains.eu/vocab/";
 
-export const generateDocumentsFromFormData = formData => {
+// Call order
+// generateDocumentsFromDataset ( dataset )
+//   -> generateDocuments (documents, dataset, null, () => null);
+//      -> createDatasetDocument
+//         -> createDocument
+//         -> setProperty
+//         -> setPropertyWithLinksCreation 
+//            -> createDocuments
+
+
+// Rename to 
+// This is the main function that is called from the wizard
+export const generateDocumentsFromDataset = formData => {
+    
+    // Documents is an object array.
+    // - ids is an object with the document id as key and the document as value
+    // - keys is an object with the document type as key and an object with the document key as key and the document id as value
+
     let documents = generateDocuments(formData, null, () => null); //hmmm...
     return Object.values(documents.ids); // return array of documents
 };
@@ -75,7 +92,7 @@ const createDatasetVersionDocument = (documents, source) => {
     // }
     // setPropertyWithLinks(dataset, "experimentalApproach", experimentalApproachIDs);
     
-    // setPropertyWithLinks(dataset, "preparationDesign", source.datasetExpMetadata.preparationType);
+    // setPropertyWithLinks(dataset, "preparationDesign", source.datasetVersion.preparationDesign);
 
     // var techniqueIDs = [];
     // for(let key in source.datasetExpMetadata.technique){

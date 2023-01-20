@@ -14,13 +14,14 @@
 
         "dataType": {
             "type": "array",
-            "title": "What type of data would you like to share?",
+            "title": "What type of data would you like to share (You can select multiple values)? ",
             "items": {
                 "type": "string",
                 "enum": [
-                    "Experimental raw/original data",
-                    "Experimental processed or derived data",
-                    "Simulated data"
+                    "Experimental data",                    
+                    "Simulated data",
+                    "Raw data [Data which has not been processed or analysed]",
+                    "Derived data [Data which has been processed or analysed]"
                 ]
             },
             "uniqueItems": true

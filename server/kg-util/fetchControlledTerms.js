@@ -4,6 +4,8 @@ const fs = require('fs');//&&added by Archana&&//
 const path = require('path');//&&added by Archana&&//
 const math = require('mathjs');//&&added by Archana&&//
 
+const studyTargetTerms = require('./constants');
+
 let fetchControlledTerms = async () => {
 
     // Get token for kg authorization using a service account
@@ -20,8 +22,9 @@ let fetchControlledTerms = async () => {
     // List of controlled terms to fetch instances for (Todo: get this from import)
     // IMPORTANT: DatasetLicense should not be a part of this list because it is a manual
     // entry that does not correspond with any openMINDS schema.
-    const CONTROLLED_TERMS = ["PreparationType", "Technique", "ContributionType", 
-                              "SemanticDataType", "ExperimentalApproach"];
+    let CONTROLLED_TERMS = ["PreparationType", "Technique", "ContributionType", 
+                            "SemanticDataType", "ExperimentalApproach"];
+    CONTROLLED_TERMS = CONTROLLED_TERMS.concat(CONTROLLED_TERMS, studyTargetTerms);
 
     // Loop through controlled terms and fetch them
     for (let i = 0; i < CONTROLLED_TERMS.length; i++){

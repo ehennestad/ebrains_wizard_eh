@@ -5,7 +5,7 @@
     "required": [],
 
     "definitions": {
-        "homePage": {
+        "homepage": {
             "title": "Home page",
             "type": "string",
             "format": "url",
@@ -36,8 +36,8 @@
             "required": [
             ],    
             "properties": {
-                "homePage": {
-                    "$ref": "#/definitions/homePage"
+                "homepage": {
+                    "$ref": "#/definitions/homepage"
                 },
                 "supportChannel": {
                     "$ref": "#/definitions/supportChannel"

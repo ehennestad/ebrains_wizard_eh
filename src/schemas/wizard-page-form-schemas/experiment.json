@@ -72,12 +72,12 @@
             "exampleIDs": []
           }
         },
-        "preparationTypeIntro": {
+        "preparationDesignIntro": {
           "type": "null",
           "title": "Preparation type",
           "description": "Please specify whether your data were acquired in vivo, in vitro etc. Remember to consider each of your methods and add all preparation types that apply."          
         },
-        "preparationType": {
+        "preparationDesign": {
           "type": "array",
           "title": "",
           "items": {
@@ -107,7 +107,7 @@
           "title": "Keywords",
           "description": "Please add up to five keywords describing your dataset. Keywords may indicate specific data collection methods, disease models, cell types or brain regions. Try to think of keywords that make your dataset easier to find for other researchers: what terms would you search for when looking for this type of data? Keywords may be composed of more than one word, e.g. 'protein kinase A'. Please do not use abbreviations."
         },
-        "keywords": {
+        "keyword": {
           "type": "array",
           "maxItems": 5,
           "title": "",

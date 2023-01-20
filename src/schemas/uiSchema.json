@@ -43,7 +43,7 @@
                 "orderable": false
             }
         },
-        "preparationType": {
+        "preparationDesign": {
             "ui:options":  {
                 "orderable": false
             }

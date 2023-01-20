@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import { ConfigProvider, Popover, Steps } from 'antd';
+import { Popover, Steps } from 'antd';
+import ConfigProvider from './ConfigProvider';
 
 // Todo: import these from external file (also do this in Wizard.js)
 //const WIZARD_STEPS_LIST = [ WIZARD_STEP_GENERAL, WIZARD_STEP_DATASET, WIZARD_STEP_FUNDING, WIZARD_STEP_CONTRIBUTORS, WIZARD_STEP_EXPERIMENT ];
@@ -42,13 +43,7 @@ const ProgressBar = ({step, onChanged}) => {
 
   return (
 
-  <ConfigProvider
-    theme={{
-      token: {
-        colorPrimary: '#45b07c',
-      },
-    }}
-  >
+  <ConfigProvider>
      <div style={{"marginBottom":"30px"}}>
       <Steps
           current={step}
