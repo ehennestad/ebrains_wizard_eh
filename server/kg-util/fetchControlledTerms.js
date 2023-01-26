@@ -24,8 +24,8 @@ let fetchControlledTerms = async () => {
     // entry that does not correspond with any openMINDS schema.
     let CONTROLLED_TERMS = ["PreparationType", "Technique", "ContributionType", 
                             "SemanticDataType", "ExperimentalApproach"];
-    CONTROLLED_TERMS = CONTROLLED_TERMS.concat(CONTROLLED_TERMS, studyTargetTerms);
-
+    CONTROLLED_TERMS = CONTROLLED_TERMS.concat(studyTargetTerms);
+    
     // Loop through controlled terms and fetch them
     for (let i = 0; i < CONTROLLED_TERMS.length; i++){
 

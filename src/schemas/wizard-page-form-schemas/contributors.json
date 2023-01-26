@@ -105,25 +105,6 @@
               }
             }
           }
-        },
-        "publications": {
-          "type": "array",
-          "title": "Related publications",
-          "description": "Please list all related publications that report on the dataset itself or on analysis based on the data.",
-          "items": {
-            "type": "object",
-            "required": ["pubTitle", "pubURL"],
-            "properties": {
-              "pubTitle": {
-                "type": "string",
-                "title": "Title"
-              },
-              "pubURL": {
-                "type": "string",
-                "title": "DOI or URL"
-              }
-            }
-          }
         }
       }
     }

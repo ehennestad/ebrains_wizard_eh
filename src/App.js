@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Wizard from './components/Wizard';
-import Tracker from './features/Tracker/Main';
+import Tracker from './modules/Tracker/Main';
 
 import PrivacyBanner from './components/PrivacyBanner';
 

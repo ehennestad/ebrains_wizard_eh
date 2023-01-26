@@ -22,10 +22,12 @@ function importControlledTerms(termNames) {
     })
 
     let jsonObject = {};
-    filePaths.forEach(filePath => {
-        let jsonContent = JSON.parse(fs.readFileSync(filePath));
-        jsonObject = { ...jsonObject, ...jsonContent };
-    });
+    for (let i = 0; i < filePaths.length; i++) {
+        let thisFilepath = filePaths[i];
+        let thisTerm = termNames[i];
+        let jsonContent = JSON.parse(fs.readFileSync(thisFilepath));
+        jsonObject[thisTerm] = jsonContent;
+    };
     return jsonObject;
 }
 module.exports = {getControlledTerms, importControlledTerms};

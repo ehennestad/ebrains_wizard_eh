@@ -19,7 +19,7 @@ const OPENMINDS_VOCAB = "https://openminds.ebrains.eu/vocab/";
 
 // Rename to 
 // This is the main function that is called from the wizard
-export const generateDocumentsFromDataset = formData => {
+export const generateDocumentsFromFormData = formData => {
     
     // Documents is an object array.
     // - ids is an object with the document id as key and the document as value

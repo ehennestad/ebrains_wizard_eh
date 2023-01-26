@@ -10,7 +10,16 @@ import {
 const OPENMINDS_VOCAB = "https://openminds.ebrains.eu/vocab/";
 const EBRAINS_VOCAB = "https://kg.ebrains.eu/api/instances/";
 
+
 const createDocument = (documents, type, key) => {
+    // Create a document with a unique id and add it to the documents object. 
+    // Return the id of the new document. If a document with the same type 
+    // and key already exists, return the id of the existing document
+    //
+    // documents: object containing all documents as an array of objects
+    // type: string, the type of the document
+    // key: string, the key of the document
+
     if (key && documents.keys[type] && documents.keys[type][key]) {
         return documents.keys[type][key];
     }
@@ -30,15 +39,26 @@ const createDocument = (documents, type, key) => {
 };
 
 const createDocuments = (documents, source, documentGenerator) => {
+    // Create documents for all items in the source array and return an array
+    // of ids of the created documents. If the source is not an array, create
+    // a document for the source and return an array with the id of the created
+    // document. If the source is null or undefined, return an empty array.
+    //
+    // documents: object containing all documents as an array of objects
+    // source: object containing the data to create a document from the wizard form
+    // documentGenerator: function, the function to create a document
+
     if (source === null || source === undefined) {
         return [];
     }
 
+    //
     const sourceList = Array.isArray(source)?source:[source];
     if (!sourceList.length) {
         return [];
     }
 
+    // 
     const ids = sourceList
         .filter(item => item !== null && item !== undefined)
         .map(item => documentGenerator(documents, item));
@@ -55,6 +75,7 @@ const setProperty = (object, name, value) => {
     }
 };
 
+// assign linked properties (i.e controlled terms)
 const setPropertyWithLinks = (object, name, value) => {
     if (Array.isArray(value)) {
         const values = value.map(id => ({"@id": id}));
@@ -64,6 +85,7 @@ const setPropertyWithLinks = (object, name, value) => {
     }
 };
 
+// assign linked properties and create documents for the linked items
 const setPropertyWithLinksCreation = (documents, object, name, source, documentGenerator) => {
     const ids = createDocuments(documents, source, documentGenerator);
     setPropertyWithLinks(object, name, ids);
@@ -354,7 +376,7 @@ const generateDocuments = (documents, dataset, studiedSpecimen, studiedSpecimenD
     setPropertyWithLinksCreation(documents, datasetDoc, "studiedSpecimen", studiedSpecimen, studiedSpecimenDocumentGenerator);
 };
     
-export const generateDocumentsFromDataset = dataset => {
+export const generateOpenMindsDocumentsFromFormData = dataset => {
     const documents = {ids: {}, keys: {}};
     generateDocuments(documents, dataset, null, () => null);
     return Object.values(documents.ids);

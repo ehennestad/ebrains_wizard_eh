@@ -26,6 +26,14 @@
             "title": "Input data",
             "type": "string",
             "description": "Add the data that was used as input for this dataset version."
+        },
+        "relatedPublication": {
+          "type": "array",
+          "title": "",
+          "description": "Please list DOIs of all related publications that report on the dataset itself or on analysis based on the data.",
+          "items": {
+            "type": "string"
+          }
         }
     },
 
@@ -47,6 +55,14 @@
                 },
                 "inputData": {
                     "$ref": "#/definitions/inputData"
+                },
+                "relatedPublicationIntro": {
+                    "type": "null",
+                    "title": "Related publications"
+                  },
+                "relatedPublication": {
+                    "title": "",
+                    "$ref": "#/definitions/relatedPublication"
                 }
             }
         },
