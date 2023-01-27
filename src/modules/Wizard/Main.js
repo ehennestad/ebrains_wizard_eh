@@ -2,24 +2,24 @@ import React from 'react';
 import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Cookies from 'universal-cookie'
-import ProgressBar from './ProgressBar';
 import ReactJson from 'react-json-view';
 
-import GeneralWizard from './Wizard/GeneralWizard';
-import DatasetWizard from './Wizard/DatasetWizard';
-import FundingAndAffiliationWizard from './Wizard/FundingAndAffiliationWizard';
-import ContributorsWizard from './Wizard/ContributorsWizard';
-import ExperimentWizard from './Wizard/ExperimentWizard.js';
-import SubmissionCompletedWizard from './Wizard/SubmissionCompletedWizard.js';
+import GeneralWizard from './Pages/GeneralWizard';
+import DatasetWizard from './Pages/DatasetWizard';
+import FundingAndAffiliationWizard from './Pages/FundingAndAffiliationWizard';
+import ContributorsWizard from './Pages/ContributorsWizard';
+import ExperimentWizard from './Pages/ExperimentWizard.js';
+import SubmissionCompletedWizard from './Pages/SubmissionCompletedWizard.js';
 
-import testfunc from '../helpers/test/test-doc-generator.js';
+import ProgressBar from '../../components/ProgressBar';
+import testfunc from '../../helpers/test/test-doc-generator.js';
 
-import { generateDocumentsFromDataset }  from '../helpers/form-data-translator';
+import { generateDocumentsFromDataset }  from '../../helpers/formDataTranslator';
 
 import { generalSchema, datasetSchema, dataset2Schema, 
          contributorsSchema, fundingAndAffiliationSchema, experimentSchema,
          submissionSuccededSchema, submissionFailedSchema } 
-  from '../helpers/FormSchemaProvider';
+  from '../../helpers/formSchemaProvider';
 
 // Todo: Bug when reseting form. Ticket number will not be updated from query parameter
 

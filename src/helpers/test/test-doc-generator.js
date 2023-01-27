@@ -1,4 +1,4 @@
-import { generateDocumentsFromFormData }  from '../form-data-translator';
+import { generateDocumentsFromFormData }  from '../formDataTranslator';
 
 let testfunc = (formData) => {
 

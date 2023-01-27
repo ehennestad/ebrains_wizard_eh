@@ -64,8 +64,13 @@
                     "orderable": false
                 }
             }
+        },
+        "studyTarget": {
+            "ui:options":  {
+                "orderable": false
+            }
         }
-    },
+    }, 
     "secret": {
         "ui:widget": "hidden"
     },

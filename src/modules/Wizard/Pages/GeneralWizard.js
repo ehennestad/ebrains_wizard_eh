@@ -1,7 +1,8 @@
 import React from 'react';
 import Form from '@rjsf/core';
-import RichTextWidget from '../customWidgets';
-import {uiSchema} from '../../helpers/ui-schema-provider';
+import RichTextWidget from '../../../components/customWidgets';
+import {uiSchema} from '../../../helpers/uiSchemaProvider';
+import validator from "@rjsf/validator-ajv8";
 
 const GeneralWizard = React.memo(({schema, formData, onSubmit, onChange, loadState, onReset}) => {
 
@@ -9,7 +10,7 @@ const GeneralWizard = React.memo(({schema, formData, onSubmit, onChange, loadSta
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
   
   return (
-    <Form widgets={{richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} >
+    <Form widgets={{richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator}>
       <div className="footer">
         <div className="col-xs-8 back-panel">
           <button type="button" className="btn btn-default" onClick={onReset}>Reset</button>

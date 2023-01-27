@@ -1,8 +1,9 @@
 import React from 'react';
 import Form from '@rjsf/core';
-import {uiSchema} from '../../helpers/ui-schema-provider';
+import {uiSchema} from '../../../helpers/uiSchemaProvider';
+import validator from "@rjsf/validator-ajv8";
 
-import {transformErrors} from '../../helpers/ErrorTransformer';
+import {transformErrors} from '../../../helpers/ErrorTransformer';
 
 const ContributorsWizard = React.memo(({ schema, formData, onSubmit, onChange, goBack }) => {
   
@@ -10,7 +11,7 @@ const ContributorsWizard = React.memo(({ schema, formData, onSubmit, onChange, g
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
 
   return (
-    <Form schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} transformErrors={transformErrors} showErrorList={false} onSubmit={handleOnSubmit} onChange={handleOnChange}>
+    <Form schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} transformErrors={transformErrors} showErrorList={false} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator}>
       <div className="footer">
         <div className="col-xs-5 back-panel">
           <button type="button" className="btn btn-info btn-default" onClick={goBack}>Previous Page</button>

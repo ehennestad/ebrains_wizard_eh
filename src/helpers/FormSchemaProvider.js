@@ -1,16 +1,16 @@
 import populateSchemaWithControlledTerms from './form-schema-processor';
 
 // Import the form json schemas
-import * as generalSchemaModule from '../schemas/wizard-page-form-schemas/general.json';
-import * as dataset1Module from '../schemas/wizard-page-form-schemas/datasetPart1.json';
-import * as dataset2Module from '../schemas/wizard-page-form-schemas/datasetPart2.json';
+import * as generalSchemaModule from '../modules/Wizard/Schemas/general.json';
+import * as dataset1Module from '../modules/Wizard/Schemas/datasetPart1.json';
+import * as dataset2Module from '../modules/Wizard/Schemas/datasetPart2.json';
 
-import * as experimentModule from '../schemas/wizard-page-form-schemas/experiment.json';
-import * as contributorsModule from '../schemas/wizard-page-form-schemas/contributors.json';
+import * as experimentModule from '../modules/Wizard/Schemas/experiment.json';
+import * as contributorsModule from '../modules/Wizard/Schemas/contributors.json';
 
-import * as fundingModule from '../schemas/wizard-page-form-schemas/funding.json';
-import * as submissionSuccededModule from '../schemas/submissionSucceededSchema.json';
-import * as submissionFailedModule from '../schemas/submissionFailedSchema.json';
+import * as fundingModule from '../modules/Wizard/Schemas/funding.json';
+import * as submissionSuccededModule from '../modules/Wizard/Schemas/submissionSucceededSchema.json';
+import * as submissionFailedModule from '../modules/Wizard/Schemas/submissionFailedSchema.json';
 
 
 export const generalSchema = populateSchemaWithControlledTerms(generalSchemaModule.default);

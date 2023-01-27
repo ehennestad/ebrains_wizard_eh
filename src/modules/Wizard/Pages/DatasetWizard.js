@@ -1,11 +1,12 @@
 import React from 'react';
 import Form from '@rjsf/core';
-import {ImageWidget, RichTextWidget} from '../customWidgets';
-import ImageUpload from '../ImageUpload';
+import {ImageWidget, RichTextWidget} from '../../../components/customWidgets';
+import ImageUpload from '../../../components/ImageUpload';
 
-import {uiSchema} from '../../helpers/ui-schema-provider';
+import {uiSchema} from '../../../helpers/uiSchemaProvider';
+import validator from "@rjsf/validator-ajv8";
 
-import {transformErrors} from '../../helpers/ErrorTransformer';
+import {transformErrors} from '../../../helpers/ErrorTransformer';
 
 
 //const DatasetWizard = React.memo(({ schema, formData, onSubmit, onChange, goBack}) => {
@@ -19,7 +20,7 @@ const DatasetWizard = ({ schema, formData, onSubmit, onChange, goBack, imageFile
   );
   
   return (
-    <Form widgets={{img: ImageWidget, richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} >
+    <Form widgets={{img: ImageWidget, richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator}>
       
       {imageFileList === undefined ? null : imageUploader}
       <div className="footer">

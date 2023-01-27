@@ -14,14 +14,15 @@
 
         "dataType": {
             "type": "array",
-            "title": "What type of data would you like to share (You can select multiple values)? ",
+            "title": "What type of data would you like to share (You can select multiple values)?",
+            "description": "Note: Raw data refers to data which has not been processed or analysed. Derived data refers to data which has been processed or analysed.",
             "items": {
                 "type": "string",
                 "enum": [
                     "Experimental data",                    
                     "Simulated data",
-                    "Raw data [Data which has not been processed or analysed]",
-                    "Derived data [Data which has been processed or analysed]"
+                    "Raw data",
+                    "Derived data"
                 ]
             },
             "uniqueItems": true
@@ -147,19 +148,25 @@
         }
     },
     "properties": {
+        "dataset": {
+            "type": "object",
+            "title": "",
+            "required": ["fullName"],
+            "properties": {
+                "fullName": {
+                    "$ref": "#/definitions/fullName"
+                }
+            }
+        },
         "datasetVersion": {
             "type": "object",
             "title": "",
             "required": [
-                "fullName",
                 "copyrightStatus",
                 "dataType",
                 "license"
             ],    
             "properties": {
-                "fullName": {
-                    "$ref": "#/definitions/fullName"
-                },
                 "dataType": {
                     "$ref": "#/definitions/dataType"
                 },

@@ -2,6 +2,8 @@ import React from 'react';
 import Form from '@rjsf/core';
 import RichTextWidget from '../../components/customWidgets';
 import axios from 'axios';
+import validator from "@rjsf/validator-ajv8";
+
 
 import * as wizardInviteForm from './Schemas/wizardInviteForm.json';
 import * as trackerUiSchema from './Schemas/trackerUISchema.json';
@@ -112,7 +114,7 @@ curation-support@ebrains.eu
         console.log('on render', formData.wizardLink)
  
         return ( 
-            <Form widgets={{richtext: RichTextWidget}} schema={formSchema} uiSchema={uiSchema} formData={this.formData} onChange={handleOnChange} onSubmit={this.handleFinalSubmit}>
+            <Form widgets={{richtext: RichTextWidget}} schema={formSchema} uiSchema={uiSchema} formData={this.formData} onChange={handleOnChange} onSubmit={this.handleFinalSubmit} validator={validator}>
                 <span className="wizardLink">{formData.wizardLink}</span>
                 
                 <div className="footer">

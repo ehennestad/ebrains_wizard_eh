@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from '@rjsf/core';
-import {uiSchema} from '../../helpers/ui-schema-provider';
+import {uiSchema} from '../../../helpers/uiSchemaProvider';
+import validator from "@rjsf/validator-ajv8";
 
 const FundingAndAffiliationWizard = React.memo(({ schema, formData, onSubmit, onChange, goBack }) => {
 
@@ -8,7 +9,7 @@ const FundingAndAffiliationWizard = React.memo(({ schema, formData, onSubmit, on
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
 
   return (
-    <Form schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange}>
+    <Form schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator}>
       <div className="footer">
         <div className="col-xs-5 back-panel">
           <button type="submit" className="btn btn-info btn-default" onClick={goBack}>Previous Page</button>
