@@ -14,11 +14,11 @@ import * as submissionFailedModule from '../modules/Wizard/Schemas/submissionFai
 
 
 export const generalSchema = populateSchemaWithControlledTerms(generalSchemaModule.default);
-export const datasetSchema = populateSchemaWithControlledTerms(dataset1Module.default);
+export const dataset1Schema = populateSchemaWithControlledTerms(dataset1Module.default);
 export const experimentSchema = populateSchemaWithControlledTerms(experimentModule.default);
 export const contributorsSchema = populateSchemaWithControlledTerms(contributorsModule.default);
 
-export const fundingAndAffiliationSchema = fundingModule.default;
+export const fundingSchema = fundingModule.default;
 export const dataset2Schema = dataset2Module.default;
 export const submissionSuccededSchema = submissionSuccededModule.default;
 export const submissionFailedSchema = submissionFailedModule.default;

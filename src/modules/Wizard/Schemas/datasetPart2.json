@@ -1,5 +1,5 @@
 {
-    "title": "About your dataset - Step 2 of 5",
+    "title": "About your dataset - Part 2",
     "description": "Please provide some general information about your dataset below.",
     "type": "object",
     "required": [],
@@ -25,7 +25,7 @@
         "inputData": {
             "title": "Input data",
             "type": "string",
-            "description": "Add the data that was used as input for this dataset version."
+            "description": "Add the data that was used as input for this dataset version. This is typically a DOI or reference to another dataset if this dataset is derived from another dataset."
         },
         "relatedPublication": {
           "type": "array",

@@ -1,7 +1,4 @@
 let StudyTargetTerms = [
-    "ParcellationEntity",
-    "ParcellationEntityVersion",
-    "CustomAnatomicalEntity",
     "GeneticStrainType",
     "Disease",
     "Species",
@@ -16,5 +13,11 @@ let StudyTargetTerms = [
     "BreedingType",
     "DiseaseModel",
     "CellCultureType" ]; 
+
+
+    //  Instances that are part of SANDS, but not trivial to add to the form 
+    // "ParcellationEntity",
+    // "ParcellationEntityVersion",
+    // "CustomAnatomicalEntity",
 
 module.exports = StudyTargetTerms;

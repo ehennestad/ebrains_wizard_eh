@@ -1,5 +1,5 @@
 {
-  "title": "Experimental metadata - Step 5 of 5",
+  "title": "Experimental metadata",
   "type": "object",
   "description": "In the last step, you have the option to provide experimental metadata for the dataset as a whole, as well as for each individual subject or subject group. If your dataset contains files that belong to individual subjects, subject groups, or techniques, we also encourage you to share this information in order to increase the FAIRness of your dataset.",
   "definitions":{
@@ -51,9 +51,6 @@
         "term": {
           "title": "Study target category",
           "enum": [
-            "ParcellationEntity",
-            "ParcellationEntityVersion",
-            "CustomAnatomicalEntity",
             "GeneticStrainType",
             "Disease",
             "Species",
@@ -1472,6 +1469,7 @@
           "maxItems": 8,          
           "title": "",
           "items": {
+            "_name": "Experimental approach",
             "type": "string",
             "controlledTerm": "experimentalApproach",
             "examples": [
@@ -1502,7 +1500,9 @@
           "type": "array",
           "maxItems": 8,          
           "title": "",
+          "_name": "technique test",
           "items": {
+            "_name": "Technique",
             "type": "string",
             "controlledTerm": "technique",
             "examples": [
@@ -1510,23 +1510,10 @@
             "exampleIDs": []            
           }
         },
-        "keywordsIntro": {
-          "type": "null",
-          "title": "Keywords",
-          "description": "Please add up to five keywords describing your dataset. Keywords may indicate specific data collection methods, disease models, cell types or brain regions. Try to think of keywords that make your dataset easier to find for other researchers: what terms would you search for when looking for this type of data? Keywords may be composed of more than one word, e.g. 'protein kinase A'. Please do not use abbreviations."
-        },
-        "keyword": {
-          "type": "array",
-          "maxItems": 5,
-          "title": "",
-          "items": {
-            "type": "string"
-          }
-        }, 
         "studyTargetIntro": {
           "type": "null",
           "title": "Study target",
-          "description": "Add all study targets of this dataset version."
+          "description": "Specify all interesting targets you had for producing this dataset. Please select first among the categories, and then choose an instance for that category."
         },
         "studyTarget": {
           "title": "",
@@ -1534,6 +1521,20 @@
           "items": {
             "title": "",
             "$ref": "#/definitions/studyTarget"
+          }
+        },
+        "keywordsIntro": {
+          "type": "null",
+          "title": "Keywords",
+          "description": "If there are additional key words you would like your dataset to be found by, please state them here."
+        },
+        "keyword": {
+          "type": "array",
+          "maxItems": 5,
+          "title": "",
+          "items": {
+            "_name": "Keywords",
+            "type": "string"
           }
         }
       }

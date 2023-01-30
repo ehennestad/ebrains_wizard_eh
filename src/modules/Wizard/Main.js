@@ -6,7 +6,7 @@ import ReactJson from 'react-json-view';
 
 import GeneralWizard from './Pages/GeneralWizard';
 import DatasetWizard from './Pages/DatasetWizard';
-import FundingAndAffiliationWizard from './Pages/FundingAndAffiliationWizard';
+import FundingWizard from './Pages/FundingWizard';
 import ContributorsWizard from './Pages/ContributorsWizard';
 import ExperimentWizard from './Pages/ExperimentWizard.js';
 import SubmissionCompletedWizard from './Pages/SubmissionCompletedWizard.js';
@@ -16,10 +16,10 @@ import testfunc from '../../helpers/test/test-doc-generator.js';
 
 import { generateDocumentsFromDataset }  from '../../helpers/formDataTranslator';
 
-import { generalSchema, datasetSchema, dataset2Schema, 
-         contributorsSchema, fundingAndAffiliationSchema, experimentSchema,
+import { generalSchema, dataset1Schema, dataset2Schema, 
+         contributorsSchema, fundingSchema, experimentSchema,
          submissionSuccededSchema, submissionFailedSchema } 
-  from '../../helpers/formSchemaProvider';
+  from '../../helpers/FormSchemaProvider';
 
 // Todo: Bug when reseting form. Ticket number will not be updated from query parameter
 
@@ -41,9 +41,9 @@ const WIZARD_STEPS_LIST = [ WIZARD_STEP_GENERAL, WIZARD_STEP_DATASET, WIZARD_STE
 
 const STEP_MAP = new Map(); // Rename to pageMap
 STEP_MAP.set(WIZARD_STEP_GENERAL, {schema: generalSchema, wizard: GeneralWizard, name: "general"});
-STEP_MAP.set(WIZARD_STEP_DATASET, {schema: datasetSchema, wizard: DatasetWizard, name: "datasetinfo"});
+STEP_MAP.set(WIZARD_STEP_DATASET, {schema: dataset1Schema, wizard: DatasetWizard, name: "datasetinfo"});
 STEP_MAP.set(WIZARD_STEP_DATASET2, {schema: dataset2Schema, wizard: DatasetWizard , name: "dataset2info"});
-STEP_MAP.set(WIZARD_STEP_FUNDING, {schema: fundingAndAffiliationSchema, wizard: FundingAndAffiliationWizard, name: "fundingAndAffiliation"});
+STEP_MAP.set(WIZARD_STEP_FUNDING, {schema: fundingSchema, wizard: FundingWizard, name: "funding"});
 STEP_MAP.set(WIZARD_STEP_CONTRIBUTORS, {schema: contributorsSchema, wizard: ContributorsWizard, name: "contributors"});
 STEP_MAP.set(WIZARD_STEP_EXPERIMENT, {schema: experimentSchema, wizard: ExperimentWizard, name: "experiment"});
 STEP_MAP.set(WIZARD_SUCCEEDED, {schema: submissionSuccededSchema, wizard: SubmissionCompletedWizard, name: ""});
@@ -286,14 +286,17 @@ class Wizard extends React.Component {
   }
 
   render() {
-
-    switch (this.state.currentStep) {
-      case TEST:
-        return (
-          <div className="col-md-12">
-          <ReactJson collapsed={10} name={false} src={this.openMindsDocument} />
-          </div>
-        );
+    if (process.env.NODE_ENV === "development") {
+      switch (this.state.currentStep) {
+        case TEST:
+          return (
+            <div className="col-md-12">
+            <ReactJson collapsed={10} name={false} src={this.openMindsDocument} />
+            </div>
+          );
+        default:
+          break;
+      }
     }
 
     const schema = STEP_MAP.get(this.state.currentStep).schema;
@@ -335,7 +338,7 @@ class Wizard extends React.Component {
       case WIZARD_STEP_GENERAL: case WIZARD_STEP_DATASET: case WIZARD_STEP_DATASET2: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
         return (
           <>
-            <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button>
+          { (process.env.NODE_ENV === "development") ? <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button> : null }
             <ProgressBar step={stepNum} onChanged={this.goToWizardStep} />
             <WizardComponent {...wizardPageProps} /> 
             {/* <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} goBack={this.goBack} />  */}

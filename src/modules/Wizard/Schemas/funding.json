@@ -7,6 +7,7 @@
       "title": "",
       "description": "Please list all funding sources for this project.",
       "items": {
+        "_name": "Funding source",
         "type": "object",
         "required": ["funder"],
   

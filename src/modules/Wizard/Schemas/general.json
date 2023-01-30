@@ -10,7 +10,7 @@
     "ticketNumber": {
       "title": "Ticket number",
       "type": "string",
-      "description": "Please enter the ticket number that you received from your curator, e.g Ticket#4815613."
+      "description": "If you have a ticket number, please enter it here. The ticket number can be found in the subject line in email correspondence with the curation team, e.g Ticket#4815613."
     },
     "contactperson": {
       "title": "Contact person",
@@ -20,7 +20,7 @@
         "firstName",
         "lastName",
         "email"
-      ],   
+      ],
       "properties": {
         "firstName": {
           "type": "string",
