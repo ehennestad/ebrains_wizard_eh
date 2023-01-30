@@ -2,17 +2,14 @@
 const fetch = require("node-fetch")
 const fs = require('fs');//&&added by Archana&&//
 const path = require('path');//&&added by Archana&&//
-const math = require('mathjs');//&&added by Archana&&//
 
+const getRequestOptions = require('./getRequestOptions')
 const studyTargetTerms = require('./constants');
 
 let fetchControlledTerms = async () => {
 
-    // Get token for kg authorization using a service account
-    const token = await getTokenFromServiceAccount();
-
     // Create request header with authorization and options
-    const requestOptions = getRequestOptions(token);
+    const requestOptions = await getRequestOptions();
 
     // Define some api constants
     const API_BASE_URL = "https://core.kg.ebrains.eu/";
@@ -82,38 +79,6 @@ function parseAndSaveData(data, instanceName) {
         }
     });
 }
-
-// Function to assemble request options including header with token authorization
-function getRequestOptions(token) {
-    const requestHeader = { 
-        Accept: "*/*", 
-        Authorization: "Bearer " + token, 
-        'User-Agent': "python-requests/2.25.0", 
-        "Accept-Encoding": "gzip, deflate", 
-        'Connection': 'keep-alive' };
-        
-    const requestOptions = {headers: requestHeader};
-    return requestOptions;
-}
-
-async function getTokenFromServiceAccount() {
-
-    let endpointURL = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/token";
-    let secret = process.env.OIDC_CLIENT_SECRET;
-
-    let body = "grant_type=client_credentials&client_id=ebrains-wizard-dev&client_secret=" + secret + "&scope=email%20profile%20team%20group";
-    
-    let requestOptions = {
-	    method: 'post',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-	    body: body
-    };
-
-    let result = await fetch(endpointURL, requestOptions)
-    jsonData = await result.json();
-    return jsonData.access_token;
-}
-
 
 module.exports = fetchControlledTerms;
 
