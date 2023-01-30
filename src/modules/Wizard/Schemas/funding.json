@@ -15,7 +15,7 @@
           "funder": {
             "type": "string",
             "title": "Funder name",
-            "description": "Please state the full name of the funder you received funding from for the data you want to share (no abbreviations)."
+            "description": "Please state the full name of the funder you received funding from (no abbreviations)."
           },
           "awardNumber": {
             "type": "string",

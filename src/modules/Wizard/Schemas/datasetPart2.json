@@ -20,18 +20,19 @@
         "howToCite": {
             "title": "How to cite",
             "type": "string",
-            "description": "Enter the preferred citation text for this research product version. Leave blank if citation text can be extracted from the assigned digital identifier."
+            "description": "Enter the preferred citation for this dataset version."
         },
         "inputData": {
             "title": "Input data",
             "type": "string",
-            "description": "Add the data that was used as input for this dataset version. This is typically a DOI or reference to another dataset if this dataset is derived from another dataset."
+            "description": "Add the data that was used as input for this dataset version. This is typically a DOI or reference to the original dataset from which the current dataset is derived (if applicable)."
         },
         "relatedPublication": {
           "type": "array",
           "title": "",
           "description": "Please list DOIs of all related publications that report on the dataset itself or on analysis based on the data.",
           "items": {
+            "_name": "Related publication",
             "type": "string"
           }
         }
@@ -71,7 +72,7 @@
             "title": "Dataset preview image",
             "description": "Upload a preview image for this dataset version.",
             "type": "string",
-            "text": "<p> Please upload a preview image for your dataset. This image will be displayed on the dataset landing page and should give a general overview of the dataset. The image should be stored as a .jpg or a .png file and preferrably be at least 500x500 pixels in size. </p>"
+            "text": "<p> Please upload a preview image for your dataset. This image will be displayed on the dataset landing page and should give a general overview of the dataset. The image should be a .jpg or a .png file and preferrably be at least 500x500 pixels in size. </p>"
 
           }
     }

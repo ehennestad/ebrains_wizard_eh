@@ -100,7 +100,6 @@
                 "embargo":{
                     "type": "boolean",
                     "title": "Embargo status",
-                    "description": "In case you wish to publish a scientific article before sharing the associated data through EBRAINS, you have the possibility to embargo your data for a certain period of time. Under the embargo period, only some of the metadata (e.g. information about subjects, aims etc.) will be published through EBRAINS, but the original data itself will not be shared.",
                     "oneOf": [{
                             "title": "Yes, embargoed",
                             "const": true
@@ -170,6 +169,11 @@
                 "dataType": {
                     "$ref": "#/definitions/dataType"
                 },
+                "embargoIntro": {
+                    "type": "null",
+                    "title": "Embargo",
+                    "description": "In case you wish to publish a scientific article before sharing the associated data through EBRAINS, you have the possibility to embargo your data for a certain period of time. Under the embargo period, only some of the metadata (e.g. information about subjects, aims etc.) will be published through EBRAINS, but the original data itself will not be shared."
+                  },
                 "embargo": {
                     "title": "",
                     "$ref": "#/definitions/embargo"

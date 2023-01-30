@@ -1,7 +1,6 @@
 {
   "title": "Experimental metadata",
   "type": "object",
-  "description": "In the last step, you have the option to provide experimental metadata for the dataset as a whole, as well as for each individual subject or subject group. If your dataset contains files that belong to individual subjects, subject groups, or techniques, we also encourage you to share this information in order to increase the FAIRness of your dataset.",
   "definitions":{
     "subjectExpMetadata": {
       "type": "object",
@@ -10,7 +9,7 @@
       "properties": {
         "subjectsExist": {
           "type": "boolean",
-          "title": "Subjects",
+          "title": "Specimen information",
           "description": "Did you use experimental subjects in any way? Tick 'Yes' if you have information about subject groups, individual subjects and/or tissue samples."
         }
       },
@@ -1456,7 +1455,7 @@
     },
     "datasetVersion": {
       "type": "object",
-      "title": "Dataset characteristics",
+      "title": "",
       "required": ["experimentalApproach"],
       "properties": {
         "experimentalApproachIntro": {

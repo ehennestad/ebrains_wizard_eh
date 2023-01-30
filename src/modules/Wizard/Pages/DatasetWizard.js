@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from '@rjsf/core';
-import {ImageWidget, RichTextWidget} from '../../../components/customWidgets';
+import {ImageWidget, RichTextWidget, CustomArrayField} from '../../../components/customWidgets';
 import ImageUpload from '../../../components/ImageUpload';
 
 import {uiSchema} from '../../../helpers/uiSchemaProvider';
@@ -20,7 +20,7 @@ const DatasetWizard = ({ schema, formData, onSubmit, onChange, goBack, imageFile
   );
   
   return (
-    <Form widgets={{img: ImageWidget, richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator}>
+    <Form fields={CustomArrayField} widgets={{img: ImageWidget, richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator}>
       
       {imageFileList === undefined ? null : imageUploader}
       <div className="footer">
