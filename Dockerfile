@@ -41,4 +41,4 @@ CMD node setup.js && node server/server.js
 
 # Example:
 # docker image tag ddb2fe9a8083 docker-registry.ebrains.eu/ebrains_wizard_test/wizard_dev:0.1.2
-# docker push docker-registry.ebrains.eu/ebrains_wizard_test/wizard_dev:0.1.2;
+# docker push docker-registry.ebrains.eu/ebrains_wizard_test/wizard_dev:0.1.2

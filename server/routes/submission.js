@@ -110,17 +110,12 @@ function sendMetadataEmailMessage(emailRecipient, emailMessage, sendResponseToCl
 function getContactPersonEmailAddress(jsonObject) {
 
   let emailAddress = undefined;
-
-  if (jsonObject[0]["general"]["contactperson"]["same"]) {
-    emailAddress = jsonObject[0]["general"]["custodian"]["email"];
-  } else {
-    emailAddress = jsonObject[0]["general"]["contactperson"]["contactinfo"]["email"];
-  }
+  emailAddress = jsonObject[0]["general"]["contactperson"]["email"];
   return emailAddress;
 }
 
 function writeMailSubject(jsonObject) {
-  const dsTitle = jsonObject[0]["general"]["datasetinfo"]["datasetTitle"];
+  const dsTitle = jsonObject[0]["datasetinfo"]["dataset"]["fullName"];
   let mailSubjectStr = `[Wizard Metadata Submission] ${dsTitle}`;
 
   let ticketNumber = jsonObject[0]["general"]["ticketNumber"];
@@ -137,15 +132,15 @@ function writeMailBody(jsonObject) {
   
     // TODO: use contact person if available
 
-  const dsTitle = jsonObject[0]["general"]["datasetinfo"]["datasetTitle"];
-  const custodianFirstName = jsonObject[0]["general"]["custodian"]["firstName"];
-  const custodianLastName = jsonObject[0]["general"]["custodian"]["lastName"];
-  const custodianEmail = jsonObject[0]["general"]["custodian"]["email"];
+  const dsTitle = jsonObject[0]["datasetinfo"]["dataset"]["fullName"];
+  const contactFirstName = jsonObject[0]["general"]["contactperson"]["firstName"];
+  const contactLastName = jsonObject[0]["general"]["contactperson"]["lastName"];
+  const contactEmail = jsonObject[0]["general"]["contactperson"]["email"];
   
   let mailBodyStr = `Dataset information:
 
-Dataset Custodian: ${custodianFirstName + ' ' + custodianLastName}
-Dataset Custodian Email: ${custodianEmail}
+Dataset Custodian: ${contactFirstName + ' ' + contactLastName}
+Dataset Custodian Email: ${contactEmail}
 Dataset Title: ${dsTitle}
     
 Attachments:
@@ -156,17 +151,12 @@ Attachments:
   
 function writeMailBodyConfirmation(jsonObject) {
 
-  let contactPersonName = undefined;
-
-  if (jsonObject[0]["general"]["contactperson"]["same"]) {
-    contactPersonName = jsonObject[0]["general"]["custodian"]["firstName"];
-  } else {
-    contactPersonName = jsonObject[0]["general"]["contactperson"]["contactinfo"]["firstName"];
-  }
+  const contactPersonName = jsonObject[0]["general"]["contactperson"]["firstName"];
+  const datasetTitle = jsonObject[0]["datasetinfo"]["dataset"]["fullName"];
 
   let mailBodyStr = `Dear ${contactPersonName},
 
-Thank you for submitting metadata for the dataset "${jsonObject[0]["general"]["datasetinfo"]["datasetTitle"]}". We will review the metadata and get back to you as soon as possible.
+Thank you for submitting metadata for the dataset "${datasetTitle}". We will review the metadata and get back to you as soon as possible.
 
 The attached file(s) are the metadata you submitted. The json file contains the metadata in a machine-readable format and if you at some point need to make changes to the metadata, you can upload it to the wizard, make modifications and resubmit.
 
