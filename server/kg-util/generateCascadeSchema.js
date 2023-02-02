@@ -6,37 +6,41 @@ const controlledTerms = require('../../src/controlledTerms/studyTargetTermGroup.
 function generateSchema(data) {
     const schema = {
       type: "object",
-      properties: {term: {enum: Object.keys(data) } },
+      properties: {term: {title: "Study target category", enum: Object.keys(data) } },
       allOf: []
     };
   
     Object.entries(data).forEach(([term, instances]) => {
 
-      schema.allOf.push({
-        if: {
-          properties: {
-            term: {
-              const: term
-            }
-          }
-        },
-        then: {
-          properties: {
-            instance: {
-              type: "string",
-              enum: instances.map( (instance) => (instance.name) )
-
+      // if instances is empty
+      if (instances.length !== 0) {
+        schema.allOf.push({
+          if: {
+            properties: {
+              term: {
+                const: term
+              }
             }
           },
-          required: ["instance"]
-        }
-      });
+          then: {
+            properties: {
+              instance: {
+                title: term,
+                type: "string",
+                enum: instances.map( (instance) => (instance.name) )
+                
+              }
+            },
+            required: ["instance"]
+          }
+        })
+      };
     });
-  
+
     schema.allOf.push({
       required: ["term"]
     });
-  
+    
     return schema;
   }
 

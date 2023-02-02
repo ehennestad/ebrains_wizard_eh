@@ -5,6 +5,9 @@
 # But: keep the datasetLicense file because this is a manual entry
 !datasetLicense.json
 
+# Downloaded data
+/server/data
+
 # Temporary files
 /tmp/upload
 /tmp

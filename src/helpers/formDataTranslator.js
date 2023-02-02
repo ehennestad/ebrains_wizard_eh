@@ -1,6 +1,6 @@
 //Why is this imported here? Shouldn't the controlled terms already be part of the form schema? Could the KG ID be placed in the formdata directly?
-import * as experimentalApproachModule from '../controlledTerms/experimentalApproach.json'; 
-import * as techniqueModule from '../controlledTerms/technique.json'
+//import * as experimentalApproachModule from '../controlledTerms/experimentalApproach.json'; 
+//import * as techniqueModule from '../controlledTerms/technique.json'
 
 import {setProperty, setPropertyWithLinks, setPropertyWithLinksCreation, createDocument}
     from './openminds-document-generator';

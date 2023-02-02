@@ -15,6 +15,8 @@ const nodemailer = require('nodemailer');  // Nodemailer is used for sending ema
 
 // For local development (get credentials from a config file):
 // Todo: Add a check for the environment variable NODE_ENV instead of the user
+ 
+// if process.env.NODE_ENV === 'development'
 if (process.env.USER==='eivinhen' || process.env.USER==='Eivind') {
     const creds = require('./mail_credentials');
     var transportConfiguration = {
@@ -26,7 +28,7 @@ if (process.env.USER==='eivinhen' || process.env.USER==='Eivind') {
     }
 }
 
-// For production (use the mail relay)
+// For production (use the mail relay) // if process.env.NODE_ENV === 'production'
 else {
     var transportConfiguration = {
       host: process.env.RELAY_HOST,
@@ -40,6 +42,7 @@ var mailTransporter = nodemailer.createTransport(transportConfiguration)
 
 mailTransporter.verify((error, success) => {
   if (error) {
+    console.log('Failed to create a mail transporter');
     console.log(error);
   } else {
     console.log('Successfully created a mail transporter');
