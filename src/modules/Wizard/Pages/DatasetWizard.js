@@ -10,7 +10,7 @@ import {transformErrors} from '../../../helpers/ErrorTransformer';
 
 
 //const DatasetWizard = React.memo(({ schema, formData, onSubmit, onChange, goBack}) => {
-const DatasetWizard = ({ schema, formData, onSubmit, onChange, goBack, imageFileList, imageUploadedFcn}) => {
+const DatasetWizard = ({ schema, formData, onSubmit, onChange, goBack, imageFileList, imageUploadedFcn, formRef}) => {
 
   const handleOnChange = ( {formData} ) => onChange(formData);
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
@@ -20,7 +20,7 @@ const DatasetWizard = ({ schema, formData, onSubmit, onChange, goBack, imageFile
   );
   
   return (
-    <Form fields={CustomArrayField} widgets={{img: ImageWidget, richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator}>
+    <Form fields={CustomArrayField} widgets={{img: ImageWidget, richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator} ref={formRef}>
       
       {imageFileList === undefined ? null : imageUploader}
       <div className="footer">

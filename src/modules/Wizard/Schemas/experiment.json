@@ -1456,7 +1456,7 @@
     "datasetVersion": {
       "type": "object",
       "title": "",
-      "required": ["experimentalApproach"],
+      "required": ["experimentalApproach", "experimentalApproachIntro"],
       "properties": {
         "experimentalApproachIntro": {
           "type": "null",
@@ -1468,7 +1468,6 @@
           "maxItems": 8,          
           "title": "",
           "items": {
-            "_name": "Experimental approach",
             "type": "string",
             "controlledTerm": "experimentalApproach",
             "examples": [
@@ -1485,7 +1484,6 @@
           "type": "array",
           "title": "",
           "items": {
-            "title": "Preparation type",
             "type": "string",
             "controlledTerm": "preparationType"
           }

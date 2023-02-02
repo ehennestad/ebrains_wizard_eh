@@ -21,8 +21,8 @@ const CustomArraySchemaField = function(props) {
   const { SchemaField } = registry.fields;
   //const name = `Entry ${index+1}`;
   //const name = props.name.replace(/-(\d+)/g, (match, number) => ` ${Number(number) + 1}`);
-  const name = `${props.schema._name} ${index+1}`
-  console.log(props.schema)
+  //const name = `${props.schema._name} ${index+1}`
+  const name = '';
   return <SchemaField {...props} name={name} />;
 };
 

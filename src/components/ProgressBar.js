@@ -18,11 +18,11 @@ const customDot = (dot, { status, index }) => (
     {dot}
   </Popover>
 );
-const description = '';
+//const description = 'Incomplete';
 
-const ProgressBar = ({step, onChanged}) => {
+const ProgressBar = ({step, status, onChanged}) => {
 //const ProgressBar = ({step, status, onChanged}) => {
-
+  
   const [current, setCurrent] = useState(0);
   
   const onChange = (value) => {
@@ -33,10 +33,26 @@ const ProgressBar = ({step, onChanged}) => {
   let items = [];
 
   for (let i = 0; i < NUM_STEPS; i++) {
+      let thisDescription = 'Incomplete';
+      let thisStatus = 'wait';
+      if ( status[i] ) {
+        thisDescription = 'Completed';
+        thisStatus = 'finish';
+      } else if ( i===step ) {
+        thisStatus = 'process';
+      } else {
+        thisStatus = 'wait';
+      }
+
+      if  ( i === step ) {
+        thisStatus = 'process';
+        thisDescription = 'In progress';
+      }
+
       let thisItem = {
           title: WIZARD_STEP_NAMES[i],
-          //status: status[i],
-          description,
+          description: thisDescription,
+          status: thisStatus,
       };
       items.push(thisItem);
   }

@@ -33,10 +33,7 @@ export const transformErrors = errors => {
         } else if (error.property === ".datasetVersion.copyrightStatus.copyright.year" && error.message === "should match pattern \"([0-9]{4})\"") {
             error.message = "Should be a valid valid year, i.e a 4 digit number."
         }
-        console.log(error)
         
-
-
         return error;
     });
 };

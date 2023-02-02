@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Cookies from 'universal-cookie'
@@ -40,12 +40,12 @@ const TEST = "TEST";
 const WIZARD_STEPS_LIST = [ WIZARD_STEP_GENERAL, WIZARD_STEP_DATASET, WIZARD_STEP_DATASET2, WIZARD_STEP_FUNDING, WIZARD_STEP_CONTRIBUTORS, WIZARD_STEP_EXPERIMENT ];
 
 const STEP_MAP = new Map(); // Rename to pageMap
-STEP_MAP.set(WIZARD_STEP_GENERAL, {schema: generalSchema, wizard: GeneralWizard, name: "general"});
-STEP_MAP.set(WIZARD_STEP_DATASET, {schema: dataset1Schema, wizard: DatasetWizard, name: "datasetinfo"});
-STEP_MAP.set(WIZARD_STEP_DATASET2, {schema: dataset2Schema, wizard: DatasetWizard , name: "dataset2info"});
-STEP_MAP.set(WIZARD_STEP_FUNDING, {schema: fundingSchema, wizard: FundingWizard, name: "funding"});
-STEP_MAP.set(WIZARD_STEP_CONTRIBUTORS, {schema: contributorsSchema, wizard: ContributorsWizard, name: "contributors"});
-STEP_MAP.set(WIZARD_STEP_EXPERIMENT, {schema: experimentSchema, wizard: ExperimentWizard, name: "experiment"});
+STEP_MAP.set(WIZARD_STEP_GENERAL, {schema: generalSchema, wizard: GeneralWizard, name: "general", formRef: createRef()});
+STEP_MAP.set(WIZARD_STEP_DATASET, {schema: dataset1Schema, wizard: DatasetWizard, name: "datasetinfo", formRef: createRef()});
+STEP_MAP.set(WIZARD_STEP_DATASET2, {schema: dataset2Schema, wizard: DatasetWizard , name: "dataset2info", formRef: createRef()});
+STEP_MAP.set(WIZARD_STEP_FUNDING, {schema: fundingSchema, wizard: FundingWizard, name: "funding", formRef: createRef()});
+STEP_MAP.set(WIZARD_STEP_CONTRIBUTORS, {schema: contributorsSchema, wizard: ContributorsWizard, name: "contributors", formRef: createRef()});
+STEP_MAP.set(WIZARD_STEP_EXPERIMENT, {schema: experimentSchema, wizard: ExperimentWizard, name: "experiment", formRef: createRef()});
 STEP_MAP.set(WIZARD_SUCCEEDED, {schema: submissionSuccededSchema, wizard: SubmissionCompletedWizard, name: ""});
 STEP_MAP.set(WIZARD_FAILED, {schema: submissionFailedSchema, wizard: SubmissionCompletedWizard, name: ""});
 
@@ -59,10 +59,10 @@ class Wizard extends React.Component {
     this.jsonStr = null;                          // json string of the whole formdata
     this.previewImage = [];                       // image for preview of dataset
     this.openMindsDocument = null;                // openMinds document for the dataset
+    this.validSteps = this.initializeValidSteps(); // list of valid steps
     this.state = { 
       currentStep: WIZARD_STEPS_LIST[0],
     }
-
     this.isInitialized = false;
   }
 
@@ -79,6 +79,11 @@ class Wizard extends React.Component {
     }
     return formData;
   };
+
+  initializeValidSteps = () => {
+    // Initialize validSteps array with false
+    return Array(WIZARD_STEPS_LIST.length).fill(false)
+  }
 
   componentDidMount = () => {
     let jsonStr = cookies.get('wizardData', {doNotParse:true} );
@@ -110,8 +115,7 @@ class Wizard extends React.Component {
   getNextWizardStep = (stepDirection) => {
    
     // find index of current step in WIZARD_STEPS_LIST array
-    const isCurrentStep = (step) => step === this.state.currentStep;
-    const currentStepIndex = WIZARD_STEPS_LIST.findIndex(isCurrentStep);
+    const currentStepIndex = this.getCurrentStepIndex();
 
     switch (stepDirection) {
       case "next":
@@ -125,10 +129,30 @@ class Wizard extends React.Component {
     }
   };
 
-  goToWizardStep = (nextWizardStep) => {
+  getCurrentStepIndex = () => {
+    // find index of current step in WIZARD_STEPS_LIST array
+    const isCurrentStep = (step) => step === this.state.currentStep;
+    const currentStepIndex = WIZARD_STEPS_LIST.findIndex(isCurrentStep);
+    return currentStepIndex;
+  }
+
+  goToWizardStep = (nextWizardStep, skipValidation) => {
+    if (skipValidation === undefined) {
+      skipValidation = false;
+    }
+
     if (typeof nextWizardStep === "number") {
       nextWizardStep = WIZARD_STEPS_LIST[nextWizardStep];
     }
+
+    // Check if current step is valid
+    if (!skipValidation) {
+      let tf = STEP_MAP.get(this.state.currentStep).formRef.current.validateForm();
+      const currentStepIndex = this.getCurrentStepIndex();
+      this.validSteps[currentStepIndex] = tf;
+    }
+
+
     this.setState({ currentStep: nextWizardStep });
     window.scrollTo(0, 0);
   };
@@ -240,6 +264,7 @@ class Wizard extends React.Component {
     this.previewImage = [];
     this.saveFormDatasInCookie();
     this.goToWizardStep( WIZARD_STEPS_LIST[0] )
+    this.validSteps = this.initializeValidSteps();
   };
 
   loadJson = () => { // Consider moving this to a separate file (e.g. utils.js
@@ -267,7 +292,9 @@ class Wizard extends React.Component {
 
   loadState = formStates => {
     this.formData = this.initializeFormDataMap(formStates);
-    this.goToWizardStep( WIZARD_STEPS_LIST[0] )
+    this.validSteps = this.initializeValidSteps();
+    let skipFormValidation = true;
+    this.goToWizardStep( WIZARD_STEPS_LIST[0], skipFormValidation )
   };
 
   saveState = () => {
@@ -310,7 +337,8 @@ class Wizard extends React.Component {
       schema: schema,
       formData: currentFormData,
       onSubmit: this.handleSubmit,
-      onChange: this.onFormChanged
+      onChange: this.onFormChanged,
+      formRef: STEP_MAP.get(this.state.currentStep).formRef
     }
 
     switch (this.state.currentStep) {
@@ -324,8 +352,11 @@ class Wizard extends React.Component {
         wizardPageProps.imageUploadedFcn = this.onImageUploaded;
         wizardPageProps.goBack = this.goBack;
         break;
+      case WIZARD_STEP_EXPERIMENT:
+        // check that items 0-4 are valid
+        wizardPageProps.isValid = this.validSteps.slice(0, 5).every( (item) => item === true );
 
-        case WIZARD_STEP_DATASET: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
+      case WIZARD_STEP_DATASET: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
         wizardPageProps.goBack = this.goBack;
         break;
 
@@ -333,13 +364,15 @@ class Wizard extends React.Component {
         break;
     };
 
+    console.log( this.validSteps )
+
     switch (this.state.currentStep) {
 
       case WIZARD_STEP_GENERAL: case WIZARD_STEP_DATASET: case WIZARD_STEP_DATASET2: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
         return (
           <>
           { (process.env.NODE_ENV === "development") ? <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button> : null }
-            <ProgressBar step={stepNum} onChanged={this.goToWizardStep} />
+            <ProgressBar step={stepNum} status={this.validSteps} onChanged={this.goToWizardStep} />
             <WizardComponent {...wizardPageProps} /> 
             {/* <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} goBack={this.goBack} />  */}
           </>

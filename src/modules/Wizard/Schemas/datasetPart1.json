@@ -12,6 +12,13 @@
             "maxLength": 110
         },
 
+        "shortName": {
+            "type": "string",
+            "title": "Short name",
+            "description": "Enter a short name (alias) that could be used as a shortened title for visualization in cases where there is limited space for display (max 30 characters).",
+            "maxLength": 30
+        },
+
         "dataType": {
             "type": "array",
             "title": "What type of data would you like to share (You can select multiple values)?",
@@ -99,7 +106,7 @@
             "properties": {
                 "embargo":{
                     "type": "boolean",
-                    "title": "Embargo status",
+                    "title": "Yes, embargo dataset",
                     "oneOf": [{
                             "title": "Yes, embargoed",
                             "const": true
@@ -161,17 +168,21 @@
             "type": "object",
             "title": "",
             "required": [
+                "shortName",
                 "copyrightStatus",
                 "dataType",
                 "license"
             ],    
             "properties": {
+                "shortName": {
+                    "$ref": "#/definitions/shortName"
+                },
                 "dataType": {
                     "$ref": "#/definitions/dataType"
                 },
                 "embargoIntro": {
                     "type": "null",
-                    "title": "Embargo",
+                    "title": "Embargo status",
                     "description": "In case you wish to publish a scientific article before sharing the associated data through EBRAINS, you have the possibility to embargo your data for a certain period of time. Under the embargo period, only some of the metadata (e.g. information about subjects, aims etc.) will be published through EBRAINS, but the original data itself will not be shared."
                   },
                 "embargo": {
