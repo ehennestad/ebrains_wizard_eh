@@ -52,8 +52,9 @@
   "scripts": {
     "build": "react-scripts build",
     "postinstall": "node setup.js",
-    "devstart": "nodemon server/server.js",
-    "start": "node server/server.js",
+    "devstart": "export NODE_ENV=development && nodemon server/server.js",
+    "start": "export NODE_ENV=production && node server/server.js",
+    "dockerstart": "export NODE_ENV=production && node setup.js && node server/server.js",
     "dev": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

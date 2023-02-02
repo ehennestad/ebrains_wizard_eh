@@ -1,3 +1,12 @@
+# Ignore the docket files
 .dockerignore
 Dockerfile
-**/mail_credentials_template.js
+
+# Ignore node modules which will anyway be created when we run npm install
+/node_modules
+
+# Ignore production files, they will be created when docker image is run
+/build
+
+# Ignore some secrets
+**/mail_credentials.js
