@@ -1,4 +1,6 @@
 var fetchControlledTerms = require('./server/kg-util/fetchControlledTerms');
+var fetchCoreSchemaInstances = require('./server/kg-util/fetchCoreSchemaInstances');
+
 const {exec} = require('child_process');
 
 setup();
