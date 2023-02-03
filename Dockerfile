@@ -14,8 +14,7 @@ COPY . /app
 RUN npm install --force
 
 # Run the app as a non-privileged user
-RUN chgrp -R 0 . && chmod -R g=u .
-RUN chown -R 1001:0 . && chmod -R g+s+rw .
+RUN chown -R 1001:0 . && chmod -R gu+s+rw .
 USER 1001
 
 # Expose server at port ( accessible outside of container)
