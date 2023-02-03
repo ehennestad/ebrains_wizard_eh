@@ -1,9 +1,18 @@
 export const transformErrors = errors => {
     return errors.map(error => {
 
-        // Replace message if no contributors are added
-        if (error.property === ".dataset.authors" && error.name === "minItems") {
-            error.message = "Please add at least one author."
+        // Replace message for array where at least one item is required
+        if (error.message === "must NOT have fewer than 1 items" && error.name === "minItems") {
+
+            if  (error.property === ".dataset.authors") {
+                error.message = "Please add at least one author."
+            } else if (error.property === ".datasetVersion.dataType") {
+                error.message = "Please select at least one item."
+            } else if (error.property === ".datasetVersion.experimentalApproach") {
+                error.message = "Please add at least one experimental approach."
+            } else if (error.property === ".datasetVersion.technique") {
+                error.message = "Please add at least one technique."
+            }
 
         } else if (error.property === ".datasetVersion.dataType" && error.name === "minItems") {
             error.message = "Please select at least one item."
@@ -50,8 +59,9 @@ export const transformErrors = errors => {
             } else if (error.name === "enum") {
                 error.message = "";
             } else if (error.name === "required") {
-                if (error.property === ".datasetVersion.studyTarget.0.instance") {
-                    error.message = "Please select one of the values from the list.";
+                console.log(error.property)
+                if ( error.property.includes(".studyTarget") && error.property.includes(".instance") ) {
+                    error.message = "";
                 } else {
                     error.message = "Please select one of the values from the list.";
                 }

@@ -1456,7 +1456,7 @@
     "datasetVersion": {
       "type": "object",
       "title": "",
-      "required": ["experimentalApproach", "experimentalApproachIntro"],
+      "required": ["experimentalApproach", "experimentalApproachIntro", "technique", "techniqueIntro"],
       "properties": {
         "experimentalApproachIntro": {
           "type": "null",
@@ -1465,6 +1465,7 @@
         },
         "experimentalApproach": {
           "type": "array",
+          "minItems": 1,
           "maxItems": 8,          
           "title": "",
           "items": {
@@ -1495,6 +1496,7 @@
         },
         "technique": {
           "type": "array",
+          "minItems": 1,
           "maxItems": 8,          
           "title": "",
           "_name": "technique test",
