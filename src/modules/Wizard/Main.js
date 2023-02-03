@@ -21,6 +21,9 @@ import { generalSchema, dataset1Schema, dataset2Schema,
          submissionSuccededSchema, submissionFailedSchema } 
   from '../../helpers/FormSchemaProvider';
 
+import {  notification } from 'antd';
+
+
 // Todo: Bug when reseting form. Ticket number will not be updated from query parameter
 
 // Path for posting submission to the backend
@@ -152,7 +155,6 @@ class Wizard extends React.Component {
       this.validSteps[currentStepIndex] = tf;
     }
 
-
     this.setState({ currentStep: nextWizardStep });
     window.scrollTo(0, 0);
   };
@@ -213,6 +215,15 @@ class Wizard extends React.Component {
         this.goNext()
     }
   };
+
+  onSubmitFailed = (errorInfo) => {
+    notification.open({
+      message: 'Form validation failed',
+      description: 'Please review this page for hints on how to correct errors.',
+      placement: 'bottomRight',
+      onClick: () => { console.log('Notification Clicked!'); },
+    });
+  }
 
   handleFinalSubmit = data => {
 
@@ -332,12 +343,13 @@ class Wizard extends React.Component {
 
     const currentFormData = this.formData.get(formName);
     const stepNum = WIZARD_STEPS_LIST.indexOf(this.state.currentStep);
-    
+
     let wizardPageProps = {
       schema: schema,
       formData: currentFormData,
       onSubmit: this.handleSubmit,
       onChange: this.onFormChanged,
+      onError: this.onSubmitFailed,
       formRef: STEP_MAP.get(this.state.currentStep).formRef
     }
 
@@ -363,9 +375,7 @@ class Wizard extends React.Component {
       default:
         break;
     };
-
-    console.log( this.validSteps )
-
+    
     switch (this.state.currentStep) {
 
       case WIZARD_STEP_GENERAL: case WIZARD_STEP_DATASET: case WIZARD_STEP_DATASET2: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:

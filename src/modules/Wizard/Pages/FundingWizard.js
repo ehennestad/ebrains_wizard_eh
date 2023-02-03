@@ -7,14 +7,14 @@ import {transformErrors} from '../../../helpers/ErrorTransformer';
 import {CustomArrayField} from '../../../components/customWidgets';
 
 
-const FundingAndAffiliationWizard = React.memo(({ schema, formData, onSubmit, onChange, goBack, formRef }) => {
+const FundingAndAffiliationWizard = React.memo(({ schema, formData, onSubmit, onChange, onError, goBack, formRef }) => {
 
   const handleOnChange = ( {formData} ) => onChange(formData);
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
 
   return (
     <Form fields={CustomArrayField} schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} 
-    onSubmit={handleOnSubmit} onChange={handleOnChange} 
+    onSubmit={handleOnSubmit} onChange={handleOnChange} onError={onError} 
     transformErrors={transformErrors} validator={validator} ref={formRef}>
       <div className="footer">
         <div className="col-xs-5 back-panel">

@@ -8,7 +8,7 @@ import {transformErrors} from '../../../helpers/ErrorTransformer';
 import {CustomArrayField} from '../../../components/customWidgets';
 
 
-const ContributorsWizard = React.memo(({ schema, formData, onSubmit, onChange, goBack, formRef }) => {
+const ContributorsWizard = React.memo(({ schema, formData, onSubmit, onChange, onError, goBack, formRef }) => {
   
   const handleOnChange = ( {formData} ) => onChange(formData);
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
@@ -16,7 +16,7 @@ const ContributorsWizard = React.memo(({ schema, formData, onSubmit, onChange, g
   return (
     <Form fields={CustomArrayField} schema={schema} uiSchema={uiSchema} 
           formData={formData} omitExtraData={true} transformErrors={transformErrors} 
-          showErrorList={false} onSubmit={handleOnSubmit} onChange={handleOnChange} 
+          showErrorList={false} onSubmit={handleOnSubmit} onChange={handleOnChange} onError={onError} 
           validator={validator} ref={formRef}>
       <div className="footer">
         <div className="col-xs-5 back-panel">

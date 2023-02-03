@@ -7,15 +7,15 @@ import {uiSchema} from '../../../helpers/uiSchemaProvider';
 import {transformErrors} from '../../../helpers/ErrorTransformer';
 
 
-const GeneralWizard = React.memo(({schema, formData, onSubmit, onChange, loadState, onReset, formRef}) => {
+const GeneralWizard = React.memo(({schema, formData, onSubmit, onChange, onError, loadState, onReset, formRef}) => {
 
   const handleOnChange = ( {formData} ) => onChange(formData);
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
   
   return (
     <Form widgets={{richtext: RichTextWidget}} schema={schema} uiSchema={uiSchema} formData={formData} 
-          omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator} 
-          ref={formRef} transformErrors={transformErrors} >
+          omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} onError={onError} 
+          validator={validator} ref={formRef} transformErrors={transformErrors} >
       <div className="footer">
         <div className="col-xs-8 back-panel">
           <button type="button" className="btn btn-default" onClick={onReset}>Reset</button>

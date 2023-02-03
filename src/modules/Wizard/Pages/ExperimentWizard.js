@@ -11,13 +11,13 @@ import {transformErrors} from '../../../helpers/ErrorTransformer';
 import CascadeSelector from '../../../components/CascadeSelector';
 
 
-const ExperimentWizard = React.memo(({ schema, formData,  onSubmit, onChange, goBack, formRef, isValid }) => {
+const ExperimentWizard = React.memo(({ schema, formData,  onSubmit, onChange, onError, goBack, formRef, isValid }) => {
 
   const handleOnChange = ( {formData} ) => onChange(formData);
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
 
   return (
-    <Form widgets={{richtext: RichTextWidget}} fields={CustomArrayField} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator} ref={formRef}>
+    <Form widgets={{richtext: RichTextWidget}} fields={CustomArrayField} schema={schema} uiSchema={uiSchema} formData={formData} transformErrors={transformErrors} showErrorList={false} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} onError={onError} validator={validator} ref={formRef}>
       <div className="footer">
         <div className="col-xs-5 back-panel">
           <button type="submit" className="btn btn-info btn-default" onClick={goBack}>Previous Page</button>
