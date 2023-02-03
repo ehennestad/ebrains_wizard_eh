@@ -3,9 +3,8 @@ import Form from '@rjsf/core';
 import {ImageWidget, RichTextWidget, CustomArrayField} from '../../../components/customWidgets';
 import ImageUpload from '../../../components/ImageUpload';
 
-import {uiSchema} from '../../../helpers/uiSchemaProvider';
 import validator from "@rjsf/validator-ajv8";
-
+import {uiSchema} from '../../../helpers/uiSchemaProvider';
 import {transformErrors} from '../../../helpers/ErrorTransformer';
 
 

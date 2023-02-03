@@ -41,8 +41,8 @@ const populateSchemaWithControlledTerms = schema => {
           if (controlledTerm) {
             if(schema.examples) {
               schema.examples = controlledTerm.map(term => term.name);
-              schema.exampleIDs = controlledTerm.map(term => term.identifier);        
-   
+              schema.exampleIDs = controlledTerm.map(term => term.identifier);    
+              schema.pattern = "^(" + schema.examples.join("|") + ")$";   
             } else {
               schema.enum = controlledTerm.map(term => term.identifier);
               schema.enumNames = controlledTerm.map(term => term.name);

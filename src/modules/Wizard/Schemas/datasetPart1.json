@@ -32,6 +32,7 @@
                     "Derived data"
                 ]
             },
+            "minItems": 1,
             "uniqueItems": true
         },
 
@@ -44,7 +45,7 @@
             "properties": {
                 "holder": {
                     "type": "string",
-                    "description": "Legal person in possession of something.",
+                    "description": "Legal entity in possession of the copyright.",
                     "title": "Copyright Holder"
                 },
                 "year": {

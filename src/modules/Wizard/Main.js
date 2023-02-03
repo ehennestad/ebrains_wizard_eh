@@ -240,10 +240,10 @@ class Wizard extends React.Component {
     }, []);
 
     // const res = generateDocumentsFromDataset(datasetFlattened);
+    const res = {'documents': null};
 
     // // Create a json string from data which user has entered.
-    // const jsonData = JSON.stringify([dataset, res]);
-    const jsonData = JSON.stringify(dataset, null, 2);
+    const jsonData = JSON.stringify([dataset, res], null, 2);
     this.jsonStr = jsonData;
 
     // Create a FormData object in order to send data to the backend server

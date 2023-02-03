@@ -4,10 +4,10 @@ import Form from '@rjsf/core';
 import TableField from "react-jsonschema-form-extras/lib/table";
 import RichTextWidget, {CustomArrayField} from '../../../components/customWidgets';
 
-import {uiSchema} from '../../../helpers/uiSchemaProvider';
 import validator from "@rjsf/validator-ajv8";
-
+import {uiSchema} from '../../../helpers/uiSchemaProvider';
 import {transformErrors} from '../../../helpers/ErrorTransformer';
+
 import CascadeSelector from '../../../components/CascadeSelector';
 
 

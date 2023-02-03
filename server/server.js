@@ -56,7 +56,7 @@ sceduledUpdater()
 function onIndexFileSent(err, res) {
   if (err) {
     if (err.code === 'ENOENT') {
-      res.send('Server is updating. Please try again in about 10 seconds.')
+      res.send('Server is updating. It should be back up and running within a minute. If it takes longer, please let us know!')
     } else {
       res.send('Internal server error.')
     }

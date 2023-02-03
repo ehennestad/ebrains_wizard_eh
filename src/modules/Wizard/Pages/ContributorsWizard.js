@@ -1,10 +1,12 @@
 import React from 'react';
 import Form from '@rjsf/core';
-import {uiSchema} from '../../../helpers/uiSchemaProvider';
+
 import validator from "@rjsf/validator-ajv8";
+import {uiSchema} from '../../../helpers/uiSchemaProvider';
+import {transformErrors} from '../../../helpers/ErrorTransformer';
+
 import {CustomArrayField} from '../../../components/customWidgets';
 
-import {transformErrors} from '../../../helpers/ErrorTransformer';
 
 const ContributorsWizard = React.memo(({ schema, formData, onSubmit, onChange, goBack, formRef }) => {
   

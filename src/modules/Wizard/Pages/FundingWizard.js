@@ -1,8 +1,11 @@
 import React from 'react';
 import Form from '@rjsf/core';
-import {uiSchema} from '../../../helpers/uiSchemaProvider';
+
 import validator from "@rjsf/validator-ajv8";
+import {uiSchema} from '../../../helpers/uiSchemaProvider';
+import {transformErrors} from '../../../helpers/ErrorTransformer';
 import {CustomArrayField} from '../../../components/customWidgets';
+
 
 const FundingAndAffiliationWizard = React.memo(({ schema, formData, onSubmit, onChange, goBack, formRef }) => {
 
@@ -10,7 +13,9 @@ const FundingAndAffiliationWizard = React.memo(({ schema, formData, onSubmit, on
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
 
   return (
-    <Form fields={CustomArrayField} schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} onSubmit={handleOnSubmit} onChange={handleOnChange} validator={validator} ref={formRef}>
+    <Form fields={CustomArrayField} schema={schema} uiSchema={uiSchema} formData={formData} omitExtraData={true} 
+    onSubmit={handleOnSubmit} onChange={handleOnChange} 
+    transformErrors={transformErrors} validator={validator} ref={formRef}>
       <div className="footer">
         <div className="col-xs-5 back-panel">
           <button type="submit" className="btn btn-info btn-default" onClick={goBack}>Previous Page</button>

@@ -32,6 +32,16 @@
                 "ui:widget": "radio"
             }
         },
+        "supportChannel": {
+            "ui:options":  {
+                "orderable": false
+            }
+        },
+        "relatedPublication": {
+            "ui:options":  {
+                "orderable": false
+            }
+        },
         "color": {
             "ui:widget": "color"
         },

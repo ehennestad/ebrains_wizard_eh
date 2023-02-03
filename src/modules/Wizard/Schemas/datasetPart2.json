@@ -12,11 +12,13 @@
             "description": "Add the URL to the homepage of this dataset."
         },
         "supportChannel": {
-            "title": "Support channel",
-            "type": "string",
-            "format": "email",
-            "description": "Enter all channels through which a user can receive support for handling this research product."
-          },
+            "title": "",
+            "type": "array",
+            "description": "Enter all channels through which a user can receive support for handling this research product. This could for example be a link to a website or a contact email address.",
+            "items": {
+                "type": "string"
+            }
+        },
         "howToCite": {
             "title": "How to cite",
             "type": "string",
@@ -28,13 +30,14 @@
             "description": "Add the data that was used as input for this dataset version. This is typically a DOI or reference to the original dataset from which the current dataset is derived (if applicable)."
         },
         "relatedPublication": {
-          "type": "array",
-          "title": "",
-          "description": "Please list DOIs of all related publications that report on the dataset itself or on analysis based on the data.",
-          "items": {
-            "_name": "Related publication",
-            "type": "string"
-          }
+            "title": "",
+            "type": "array",
+            "description": "Please list DOIs of all related publications that report on the dataset itself or on analysis based on the data. The doi should be in the following format: https://doi.org/10.1000/182",
+            "items": {
+                "_name": "Related publication",
+                "type": "string",
+                "pattern": "^https:\/\/doi.org\/10.[0-9]{4,9}\/[-._;()/:A-Za-z0-9]+"
+            }
         }
     },
 
@@ -48,6 +51,10 @@
                 "homepage": {
                     "$ref": "#/definitions/homepage"
                 },
+                "supportChannelIntro": {
+                    "type": "null",
+                    "title": "Support channel"
+                  },
                 "supportChannel": {
                     "$ref": "#/definitions/supportChannel"
                 },
@@ -60,7 +67,7 @@
                 "relatedPublicationIntro": {
                     "type": "null",
                     "title": "Related publications"
-                  },
+                },
                 "relatedPublication": {
                     "title": "",
                     "$ref": "#/definitions/relatedPublication"

@@ -1,8 +1,9 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import RichTextWidget from '../../../components/customWidgets';
-import {uiSchema} from '../../../helpers/uiSchemaProvider';
+
 import validator from "@rjsf/validator-ajv8";
+import {uiSchema} from '../../../helpers/uiSchemaProvider';
 
 const SubmissionCompletedWizard = React.memo(({ schema, onReset, onSave }) => {
 
