@@ -63,7 +63,7 @@
                 "orderable": false
             }
         },
-        "keywords": {
+        "keyword": {
             "ui:options":  {
                 "orderable": false
             }

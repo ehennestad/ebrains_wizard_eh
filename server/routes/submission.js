@@ -181,8 +181,6 @@ function prepareMailAttachments(requestObject) {
   mailAttachmentArray.push(jsonAttachment)
   
   if (requestObject.body.excelData) { // push excel data to the attachment list if it is present
-    console.log('excel_file', requestObject.body.excelData)
-
     let excelAttachment = {
       filename:'subject_data.xlsx',
       content: convertExcelDataUrlToByteArray(requestObject.body.excelData), 
@@ -199,8 +197,8 @@ function prepareMailAttachments(requestObject) {
     if (requestObject.files.previewImage) { // push image file to the attachment list if it is present
       //console.log('preview image', requestObject.body.previewImage)
       //console.log('type of preview image', typeof requestObject.body.previewImage)
-      console.log('image size', requestObject.files.previewImage.size / 1024 / 1024, 'MB')
-      console.log(requestObject.files.previewImage)
+      //console.log('image size', requestObject.files.previewImage.size / 1024 / 1024, 'MB')
+      
       let previewImageAttachment = {
         filename: requestObject.files.previewImage.name,
         content: requestObject.files.previewImage.data,
