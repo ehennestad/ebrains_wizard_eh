@@ -12,12 +12,6 @@
         }
     },
     "datasetVersion": {
-        "summary": {
-            "ui:widget": "textarea",
-            "ui:options": {
-                "rows": 5
-            }
-        },
         "dataType": {
             "ui:widget": "checkboxes"
         },
@@ -44,9 +38,6 @@
         },
         "color": {
             "ui:widget": "color"
-        },
-        "multipleChoicesList": {
-            "ui:widget": "radio"
         },
         "experimentalApproach": {
             "ui:options":  {
@@ -81,67 +72,6 @@
             }
         }
     }, 
-    "secret": {
-        "ui:widget": "hidden"
-    },
-    "disabled": {
-        "ui:disabled": true
-    },
-    "readonly": {
-        "ui:readonly": true
-    },
-    "widgetOptions": {
-        "ui:options": {
-            "backgroundColor": "yellow"
-        }
-    },
-    "selectWidgetOptions": {
-        "ui:options": {
-            "backgroundColor": "pink"
-        }
-    },
-    "sharedAlready": {
-        "sharedAlready": {
-            "ui:widget": "radio"
-        }
-    },
-    "licenseImage": {
-        "ui:widget": "img"
-    },
-    "previewImage": {
-        "ui:widget": "richtext"
-    },
-    "versions": {
-        "versions": {
-            "ui:widget": "radio"
-        }    
-    },
-    "versionInnovation": {
-        "ui:widget": "textarea",
-        "ui:options": {
-            "rows": 3
-        }
-    },
-    "dataCollection": {
-        "ui:widget": "radio"
-    },
-    "dataSharing": {
-        "ui:widget": "radio"
-    },
-    "affiliation": {
-        "ui:widget": "radio"
-    },
-    "taskID": {
-        "ui:help": "If your data are related to more than one task ID, please list them separated by a semicolon (;)."
-    },
-    "fundingPhase": {
-        "ui:widget": "checkboxes"
-    },
-    "publications": {
-        "ui:options":  {
-            "orderable": false
-          }   
-    },
     "subjectExpMetadata": {
 
         "subjectsExist": {
@@ -152,66 +82,6 @@
             "ui:options": {
                 "accept": ".xlsx, .xls"
           }
-        },
-        "subjectsTable": {
-            "subjectRows": {
-                "ui:field": "table",
-                "table": {
-                    "striped": true,
-                    "hover": true,
-                    "search": true,
-                    "keyBoardNav": {
-                        "enterToEdit": true
-                    },
-                    "cellEdit": {
-                        "mode": "click",
-                        "blurToSave": true
-                    },
-                    "insertRow": true,
-                    "deleteRow": true,
-                    "selectRow": {
-                        "mode": "checkbox",
-                        "clickToSelect": true,
-                        "bgColor": "rgb(251, 238, 172)",
-                        "hideSelectColumn": false 
-                      },
-                    "expandColumnOptions": { 
-                        "expandColumnVisible": false
-                    },
-                    "tableCols": [
-                      {
-                        "dataField": "subjectID",
-                        "dataSort": true,
-                        "width": 200
-                      },
-                      {
-                        "dataField": "species"
-                      },
-                      {
-                        "dataField": "sex"
-                      },
-                      {
-                        "dataField": "ageCategory"
-                      },
-                      {
-                        "dataField": "age"
-                      },
-                      {
-                        "dataField": "weight"
-                      },
-                      {
-                        "dataField": "strain"
-                      },
-                      {
-                        "dataField": "pathology"
-                      },
-                      {
-                        "dataField": "phenotype"
-                      }
-                    ]              
-    
-                  }            
-            }
         },
         "externalTable": {
             "ui:widget": "richtext"
