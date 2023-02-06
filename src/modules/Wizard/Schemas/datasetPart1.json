@@ -206,7 +206,7 @@
             "src": "cc_licences-1024x730.png",
             "alt": "Creative Commons licences comparison",
             "width": "850",
-            "citation": "<a href='https://foter.com/blog/how-to-attribute-creative-commons-photos/'>Creative Commons Licenses, Foter.com, CC BY-SA 3.0</a>",
+            "citation": "<a href='https://foter.com/blog/how-to-attribute-creative-commons-photos/' target='_blank' rel='noreferrer'>Creative Commons Licenses, Foter.com, CC BY-SA 3.0</a>",
             "style": {"textAlign":"right", "marginRight":30, "marginTop":-25}
         }
     }

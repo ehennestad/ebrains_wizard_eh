@@ -31,6 +31,9 @@
                 "orderable": false
             }
         },
+        "_relatedPublicationIntro": {
+            "ui:widget": "richtext"
+        },
         "relatedPublication": {
             "ui:options":  {
                 "orderable": false
@@ -94,5 +97,11 @@
 
     "submissionFailedText": {
         "ui:widget": "richtext"
+    }, 
+    "previewImage": {
+        "ui:widget": "richtext"
+    }, 
+    "licenseImage": {
+        "ui:widget": "img"
     }
 }

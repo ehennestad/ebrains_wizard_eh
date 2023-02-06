@@ -67,6 +67,7 @@
     "dataset": {
       "title": "",
       "type": "object",
+      "required": ["authors"],
       "properties": {
         "authors": {
           "type": "array",

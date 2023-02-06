@@ -15,7 +15,10 @@ import SubmissionCompletedWizard from './Pages/SubmissionCompletedWizard.js';
 import ProgressBar from '../../components/ProgressBar';
 import testfunc from '../../helpers/test/test-doc-generator.js';
 
-import { generateDocumentsFromDataset }  from '../../helpers/formDataTranslator';
+// import { generateDocumentsFromDataset }  from '../../helpers/formDataTranslator';
+
+//import createOpenMindsDocuments from '../../helpers/Translator.js';
+
 
 import { generalSchema, dataset1Schema, dataset2Schema, contributorsSchema, fundingSchema, 
          experimentSchema, submissionSuccededSchema, submissionFailedSchema } 
@@ -242,7 +245,8 @@ class Wizard extends React.Component {
       return {...value, ...dataset[key]}; // flatten object
     }, []);
 
-    // const res = generateDocumentsFromDataset(datasetFlattened);
+    //const res = generateDocumentsFromDataset(datasetFlattened);
+    //const res = createOpenMindsDocuments(dataset)
     const res = {'documents': null};
 
     // // Create a json string from data which user has entered.
@@ -266,11 +270,12 @@ class Wizard extends React.Component {
     this.jsonStr = null;
     this.previewImage = [];
     this.saveFormDatasInCookie();
-    this.goToWizardStep( WIZARD_STEPS_LIST[0] )
+    let skipValidation = true;
+    this.goToWizardStep( WIZARD_STEPS_LIST[0], skipValidation )
     this.validSteps = this.initializeValidSteps();
   };
 
-  loadJson = () => { // Consider moving this to a separate file (e.g. utils.js
+  loadJson = () => { // Consider moving this to a separate file (e.g. utils.js)
     let input = document.createElement("input");
     input.type = "file";
     input.accept=".json,application/json";

@@ -154,13 +154,19 @@ function writeMailBodyConfirmation(jsonObject) {
   const contactPersonName = jsonObject[0]["general"]["contactperson"]["firstName"];
   const datasetTitle = jsonObject[0]["datasetinfo"]["dataset"]["fullName"];
 
+  var ticketPrompt = "";
+  let ticketNumber = jsonObject[0]["general"]["ticketNumber"];
+  if (ticketNumber) {
+    ticketNumber = cleanTicketNumber(ticketNumber);
+    ticketPrompt = ", and please add the following ticket reference to the mail subject line: " + `[Ticket#${ticketNumber}]`;
+  }
   let mailBodyStr = `Dear ${contactPersonName},
 
 Thank you for submitting metadata for the dataset "${datasetTitle}". We will review the metadata and get back to you as soon as possible.
 
 The attached file(s) are the metadata you submitted. The json file contains the metadata in a machine-readable format and if you at some point need to make changes to the metadata, you can upload it to the wizard, make modifications and resubmit.
 
-If you have any further questions, please contact the curation team at ${process.env.EMAIL_ADDRESS_CURATION_SUPPORT}.
+If you have any further questions, do not hesitate to contact the curation team at ${process.env.EMAIL_ADDRESS_CURATION_SUPPORT}${ticketPrompt}.
 
 Best regards,
 EBRAINS Curation Service

@@ -1492,14 +1492,13 @@
         "techniqueIntro": {
           "type": "null",
           "title": "Technique",
-          "description": "Please select techniques describing your data acquisition and analysis. Start typing to find relevant techniques."
+          "description": "Please select techniques describing your data acquisition and analysis. Start typing to find relevant techniques and then select from the list. If you cannot find the technique you are looking for, you can add it as a keyword below."
         },
         "technique": {
           "type": "array",
           "minItems": 1,
           "maxItems": 8,          
           "title": "",
-          "_name": "technique test",
           "items": {
             "_name": "Technique",
             "type": "string",

@@ -12,7 +12,6 @@ import * as fundingModule from '../modules/Wizard/Schemas/funding.json';
 import * as submissionSuccededModule from '../modules/Wizard/Schemas/submissionSucceededSchema.json';
 import * as submissionFailedModule from '../modules/Wizard/Schemas/submissionFailedSchema.json';
 
-
 export const generalSchema = populateSchemaWithControlledTerms(generalSchemaModule.default);
 export const dataset1Schema = populateSchemaWithControlledTerms(dataset1Module.default);
 export const experimentSchema = populateSchemaWithControlledTerms(experimentModule.default);
@@ -22,7 +21,3 @@ export const fundingSchema = fundingModule.default;
 export const dataset2Schema = dataset2Module.default;
 export const submissionSuccededSchema = submissionSuccededModule.default;
 export const submissionFailedSchema = submissionFailedModule.default;
-
-console.log('general:', generalSchema)
-
- 
