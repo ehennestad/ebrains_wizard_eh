@@ -3,6 +3,7 @@ import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Cookies from 'universal-cookie'
 import ReactJson from 'react-json-view';
+import { notification } from 'antd';
 
 import GeneralWizard from './Pages/GeneralWizard';
 import DatasetWizard from './Pages/DatasetWizard';
@@ -16,12 +17,9 @@ import testfunc from '../../helpers/test/test-doc-generator.js';
 
 import { generateDocumentsFromDataset }  from '../../helpers/formDataTranslator';
 
-import { generalSchema, dataset1Schema, dataset2Schema, 
-         contributorsSchema, fundingSchema, experimentSchema,
-         submissionSuccededSchema, submissionFailedSchema } 
+import { generalSchema, dataset1Schema, dataset2Schema, contributorsSchema, fundingSchema, 
+         experimentSchema, submissionSuccededSchema, submissionFailedSchema } 
   from '../../helpers/FormSchemaProvider';
-
-import {  notification } from 'antd';
 
 
 // Todo: Bug when reseting form. Ticket number will not be updated from query parameter
@@ -187,16 +185,10 @@ class Wizard extends React.Component {
       let dataset = Object.fromEntries(this.formData) // convert formData Map to object
       const jsonData = JSON.stringify(dataset);
 
-      //var startTime = performance.now()
       cookies.set('wizardData', jsonData, { path: '/' })
-      //var endTime = performance.now()
-      //console.log(`Saving to cookie took: ${endTime - startTime} milliseconds`)
 
-      //startTime = performance.now()
-      //localStorage.setItem('wizardData2', jsonData)
-      //endTime = performance.now()
-      //console.log(`Saving to local storage took: ${endTime - startTime} milliseconds`)
-
+      // See: https://stackoverflow.com/questions/3220660/local-storage-vs-cookies
+      //localStorage.setItem('wizardData', jsonData)
     }
   }
 
