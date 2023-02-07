@@ -4,41 +4,38 @@ const path = require('path');//&&added by Archana&&//
 const controlledTerms = require('../../src/controlledTerms/studyTargetTermGroup.json');
 
 function generateSchema(data) {
+
+    // Inspired by rjsf playground : "schema dependencies"
+
     const schema = {
       type: "object",
-      properties: {term: {title: "Study target category", enum: Object.keys(data) } },
-      allOf: []
+      properties: {term: {title: "Study target category", type: "string", enum: Object.keys(data) } },
+      required: ["term"],
+      dependencies: {term: {oneOf: []}}
     };
   
     Object.entries(data).forEach(([term, instances]) => {
 
       // if instances is empty
       if (instances.length !== 0) {
-        schema.allOf.push({
-          if: {
-            properties: {
-              term: {
-                const: term
-              }
+        schema.dependencies.term.oneOf.push( {
+          "properties": {
+            "term": {
+              "enum": [
+                term
+              ]
+            },
+            [term]: {
+              "title": term, 
+              "type": "string",
+              "enum": instances.map( (instance) => (instance.name) )
             }
           },
-          then: {
-            properties: {
-              instance: {
-                title: term,
-                type: "string",
-                enum: instances.map( (instance) => (instance.name) )
-                
-              }
-            },
-            required: ["instance"]
-          }
+          "required": [
+            term
+          ]
         })
       };
-    });
-
-    schema.allOf.push({
-      required: ["term"]
     });
     
     return schema;
@@ -49,12 +46,12 @@ function generateSchema(data) {
 
   saveFolder = process.cwd() + "/src" + "/schemas";
   
-  const filePath = path.join(saveFolder, 'test.json');
+  const filePath = path.join(saveFolder, 'studyTargetCascadeSchema.json');
       
   fs.writeFile(filePath, jsonStr, (err) => {
       if (err) {
           console.error(err);
       } else {
-          console.log('File with instances for cascade schema written successfully');
+          console.log('File with instances for "cascade" schema written successfully');
       }
   });
