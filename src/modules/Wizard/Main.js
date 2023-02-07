@@ -60,14 +60,15 @@ class Wizard extends React.Component {
     super(props);
     this.ticketNumber = "";                       // ticket number of the submission
     this.formData = this.initializeFormDataMap(); // formdata for each wizard step in a Map
-    this.jsonStr = null;                          // json string of the whole formdata
+    this.jsonStr = null;                          // json string of the whole formdata // Todo: What is this used for? Remove???
     this.previewImage = [];                       // image for preview of dataset
-    this.openMindsDocument = null;                // openMinds document for the dataset
+    this.openMindsDocument = null;                // openMinds document for the dataset // Currently only used for testing
     this.validSteps = this.initializeValidSteps(); // list of valid steps
     this.state = { 
       currentStep: WIZARD_STEPS_LIST[0],
     }
     this.isInitialized = false;
+    this.needUserConfirmation = false; 
   }
 
   initializeFormDataMap = (formStates) => {
@@ -140,9 +141,12 @@ class Wizard extends React.Component {
     return currentStepIndex;
   }
 
-  goToWizardStep = (nextWizardStep, skipValidation) => {
+  goToWizardStep = (nextWizardStep, skipValidation, scrollToTop) => {
     if (skipValidation === undefined) {
       skipValidation = false;
+    }
+    if (scrollToTop === undefined) {
+      scrollToTop = true;
     }
 
     if (typeof nextWizardStep === "number") {
@@ -157,7 +161,10 @@ class Wizard extends React.Component {
     }
 
     this.setState({ currentStep: nextWizardStep });
-    window.scrollTo(0, 0);
+
+    if (scrollToTop) {
+      window.scrollTo(0, 0);
+    }
   };
 
   goBack = () => {
@@ -198,12 +205,15 @@ class Wizard extends React.Component {
   handleSubmit = (formData) => {
 
     let currentWizardStep = this.state.currentStep;
-
     switch (currentWizardStep) {
 
       case WIZARD_STEP_EXPERIMENT:
-        this.handleFinalSubmit(formData);
-        return // Setting next wizard page is handled internally in handleFinalSubmit
+        this.updateFormData(currentWizardStep, formData)
+        this.needUserConfirmation = true;
+        this.setState({ currentStep: this.state.currentStep });
+
+        //this.handleFinalSubmit(formData);
+        break // Setting next wizard page is handled internally in handleFinalSubmit
         
       default:
         this.updateFormData(currentWizardStep, formData)
@@ -221,6 +231,11 @@ class Wizard extends React.Component {
   }
 
   handleFinalSubmit = data => {
+    if (data === undefined) {
+        // todo: use last step...
+        let formName = STEP_MAP.get( this.state.currentStep ).name;
+        data = this.formData.get( formName )
+    }
 
     // retrieve excel data from data
     let subjectExcelData = [];
@@ -362,8 +377,14 @@ class Wizard extends React.Component {
         wizardPageProps.goBack = this.goBack;
         break;
       case WIZARD_STEP_EXPERIMENT:
-        // check that items 0-4 are valid
+        // check that items 0-4 are valid  // Todo: check that all items are valid except the last one
         wizardPageProps.isValid = this.validSteps.slice(0, 5).every( (item) => item === true );
+       
+        wizardPageProps.doShowModal = this.needUserConfirmation;
+        wizardPageProps.onSubmissionConfirmed = this.handleFinalSubmit;
+        wizardPageProps.onSubmissionCanceled = () => { this.goToWizardStep(this.state.currentStep, true, false) }; 
+
+        this.needUserConfirmation = false; // reset the flag for the submission confirmation dialog
 
       case WIZARD_STEP_DATASET: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
         wizardPageProps.goBack = this.goBack;
@@ -376,15 +397,15 @@ class Wizard extends React.Component {
     switch (this.state.currentStep) {
 
       case WIZARD_STEP_GENERAL: case WIZARD_STEP_DATASET: case WIZARD_STEP_DATASET2: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
+
         return (
-          <>
-          { (process.env.NODE_ENV === "development") ? <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button> : null }
-            <ProgressBar step={stepNum} status={this.validSteps} onChanged={this.goToWizardStep} />
-            <WizardComponent {...wizardPageProps} /> 
-            {/* <WizardComponent schema={schema} formData={currentFormData} onSubmit={this.handleSubmit} onChange={this.onFormChanged} goBack={this.goBack} />  */}
-          </>
-        );
-      
+            <>
+            { (process.env.NODE_ENV === "development") ? <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button> : null }
+              <ProgressBar step={stepNum} status={this.validSteps} onChanged={this.goToWizardStep} />
+              <WizardComponent {...wizardPageProps} />
+            </>
+          );
+                
       case WIZARD_SUCCEEDED: case WIZARD_FAILED:
         return ( <WizardComponent schema={schema} onReset={this.handleReset} onSave={this.saveState}/> );
 

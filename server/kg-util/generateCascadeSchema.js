@@ -25,14 +25,14 @@ function generateSchema(data) {
                 term
               ]
             },
-            [term]: {
+            instance: {
               "title": term, 
               "type": "string",
               "enum": instances.map( (instance) => (instance.name) )
             }
           },
           "required": [
-            term
+            "instance"
           ]
         })
       };

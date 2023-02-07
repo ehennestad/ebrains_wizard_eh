@@ -81,7 +81,7 @@
                     "GeneticStrainType"
                   ]
                 },
-                "GeneticStrainType": {
+                "instance": {
                   "title": "GeneticStrainType",
                   "type": "string",
                   "enum": [
@@ -96,7 +96,7 @@
                 }
               },
               "required": [
-                "GeneticStrainType"
+                "instance"
               ]
             },
             {
@@ -106,7 +106,7 @@
                     "Disease"
                   ]
                 },
-                "Disease": {
+                "instance": {
                   "title": "Disease",
                   "type": "string",
                   "enum": [
@@ -131,7 +131,7 @@
                 }
               },
               "required": [
-                "Disease"
+                "instance"
               ]
             },
             {
@@ -141,7 +141,7 @@
                     "Species"
                   ]
                 },
-                "Species": {
+                "instance": {
                   "title": "Species",
                   "type": "string",
                   "enum": [
@@ -165,7 +165,7 @@
                 }
               },
               "required": [
-                "Species"
+                "instance"
               ]
             },
             {
@@ -175,7 +175,7 @@
                     "SubcellularEntity"
                   ]
                 },
-                "SubcellularEntity": {
+                "instance": {
                   "title": "SubcellularEntity",
                   "type": "string",
                   "enum": [
@@ -197,7 +197,7 @@
                 }
               },
               "required": [
-                "SubcellularEntity"
+                "instance"
               ]
             },
             {
@@ -207,7 +207,7 @@
                     "Handedness"
                   ]
                 },
-                "Handedness": {
+                "instance": {
                   "title": "Handedness",
                   "type": "string",
                   "enum": [
@@ -220,7 +220,7 @@
                 }
               },
               "required": [
-                "Handedness"
+                "instance"
               ]
             },
             {
@@ -230,7 +230,7 @@
                     "Organ"
                   ]
                 },
-                "Organ": {
+                "instance": {
                   "title": "Organ",
                   "type": "string",
                   "enum": [
@@ -244,7 +244,7 @@
                 }
               },
               "required": [
-                "Organ"
+                "instance"
               ]
             },
             {
@@ -254,7 +254,7 @@
                     "UBERONParcellation"
                   ]
                 },
-                "UBERONParcellation": {
+                "instance": {
                   "title": "UBERONParcellation",
                   "type": "string",
                   "enum": [
@@ -1095,7 +1095,7 @@
                 }
               },
               "required": [
-                "UBERONParcellation"
+                "instance"
               ]
             },
             {
@@ -1105,7 +1105,7 @@
                     "CellType"
                   ]
                 },
-                "CellType": {
+                "instance": {
                   "title": "CellType",
                   "type": "string",
                   "enum": [
@@ -1167,7 +1167,7 @@
                 }
               },
               "required": [
-                "CellType"
+                "instance"
               ]
             },
             {
@@ -1177,7 +1177,7 @@
                     "BiologicalSex"
                   ]
                 },
-                "BiologicalSex": {
+                "instance": {
                   "title": "BiologicalSex",
                   "type": "string",
                   "enum": [
@@ -1189,7 +1189,7 @@
                 }
               },
               "required": [
-                "BiologicalSex"
+                "instance"
               ]
             },
             {
@@ -1199,7 +1199,7 @@
                     "MolecularEntity"
                   ]
                 },
-                "MolecularEntity": {
+                "instance": {
                   "title": "MolecularEntity",
                   "type": "string",
                   "enum": [
@@ -1294,7 +1294,7 @@
                 }
               },
               "required": [
-                "MolecularEntity"
+                "instance"
               ]
             },
             {
@@ -1304,7 +1304,7 @@
                     "BiologicalOrder"
                   ]
                 },
-                "BiologicalOrder": {
+                "instance": {
                   "title": "BiologicalOrder",
                   "type": "string",
                   "enum": [
@@ -1318,7 +1318,7 @@
                 }
               },
               "required": [
-                "BiologicalOrder"
+                "instance"
               ]
             },
             {
@@ -1328,7 +1328,7 @@
                     "BreedingType"
                   ]
                 },
-                "BreedingType": {
+                "instance": {
                   "title": "BreedingType",
                   "type": "string",
                   "enum": [
@@ -1342,7 +1342,7 @@
                 }
               },
               "required": [
-                "BreedingType"
+                "instance"
               ]
             },
             {
@@ -1352,7 +1352,7 @@
                     "DiseaseModel"
                   ]
                 },
-                "DiseaseModel": {
+                "instance": {
                   "title": "DiseaseModel",
                   "type": "string",
                   "enum": [
@@ -1368,7 +1368,7 @@
                 }
               },
               "required": [
-                "DiseaseModel"
+                "instance"
               ]
             },
             {
@@ -1378,7 +1378,7 @@
                     "CellCultureType"
                   ]
                 },
-                "CellCultureType": {
+                "instance": {
                   "title": "CellCultureType",
                   "type": "string",
                   "enum": [
@@ -1388,7 +1388,7 @@
                 }
               },
               "required": [
-                "CellCultureType"
+                "instance"
               ]
             }
           ]
