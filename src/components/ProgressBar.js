@@ -22,8 +22,8 @@ const customDot = (dot, { status, index }) => (
 
 const ProgressBar = ({step, status, onChanged}) => {
 //const ProgressBar = ({step, status, onChanged}) => {
-  
-  const [current, setCurrent] = useState(0);
+
+  const [, setCurrent] = useState(0);
   
   const onChange = (value) => {
     setCurrent(value);
@@ -33,8 +33,10 @@ const ProgressBar = ({step, status, onChanged}) => {
   let items = [];
 
   for (let i = 0; i < NUM_STEPS; i++) {
+      
       let thisDescription = 'Incomplete';
       let thisStatus = 'wait';
+      
       if ( status[i] ) {
         thisDescription = 'Completed';
         thisStatus = 'finish';
