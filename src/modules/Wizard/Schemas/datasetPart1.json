@@ -36,25 +36,64 @@
             "uniqueItems": true
         },
 
-        "copyright": {
+        "copyrightHolder": {
             "title": "",
             "required": [
-            "holder",
-            "year"
+            "holder"
             ],
             "properties": {
                 "holder": {
                     "type": "string",
-                    "description": "Legal entity in possession of the copyright.",
-                    "title": "Copyright Holder"
-                },
-                "year": {
-                    "type": "string",
-                    "pattern": "([0-9]{4})",
-                    "description": "Enter the year during which the copyright was first asserted.",
-                    "title": "Copyright Year"
+                    "description": "Select the type of legal entity in possession of the copyright.",
+                    "title": "Copyright Holder",
+                    "enum": [
+                        "Person",
+                        "Organization"
+                    ],
+                    "default": "Person"
+                }
+            },
+            "dependencies":{
+                "holder":{
+                    "oneOf":[
+                    {
+                        "properties":{
+                            "holder":{
+                                "const": "Person"
+                            },
+                            "givenName": {
+                                "type": "string",
+                                "title": "First name"
+                            },
+                            "familyName": {
+                                "type": "string",
+                                "title": "Last name"
+                            }
+                        },
+                        "required": ["givenName", "familyName"]
+                    },
+                    {
+                        "properties":{
+                            "holder":{
+                                "const": "Organization"
+                            },
+                            "fullName": {
+                                "type": "string",
+                                "title": "Enter the full name of the organization who holds the copyright"
+                            }
+                        },
+                        "required": ["fullName"]
+                    }
+                    ]
                 }
             }
+        },
+
+        "copyrightYear": {
+            "type": "string",
+            "pattern": "([0-9]{4})",
+            "description": "Enter the year during which the copyright was first asserted.",
+            "title": "Copyright Year"
         },
 
         "copyrightStatus": {
@@ -91,11 +130,15 @@
                             "isCopyrighted":{
                                 "const": true
                             },
-                            "copyright": {
-                                "$ref": "#/definitions/copyright"
+                            "copyrightHolder": {
+                                "$ref": "#/definitions/copyrightHolder"
+                            },
+                            "copyrightYear": {
+                                "$ref": "#/definitions/copyrightYear"
                             }
+
                         },
-                        "required": ["isCopyrighted"]
+                        "required": ["isCopyrighted", "copyrightHolder", "copyrightYear" ]
                     }
                     ]
                 }

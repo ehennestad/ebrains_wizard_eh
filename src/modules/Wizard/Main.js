@@ -113,6 +113,10 @@ class Wizard extends React.Component {
     generalForm.ticketNumber = ticketNumber;
     this.formData.set('general', generalForm);
 
+    // Trigger a re-render to make sure ticket number shows correctly
+    let skipFormValidation = true;
+    this.goToWizardStep( WIZARD_STEPS_LIST[0], skipFormValidation )
+
     this.isInitialized = true;
   };
 
@@ -303,7 +307,7 @@ class Wizard extends React.Component {
 
         reader.addEventListener("load", () => {
           let data = JSON.parse(reader.result);
-          let formStates = data;
+          let formStates = data[0];
           this.loadState(formStates);
         }, false);        
 
