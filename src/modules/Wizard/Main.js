@@ -15,17 +15,12 @@ import SubmissionCompletedWizard from './Pages/SubmissionCompletedWizard.js';
 import ProgressBar from '../../components/ProgressBar';
 import testfunc from '../../helpers/test/test-doc-generator.js';
 
-// import { generateDocumentsFromDataset }  from '../../helpers/formDataTranslator';
-
-//import createOpenMindsDocuments from '../../helpers/Translator.js';
-
-
 import { generalSchema, dataset1Schema, dataset2Schema, contributorsSchema, fundingSchema, 
          experimentSchema, submissionSuccededSchema, submissionFailedSchema } 
   from '../../helpers/FormSchemaProvider';
 
-
-// Todo: Bug when reseting form. Ticket number will not be updated from query parameter
+// Todo: 
+// [ ] Bug when reseting form. Ticket number will not be updated from query parameter. Attempted fix, but needs testing.
 
 // Path for posting submission to the backend
 const SUBMISSION_PATH = "/api/submission/send_email";
@@ -60,7 +55,7 @@ class Wizard extends React.Component {
     super(props);
     this.ticketNumber = "";                       // ticket number of the submission
     this.formData = this.initializeFormDataMap(); // formdata for each wizard step in a Map
-    this.jsonStr = null;                          // json string of the whole formdata // Todo: What is this used for? Remove???
+    this.jsonStr = null;                          // json string of the whole formdata // Todo: What is this used for? Remove??? Duplicate of formData
     this.previewImage = [];                       // image for preview of dataset
     this.openMindsDocument = null;                // openMinds document for the dataset // Currently only used for testing
     this.validSteps = this.initializeValidSteps(); // list of valid steps
@@ -104,8 +99,7 @@ class Wizard extends React.Component {
     this.ticketNumber = ticketNumber;
 
     if (jsonStr !== undefined) {
-      let formStates = JSON.parse(jsonStr);
-      this.loadState(formStates);
+      this.loadState( JSON.parse(jsonStr) );
     } 
 
     // Update the general form with ticketnumber from URL
@@ -209,18 +203,14 @@ class Wizard extends React.Component {
   handleSubmit = (formData) => {
 
     let currentWizardStep = this.state.currentStep;
-    switch (currentWizardStep) {
+    const lastWizardStep = WIZARD_STEPS_LIST[WIZARD_STEPS_LIST.length - 1];
 
-      case WIZARD_STEP_EXPERIMENT:
-        this.updateFormData(currentWizardStep, formData)
+    this.updateFormData(currentWizardStep, formData)
+
+    if (currentWizardStep === lastWizardStep) {
         this.needUserConfirmation = true;
         this.setState({ currentStep: this.state.currentStep });
-
-        //this.handleFinalSubmit(formData);
-        break // Setting next wizard page is handled internally in handleFinalSubmit
-        
-      default:
-        this.updateFormData(currentWizardStep, formData)
+    } else {
         this.goNext()
     }
   };
@@ -241,14 +231,14 @@ class Wizard extends React.Component {
         data = this.formData.get( formName )
     }
 
-    // retrieve excel data from data
+    // Retrieve excel data from form data if it is present
     let subjectExcelData = [];
 
-    if (data.subjectExpMetadata.subjectsExist) {
-      subjectExcelData = data.subjectExpMetadata.uploadedExcelFile;
-      delete data.subjectExpMetadata.uploadedExcelFile
-    } else {
-      subjectExcelData = [];
+    if (data.subjectExpMetadata !== undefined) {
+      if (data.subjectExpMetadata.subjectsExist) {
+        subjectExcelData = data.subjectExpMetadata.uploadedExcelFile;
+        delete data.subjectExpMetadata.uploadedExcelFile
+      }
     }
 
     let previewImageFile = [];
@@ -360,6 +350,9 @@ class Wizard extends React.Component {
     const currentFormData = this.formData.get(formName);
     const stepNum = WIZARD_STEPS_LIST.indexOf(this.state.currentStep);
 
+    const numSteps = WIZARD_STEPS_LIST.length;
+    const lastStep = WIZARD_STEPS_LIST[numSteps - 1];
+
     let wizardPageProps = {
       schema: schema,
       formData: currentFormData,
@@ -397,6 +390,17 @@ class Wizard extends React.Component {
       default:
         break;
     };
+
+    if (this.state.currentStep === lastStep) {
+      // Check that all previous steps are valid
+      wizardPageProps.isValid = this.validSteps.slice(0, numSteps-1).every( (item) => item === true );
+      
+      wizardPageProps.doShowModal = this.needUserConfirmation;
+      wizardPageProps.onSubmissionConfirmed = this.handleFinalSubmit;
+      wizardPageProps.onSubmissionCanceled = () => { this.goToWizardStep(this.state.currentStep, true, false) }; 
+      
+      this.needUserConfirmation = false; // reset the flag for the submission confirmation dialog
+    }
     
     switch (this.state.currentStep) {
 
