@@ -17,7 +17,7 @@ import ProgressBar from '../../components/ProgressBar';
 
 import { generalSchema, dataset1Schema, dataset2Schema, contributorsSchema, fundingSchema, 
          experimentSchema, submissionSuccededSchema, submissionFailedSchema } 
-  from '../../helpers/FormSchemaProvider';
+  from './Schemas';
 
 const testfunc = () => {};
 
