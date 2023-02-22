@@ -101,6 +101,14 @@ const populateSchema = schema => {
 function addControlledTermSetToSchema(schema) {
     // Inspired by rjsf playground : "schema dependencies"
 
+    // This function takes a schema object and adds a controlled term set to it. 
+    // The controlled term set is a list of controlled terms that can be selected 
+    // from. When a term is selected from the list, the schema is updated to 
+    // include the properties of the selected term. In the form, the user first 
+    // selects the term from a dropdown and a new dropdown appears with the 
+    // instances of the selected term. The user then selects an instance from the 
+    // new dropdown.
+
     const data = importControlledTerms(schema.controlledTermSet)
 
     schema.type = "object";

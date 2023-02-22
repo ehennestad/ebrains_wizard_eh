@@ -7,6 +7,7 @@ const atob          = require('atob');                  // atob is needed for de
 // Get local modules that are needed for the submission route
 var mailTransporter = require('../mail-setup/MailTransporter');
 
+const confirmationEmailTemplate = require('../../templates/ConfirmationEmail');
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Create a router to handle requests
@@ -160,19 +161,20 @@ function writeMailBodyConfirmation(jsonObject) {
     ticketNumber = cleanTicketNumber(ticketNumber);
     ticketPrompt = ", and please add the following ticket reference to the mail subject line: " + `[Ticket#${ticketNumber}]`;
   }
-  let mailBodyStr = `Dear ${contactPersonName},
+//   let mailBodyStr = `Dear ${contactPersonName},
 
-Thank you for submitting metadata for the dataset "${datasetTitle}". We will review the metadata and get back to you as soon as possible.
+// Thank you for submitting metadata for the dataset "${datasetTitle}". We will review the metadata and get back to you as soon as possible.
 
-The attached file(s) are the metadata you submitted. The json file contains the metadata in a machine-readable format and if you at some point need to make changes to the metadata, you can upload it to the wizard, make modifications and resubmit.
+// The attached file(s) are the metadata you submitted. The json file contains the metadata in a machine-readable format and if you at some point need to make changes to the metadata, you can upload it to the wizard, make modifications and resubmit.
 
-If you have any further questions, do not hesitate to contact the curation team at ${process.env.EMAIL_ADDRESS_CURATION_SUPPORT}${ticketPrompt}.
+// If you have any further questions, do not hesitate to contact the curation team at ${process.env.EMAIL_ADDRESS_CURATION_SUPPORT}${ticketPrompt}.
 
-Best regards,
-EBRAINS Curation Service
-curation-support@ebrains.eu
+// Best regards,
+// EBRAINS Curation Service
+// curation-support@ebrains.eu
 
-`;
+// `;
+let mailBodyStr = eval(`\`${confirmationEmailTemplate}\``);
 return mailBodyStr
 }
 
@@ -181,14 +183,14 @@ function prepareMailAttachments(requestObject) {
   let mailAttachmentArray = []; // Initialize an empty list for attachments
 
   let jsonAttachment = { // utf-8 string as an attachment
-    filename: 'metadata.json',
+    filename: 'ebrains_wizard_metadata.json',
     content: requestObject.body.jsonData
   };
   mailAttachmentArray.push(jsonAttachment)
   
   if (requestObject.body.excelData) { // push excel data to the attachment list if it is present
     let excelAttachment = {
-      filename:'subject_data.xlsx',
+      filename:'ebrains_wizard_subject_data.xlsx',
       content: convertExcelDataUrlToByteArray(requestObject.body.excelData), 
       contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
     };

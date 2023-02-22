@@ -13,11 +13,13 @@ import ExperimentWizard from './Pages/ExperimentWizard.js';
 import SubmissionCompletedWizard from './Pages/SubmissionCompletedWizard.js';
 
 import ProgressBar from '../../components/ProgressBar';
-import testfunc from '../../helpers/test/test-doc-generator.js';
+//import testfunc from '../../helpers/test/test-doc-generator.js';
 
 import { generalSchema, dataset1Schema, dataset2Schema, contributorsSchema, fundingSchema, 
          experimentSchema, submissionSuccededSchema, submissionFailedSchema } 
   from '../../helpers/FormSchemaProvider';
+
+const testfunc = () => {};
 
 // Todo: 
 // [ ] Bug when reseting form. Ticket number will not be updated from query parameter. Attempted fix, but needs testing.
@@ -373,15 +375,6 @@ class Wizard extends React.Component {
         wizardPageProps.imageUploadedFcn = this.onImageUploaded;
         wizardPageProps.goBack = this.goBack;
         break;
-      case WIZARD_STEP_EXPERIMENT:
-        // check that items 0-4 are valid  // Todo: check that all items are valid except the last one
-        wizardPageProps.isValid = this.validSteps.slice(0, 5).every( (item) => item === true );
-       
-        wizardPageProps.doShowModal = this.needUserConfirmation;
-        wizardPageProps.onSubmissionConfirmed = this.handleFinalSubmit;
-        wizardPageProps.onSubmissionCanceled = () => { this.goToWizardStep(this.state.currentStep, true, false) }; 
-
-        this.needUserConfirmation = false; // reset the flag for the submission confirmation dialog
 
       case WIZARD_STEP_DATASET: case WIZARD_STEP_FUNDING: case WIZARD_STEP_CONTRIBUTORS: case WIZARD_STEP_EXPERIMENT:
         wizardPageProps.goBack = this.goBack;
