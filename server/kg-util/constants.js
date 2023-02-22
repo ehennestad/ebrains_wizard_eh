@@ -1,3 +1,4 @@
+// todo: get directly from openMINDS schema
 let StudyTargetTerms = [
     "GeneticStrainType",
     "Disease",

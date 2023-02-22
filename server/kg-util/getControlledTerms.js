@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
+// returns an array of all instances of controlled terms
 async function getControlledTerms (termNames) {
     const sourcePath = path.join(__dirname, '../../src/controlledTerms/');
     const numTerms = termNames.length;
@@ -12,6 +13,8 @@ async function getControlledTerms (termNames) {
 
     return await Promise.all(controlledTermArray);
 };
+
+// returns an object with all controlled terms as key value pairs
 function importControlledTerms(termNames) {
 
     const sourcePath = path.join(__dirname, '../../src/controlledTerms/');
