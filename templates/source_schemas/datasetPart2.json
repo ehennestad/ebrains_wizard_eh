@@ -1,0 +1,88 @@
+{
+    "title": "About your dataset - Part 2",
+    "description": "Please provide some general information about your dataset below.",
+    "type": "object",
+    "required": [],
+
+    "definitions": {
+        "homepage": {
+            "title": "Home page",
+            "type": "string",
+            "format": "url",
+            "description": "Add the URL to the homepage of this dataset (if applicable)."
+        },
+        "supportChannel": {
+            "title": "",
+            "type": "array",
+            "description": "Enter all channels through which a user can receive support for handling this research product (if applicable). This could for example be a link to a website or a contact email address.",
+            "items": {
+                "type": "string"
+            }
+        },
+        "howToCite": {
+            "title": "How to cite",
+            "type": "string",
+            "description": "Enter the preferred citation for this dataset version."
+        },
+        "inputData": {
+            "title": "Input data",
+            "type": "string",
+            "description": "Add the data that was used as input for this dataset version. This is typically a DOI or reference to the original dataset from which the current dataset is derived (if applicable)."
+        },
+        "_relatedPublicationIntro": {
+            "type": "string",
+            "title": "Related publications",
+            "text": "Please list DOIs of all related publications that report on the dataset itself or on analysis based on the data. The DOI should be in the following format: https://doi.org/[DOI], for example <a href='https://doi.org/10.1000/182' target='_blank' rel='noreferrer'>https://doi.org/10.1000/182</a>"
+        },
+        "relatedPublication": {
+            "title": "",
+            "type": "array",
+            "items": {
+                "_name": "Related publication",
+                "type": "string",
+                "pattern": "^https:\/\/doi.org\/10.[0-9]{4,9}\/[-._;()/:A-Za-z0-9]+"
+            }
+        }
+    },
+
+    "properties": {
+        "datasetVersion":{
+            "type": "object",
+            "title": "",
+            "required": [
+            ],    
+            "properties": {
+                "homepage": {
+                    "$ref": "#/definitions/homepage"
+                },
+                "supportChannelIntro": {
+                    "type": "null",
+                    "title": "Support channel"
+                  },
+                "supportChannel": {
+                    "$ref": "#/definitions/supportChannel"
+                },
+                "howToCite": {
+                    "$ref": "#/definitions/howToCite"
+                },
+                "inputData": {
+                    "$ref": "#/definitions/inputData"
+                },
+                "_relatedPublicationIntro": {
+                    "$ref": "#/definitions/_relatedPublicationIntro"
+                },
+                "relatedPublication": {
+                    "title": "",
+                    "$ref": "#/definitions/relatedPublication"
+                }
+            }
+        },
+
+        "previewImage": {
+            "title": "Dataset preview image",
+            "type": "string",
+            "textModule": "PreviewImageDescription",
+            "text": ""
+        }
+    }
+}

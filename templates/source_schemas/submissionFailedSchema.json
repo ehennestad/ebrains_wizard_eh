@@ -1,0 +1,18 @@
+{
+  "title": "Metadata submission failed",
+  "type": "object",
+  "definitions": {
+    "submissionFailedText": {
+      "title": " ",
+      "type": "string",
+      "textModule": "SubmissionFailed",
+      "text": ""
+
+    }
+  },
+  "properties": {
+    "submissionFailedText": {
+      "$ref": "#/definitions/submissionFailedText"
+    }
+  }
+}

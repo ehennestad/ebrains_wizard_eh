@@ -1,0 +1,17 @@
+{
+  "title": "Metadata submission completed",
+  "type": "object",
+  "definitions": {
+    "submissionCompletedText": {
+      "title": " ",
+      "type": "string",
+      "textModule": "SubmissionComplete",
+      "text": ""
+    }
+  },
+  "properties": {
+    "submissionCompletedText": {
+      "$ref": "#/definitions/submissionCompletedText"
+    }
+  }
+}
