@@ -1,4 +1,5 @@
 var fetchControlledTerms = require('./server/kg-util/fetchControlledTerms');
+var assembleRJSFSchemas = require('./server/internal/formSchemaAssembler');
 var fetchCoreSchemaInstances = require('./server/kg-util/fetchCoreSchemaInstances');
 
 const {exec} = require('child_process');
@@ -17,16 +18,21 @@ async function setup() {
             var endTime = performance.now()
             console.log(`Fetched all controlled terms in: ${(endTime - startTime)/1000} seconds`)
 
-            // Redo the build in order for the updated terms to be used by the frontend
-            console.log('Creating a production build for the React App...')           
-            exec('npm run build', (err) => {
-                if (err) {
-                    console.error(`exec error: ${err}`);
-                } else {
-                    console.log(`Completed React App build in: ${(performance.now() - endTime)/1000} seconds`);
-                }
-                //console.log(`Completed React App build in: ${(performance.now() - endTime)/1000} seconds`);
-            }); 
+            assembleRJSFSchemas()
+            .then( () => {
+                console.log('Assembled form schemas from templates and controlled terms.')
+
+                // Redo the build in order for the updated terms to be used by the frontend
+                console.log('Creating a production build for the React App...')           
+                exec('npm run build', (err) => {
+                    if (err) {
+                        console.error(`exec error: ${err}`);
+                    } else {
+                        console.log(`Completed React App build in: ${(performance.now() - endTime)/1000} seconds`);
+                    }
+                    //console.log(`Completed React App build in: ${(performance.now() - endTime)/1000} seconds`);
+                }); 
+            })
         })
         .catch(err => {
             console.log('Error fetching controlled terms: ' + err);

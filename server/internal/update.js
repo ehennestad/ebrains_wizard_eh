@@ -1,8 +1,11 @@
 var fetchControlledTerms = require('../kg-util/fetchControlledTerms');
+var assembleRJSFSchemas = require('./formSchemaAssembler');
+
 const {exec} = require('child_process');
 
 async function setup() {
-    let result = await fetchControlledTerms();
+    await fetchControlledTerms();
+    await assembleRJSFSchemas();
     // Redo the build of the react app in order for the updated terms to reach the frontend
     exec('npm run build') 
 }
