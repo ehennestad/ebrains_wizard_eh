@@ -1,0 +1,17 @@
+{
+  "title": "Metadata submission failed",
+  "type": "object",
+  "definitions": {
+    "submissionFailedText": {
+      "title": " ",
+      "type": "string",
+      "textModule": "SubmissionFailed",
+      "text": "<p style='color:red;'>!!An unexpected error occured during the submission of your metadata!!</p><p>Please download the metadata using the button below and send it to the curation team on <a href='mailto:curation-support@ebrains.eu'>curation-support@ebrains.eu</a>. If you filled out the excel file with subject information and/or uploaded a preview image, make sure to include these files as well.</p><p>We apologize for the inconvenience!</p>"
+    }
+  },
+  "properties": {
+    "submissionFailedText": {
+      "$ref": "#/definitions/submissionFailedText"
+    }
+  }
+}

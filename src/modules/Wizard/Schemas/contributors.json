@@ -1,0 +1,139 @@
+{
+  "title": "",
+  "type": "object",
+  "definitions": {
+    "email": {
+      "type": "string",
+      "format": "email",
+      "title": "E-mail address"
+    },
+    "person": {
+      "type": "object",
+      "required": [
+        "givenName",
+        "familyName"
+      ],
+      "properties": {
+        "givenName": {
+          "type": "string",
+          "title": "First name"
+        },
+        "familyName": {
+          "type": "string",
+          "title": "Last name"
+        },
+        "digitalIdentifier": {
+          "type": "string",
+          "title": "ORCID"
+        },
+        "affiliation": {
+          "type": "string",
+          "title": "Affiliation"
+        },
+        "emailMissing": {
+          "type": "boolean",
+          "title": "This author does not have an email address",
+          "default": false
+        }
+      },
+      "dependencies": {
+        "emailMissing": {
+          "oneOf": [
+            {
+              "required": [
+                "email"
+              ],
+              "properties": {
+                "email": {
+                  "$ref": "#/definitions/email"
+                },
+                "emailMissing": {
+                  "const": false
+                }
+              }
+            },
+            {
+              "properties": {
+                "emailMissing": {
+                  "const": true
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "dataset": {
+      "title": "",
+      "type": "object",
+      "required": [
+        "authors"
+      ],
+      "properties": {
+        "authors": {
+          "type": "array",
+          "title": "Dataset authors",
+          "description": "Please list all authors who have contributed to the dataset, in the order you would like them to appear on the data publication. Please note that the list of authors may be different for this data publication as compared to a journal article based on the data.",
+          "minItems": 1,
+          "items": {
+            "_name": "Author",
+            "$ref": "#/definitions/person"
+          }
+        }
+      }
+    },
+    "datasetVersion": {
+      "title": "",
+      "type": "object",
+      "properties": {
+        "otherContribution": {
+          "type": "array",
+          "title": "Other contributors",
+          "description": "Please list all other contributors to this dataset. This could be technicians, data managers, etc.",
+          "items": {
+            "_name": "Other contributor",
+            "type": "object",
+            "required": [
+              "contributor",
+              "contributionType"
+            ],
+            "properties": {
+              "contributor": {
+                "title": "",
+                "$ref": "#/definitions/person"
+              },
+              "contributionType": {
+                "type": "string",
+                "title": "Contribution type",
+                "controlledTerm": "contributionType",
+                "examples": [
+                  "coordination",
+                  "data collection",
+                  "data management",
+                  "data processing",
+                  "information technology support",
+                  "laboratory assistance",
+                  "marketing",
+                  "metadata managment"
+                ],
+                "exampleIDs": [
+                  "https://kg.ebrains.eu/api/instances/b40444ea-53d2-45cc-8416-14846ca27cab",
+                  "https://kg.ebrains.eu/api/instances/d2e43c9e-62e0-4c50-8b0b-7c3b70de67db",
+                  "https://kg.ebrains.eu/api/instances/e1ea8ea6-171f-428b-a98e-ca2d47f30e58",
+                  "https://kg.ebrains.eu/api/instances/b47d91d4-6a9f-4d06-b09b-02d353808d9c",
+                  "https://kg.ebrains.eu/api/instances/16dfb0ba-19b3-40ad-b6c4-c28792be6704",
+                  "https://kg.ebrains.eu/api/instances/e19b1746-b4b0-4bbf-9ed2-5525c99a9fc5",
+                  "https://kg.ebrains.eu/api/instances/052fdb80-9153-465f-a4f5-f5a1b4f23fc1",
+                  "https://kg.ebrains.eu/api/instances/7e22f830-bdf3-44f8-ba64-9513cd826caa"
+                ],
+                "pattern": "^(coordination|data collection|data management|data processing|information technology support|laboratory assistance|marketing|metadata managment)$"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
