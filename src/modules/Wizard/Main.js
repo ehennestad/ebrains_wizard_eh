@@ -55,15 +55,25 @@ const cookies = new Cookies();
 class Wizard extends React.Component {
   constructor(props) {
     super(props);
-    this.ticketNumber = "";                       // ticket number of the submission
-    this.formData = this.initializeFormDataMap(); // formdata for each wizard step in a Map
-    this.jsonStr = null;                          // json string of the whole formdata // Todo: What is this used for? Remove??? Duplicate of formData
-    this.previewImage = [];                       // image for preview of dataset
-    this.openMindsDocument = null;                // openMinds document for the dataset // Currently only used for testing
-    this.validSteps = this.initializeValidSteps(); // list of valid steps
+    
+    // ticket number of the submission:
+    this.ticketNumber = this.getTicketNumberFromUrlParameter();
+    // formdata for each wizard step in a Map:
+    this.formData = this.initializeFormDataMap();
+    // json string of the whole formdata // Todo: What is this used for? Remove??? Duplicate of formData
+    this.jsonStr = null;     
+    // image for preview of dataset:
+    this.previewImage = [];       
+    // openMinds document for the dataset // Currently only used for testing                
+    this.openMindsDocument = null;
+    // list of valid steps                
+    this.validSteps = this.initializeValidSteps(); 
+    
     this.state = { 
       currentStep: WIZARD_STEPS_LIST[0],
     }
+
+    // Some internal states that are not used for rendering
     this.isInitialized = false;
     this.needUserConfirmation = false; 
   }
@@ -74,7 +84,11 @@ class Wizard extends React.Component {
     for (let i = 0; i < WIZARD_STEPS_LIST.length; i++) {
       let iFormName = STEP_MAP.get(WIZARD_STEPS_LIST[i]).name;
       if (formStates === undefined) {
-        formData.set(iFormName, {})
+        if (iFormName === 'general') {
+          formData.set(iFormName, {ticketNumber: this.ticketNumber})
+        } else {
+          formData.set(iFormName, {})
+        }
       } else {
         formData.set(iFormName, formStates[iFormName])
       }
@@ -91,8 +105,7 @@ class Wizard extends React.Component {
     let jsonStr = cookies.get('wizardData', {doNotParse:true} );
     //let jsonStr2 = localStorage.getItem('wizardData2')
     
-    const queryString = window.location.search;
-    let ticketNumber = new URLSearchParams(queryString).get('TicketNumber');
+    let ticketNumber = this.getTicketNumberFromUrlParameter();
     
     // Check if ticketnumber is empty
     if (ticketNumber === null || ticketNumber === undefined) {
@@ -115,6 +128,12 @@ class Wizard extends React.Component {
 
     this.isInitialized = true;
   };
+
+  getTicketNumberFromUrlParameter = () => {
+    const queryString = window.location.search;
+    let ticketNumber = new URLSearchParams(queryString).get('TicketNumber');
+    return ticketNumber;
+  }
 
   // METHODS FOR NAVIGATING WIZARD STEPS
   getNextWizardStep = (stepDirection) => {
