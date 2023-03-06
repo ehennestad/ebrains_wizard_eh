@@ -8,7 +8,14 @@ const fs            = require('fs');                    // fs is needed for read
 // Create a router to handle requests
 const router = express.Router();            
 
-const uploadOptions = { limits: { fileSize: 5 * 1024 * 1024 }, debug:true, useTempFiles:true } // restrict size of uploaded files to 1 MB
+// Todo: Change file upload limit to 5? MB when understanding why openshift server is not able to handle files larger than 1MB. nginx client_max_body_size?  
+
+// Configure the file upload middleware
+const maxFileSizeMB = 1;
+const sizeLimitMessage = `File size limit exceeded. Maximum file size is ${maxFileSizeMB} MB.`
+
+const maxFileSize = maxFileSizeMB * 1024 * 1024; // 1 MB
+const uploadOptions = { limits: { fileSize: maxFileSize }, debug:true, useTempFiles:true, abortOnLimit:true, responseOnLimit:sizeLimitMessage}
 router.use( fileUpload(uploadOptions) );
 
 // Export the router so it can be used in the main app

@@ -8,16 +8,13 @@ import validator from "@rjsf/validator-ajv8";
 import {uiSchema} from '../../../helpers/uiSchemaProvider';
 import {transformErrors} from '../../../helpers/ErrorTransformer';
 
-import CascadeSelector from '../../../components/CascadeSelector';
+//import CascadeSelector from '../../../components/CascadeSelector';
 import SubmissionConfirmationModal from '../../../components/SubmissionConfirmationModal';
-
 
 const ExperimentWizard = ( { schema, formData,  onSubmit, onChange, onError, goBack, formRef, isValid, doShowModal, onSubmissionConfirmed, onSubmissionCanceled} ) => {
 
   const handleOnChange = ( {formData} ) => onChange(formData);
   const handleOnSubmit = ( {formData} ) => onSubmit(formData);
-
-  console.log('doShowModal', doShowModal)
 
   return (
     <>

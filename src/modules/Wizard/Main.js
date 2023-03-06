@@ -264,7 +264,9 @@ class Wizard extends React.Component {
 
     let previewImageFile = [];
     if (this.previewImage !== undefined && this.previewImage.length > 0) {
-      previewImageFile = this.previewImage[0].originFileObj;
+      if (this.previewImage[0].status !== "error") {
+        previewImageFile = this.previewImage[0].originFileObj;
+      }
     }
 
     // Add data to the formData map (after excel data has been removed)
