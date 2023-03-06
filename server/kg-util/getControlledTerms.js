@@ -21,7 +21,7 @@ function importControlledTerms(termNames) {
     const numTerms = termNames.length;
 
     const filePaths = Array.from({ length: numTerms }, (_, i) => {
-        return `${sourcePath}/${termNames[i]}.json`;
+        return path.join(sourcePath, termNames[i]+'.json');
     })
 
     let jsonObject = {};
