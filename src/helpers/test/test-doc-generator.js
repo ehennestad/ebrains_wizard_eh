@@ -24,6 +24,7 @@ function flattenFirstLevel(obj) {
         // key is name of pages.
         // obj[key] is the object of the page
         for (let innerKey in obj[key]) {
+            // Key is already part of results
             if (result.hasOwnProperty(innerKey)) {
                 if(typeof obj[key][innerKey] === 'object' && obj[key][innerKey] !== null){
                     for(let innerInnerKey in obj[key][innerKey]){
@@ -32,6 +33,7 @@ function flattenFirstLevel(obj) {
                 } else {
                     result[innerKey] = obj[key][innerKey];
                 }
+            // Key is not part of results yes
             } else {
                 if(typeof obj[key][innerKey] === 'object' && obj[key][innerKey] !== null){
                     result[innerKey] = {};
