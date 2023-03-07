@@ -1,6 +1,5 @@
 var fetchControlledTerms = require('./server/kg-util/fetchControlledTerms');
-var assembleRJSFSchemas = require('./server/internal/formSchemaAssembler');
-var fetchCoreSchemaInstances = require('./server/kg-util/fetchCoreSchemaInstances');
+var fetchCoreSchemaInstances = require('./server/kg-util/fetchCoreSchemaInstances'); // Todo?
 
 const {exec} = require('child_process');
 
@@ -17,6 +16,9 @@ async function setup() {
         .then( () => {
             var endTime = performance.now()
             console.log(`Fetched all controlled terms in: ${(endTime - startTime)/1000} seconds`)
+            
+            // Make this import here, because the controlled term files are needed before the module can be properly imported
+            var assembleRJSFSchemas = require('./server/internal/formSchemaAssembler');
 
             assembleRJSFSchemas()
             .then( () => {

@@ -21,9 +21,11 @@ function importControlledTerms(termNames) {
     const numTerms = termNames.length;
 
     const filePaths = Array.from({ length: numTerms }, (_, i) => {
-        return path.join(sourcePath, termNames[i]+'.json');
+        // make first letter of term name lowercase for filename
+        fileName = pascalCase2CamelCase(termNames[i]) + '.json';
+        return path.join(sourcePath, fileName);
     })
-
+    
     let jsonObject = {};
     for (let i = 0; i < filePaths.length; i++) {
         let thisFilepath = filePaths[i];
@@ -33,6 +35,11 @@ function importControlledTerms(termNames) {
     };
     return jsonObject;
 }
+
+function pascalCase2CamelCase(name) {
+    return name.charAt(0).toLowerCase() + name.slice(1);
+}
+
 module.exports = {getControlledTerms, importControlledTerms};
 
 
