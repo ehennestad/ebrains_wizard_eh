@@ -84,6 +84,31 @@
   color: white;
 }
 
+.subheader {
+  background-color: var(--form-background-color);
+  margin-bottom: 40px;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px, rgba(0, 0, 0, 0.05) 0px 1px 4px 0px, rgba(0, 0, 0, 0.05) 0px 2px 8px 0px;
+}
+
+.privacy-notice {
+  width: 80%;
+  display: inline-block;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.subheader-menu {
+  width: 20%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: inline-block;
+  text-align: right;
+  vertical-align: top;
+}
+
 .notice {
   background-color: var(--form-background-color);
 }
@@ -92,8 +117,7 @@
   margin-bottom: 0px;
   margin-left: auto;
   margin-right: auto;
-  padding: 5px 60px 5px 60px;
-  max-width: var(--max-content-width);
+  padding: 10px 0px 10px 0px;
 }
 
 .App-link {
@@ -111,6 +135,15 @@
 
 /* Specify style of main containers */
 
+.content-container {
+  margin-top: 0px;
+  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px 60px 5px 60px;
+  max-width: var(--max-content-width);;
+}
+
 .container-header {
   margin-top: 0px;
   margin-bottom: 0px;
@@ -122,7 +155,7 @@
 }
 
 .container-form {
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 50px;
   margin-left: auto;
   margin-right: auto;

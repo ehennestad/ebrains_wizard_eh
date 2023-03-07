@@ -13,16 +13,12 @@ import ExperimentWizard from './Pages/ExperimentWizard.js';
 import SubmissionCompletedWizard from './Pages/SubmissionCompletedWizard.js';
 
 import ProgressBar from '../../components/ProgressBar';
-//import testfunc from '../../helpers/test/test-doc-generator.js';
 
 import { generalSchema, dataset1Schema, dataset2Schema, contributorsSchema, fundingSchema, 
          experimentSchema, submissionSuccededSchema, submissionFailedSchema } 
   from './Schemas';
 
 const testfunc = () => {};
-
-// Todo: 
-// [ ] Bug when reseting form. Ticket number will not be updated from query parameter. Attempted fix, but needs testing.
 
 // Path for posting submission to the backend
 const SUBMISSION_PATH = "/api/submission/send_email";
@@ -60,8 +56,6 @@ class Wizard extends React.Component {
     this.ticketNumber = this.getTicketNumberFromUrlParameter();
     // formdata for each wizard step in a Map:
     this.formData = this.initializeFormDataMap();
-    // json string of the whole formdata // Todo: What is this used for? Remove??? Duplicate of formData
-    this.jsonStr = null;     
     // image for preview of dataset:
     this.previewImage = [];       
     // openMinds document for the dataset // Currently only used for testing                
@@ -75,7 +69,30 @@ class Wizard extends React.Component {
 
     // Some internal states that are not used for rendering
     this.isInitialized = false;
-    this.needUserConfirmation = false; 
+    this.needUserConfirmation = false;
+  }
+  
+  componentDidUpdate(prevProps) {
+
+    if (!!this.props.action) {
+      if (prevProps.updateKey === this.props.updateKey) {
+        return;
+      } else {
+        switch (this.props.action) {
+          case 'Load metadata from file':
+            this.loadJson();
+            break;
+          case 'Save metadata to file':
+            this.saveState();
+            break;
+          case 'Reset form':
+            this.handleReset();
+            break;
+          default:
+            break;
+        };
+      }
+    }
   }
 
   initializeFormDataMap = (formStates) => {
@@ -272,22 +289,11 @@ class Wizard extends React.Component {
     // Add data to the formData map (after excel data has been removed)
     this.updateFormData(this.state.currentStep, data)
 
-    let dataset = Object.fromEntries(this.formData) // convert formData Map to object
-    let datasetFlattened = Object.keys(dataset).reduce(function (value, key) {
-      return {...value, ...dataset[key]}; // flatten object
-    }, []);
-
-    //const res = generateDocumentsFromDataset(datasetFlattened);
-    //const res = createOpenMindsDocuments(dataset)
-    const res = {'documents': null};
-
-    // // Create a json string from data which user has entered.
-    const jsonData = JSON.stringify([dataset, res], null, 2);
-    this.jsonStr = jsonData;
+    const jsonStr = this.createJsonStringFromFormData()
 
     // Create a FormData object in order to send data to the backend server
     let formData = new FormData();
-    formData.append('jsonData', jsonData) // Json data is in the form of a string
+    formData.append('jsonData', jsonStr) // Json data is in the form of a string
     formData.append('excelData', subjectExcelData) // Excel data is in the form of a dataURL
     formData.append('previewImage', previewImageFile)
 
@@ -297,9 +303,17 @@ class Wizard extends React.Component {
       .catch( error => {console.log(error); this.goToWizardStep(WIZARD_FAILED) } );
   }
 
+  createJsonStringFromFormData = () => {
+    let dataset = Object.fromEntries(this.formData) // convert formData Map to object
+    const res = {'documents': null}; // todo: remove, but dependencies on backend need to be removed first
+
+    // // Create a json string from data which user has entered.
+    const jsonStr = JSON.stringify([dataset, res], null, 2);
+    return jsonStr;
+  }
+
   handleReset = () => {
     this.formData = this.initializeFormDataMap();
-    this.jsonStr = null;
     this.previewImage = [];
     this.saveFormDatasInCookie();
     let skipValidation = true;
@@ -338,7 +352,8 @@ class Wizard extends React.Component {
   };
 
   saveState = () => {
-    const blob = new Blob([this.jsonStr], {type: "data:text/json;charset=utf-8"});
+    const jsonStr = this.createJsonStringFromFormData()
+    const blob = new Blob([jsonStr], {type: "data:text/json;charset=utf-8"});
     saveAs(blob, "ebrains_wizard_metadata.json")
   };
 
@@ -353,6 +368,7 @@ class Wizard extends React.Component {
   }
 
   render() {
+
     if (process.env.NODE_ENV === "development") {
       switch (this.state.currentStep) {
         case TEST:
@@ -422,7 +438,7 @@ class Wizard extends React.Component {
 
         return (
             <>
-            { (process.env.NODE_ENV === "development") ? <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button> : null }
+            { (process.env.NODE_ENV === "dev") ? <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button> : null }
               <ProgressBar step={stepNum} status={this.validSteps} onChanged={this.goToWizardStep} />
               <WizardComponent {...wizardPageProps} />
             </>
