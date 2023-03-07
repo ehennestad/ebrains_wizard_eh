@@ -3,7 +3,7 @@ import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Cookies from 'universal-cookie'
 import ReactJson from 'react-json-view';
-import { notification } from 'antd';
+import { notification, Space } from 'antd';
 
 import GeneralWizard from './Pages/GeneralWizard';
 import DatasetWizard from './Pages/DatasetWizard';
@@ -13,6 +13,7 @@ import ExperimentWizard from './Pages/ExperimentWizard.js';
 import SubmissionCompletedWizard from './Pages/SubmissionCompletedWizard.js';
 
 import ProgressBar from '../../components/ProgressBar';
+import DropdownMenu from '../../components/DropdownMenu';
 //import testfunc from '../../helpers/test/test-doc-generator.js';
 
 import { generalSchema, dataset1Schema, dataset2Schema, contributorsSchema, fundingSchema, 
@@ -75,7 +76,30 @@ class Wizard extends React.Component {
 
     // Some internal states that are not used for rendering
     this.isInitialized = false;
-    this.needUserConfirmation = false; 
+    this.needUserConfirmation = false;
+  }
+  
+  componentDidUpdate(prevProps) {
+
+    if (!!this.props.action) {
+      if (prevProps.updateKey === this.props.updateKey) {
+        return;
+      } else {
+        switch (this.props.action) {
+          case 'Load metadata from file':
+            this.loadJson();
+            break;
+          case 'Save metadata to file':
+            this.saveState();
+            break;
+          case 'Reset form':
+            this.handleReset();
+            break;
+          default:
+            break;
+        };
+      }
+    }
   }
 
   initializeFormDataMap = (formStates) => {
@@ -353,6 +377,7 @@ class Wizard extends React.Component {
   }
 
   render() {
+
     if (process.env.NODE_ENV === "development") {
       switch (this.state.currentStep) {
         case TEST:
@@ -422,7 +447,7 @@ class Wizard extends React.Component {
 
         return (
             <>
-            { (process.env.NODE_ENV === "development") ? <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button> : null }
+            { (process.env.NODE_ENV === "dev") ? <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button> : null }
               <ProgressBar step={stepNum} status={this.validSteps} onChanged={this.goToWizardStep} />
               <WizardComponent {...wizardPageProps} />
             </>
