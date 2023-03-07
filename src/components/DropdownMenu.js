@@ -2,11 +2,6 @@ import { DownloadOutlined, UploadOutlined, DeleteOutlined, MenuOutlined } from '
 import { Button, Dropdown, message, Space, Tooltip } from 'antd';
 import ConfigProvider from './ConfigProvider';
 
-const handleButtonClick = (e) => {
-  message.info('Click on left button.');
-  console.log('click left button', e);
-};
-
 const items = [
   {
     label: 'Load metadata from file',
@@ -25,13 +20,15 @@ const items = [
   },
 ];
 
-
-
 const DropdownMenu = ({handleMenuSelection}) => {
 
   const handleMenuClick = (item) => { 
     handleMenuSelection(items[item.key - 1].label) }
   
+  const handleButtonClick = (e) => {
+    handleMenuSelection('Save metadata to file')
+    };
+
   const menuProps = {
     items,
     onClick: handleMenuClick,
@@ -41,7 +38,7 @@ const DropdownMenu = ({handleMenuSelection}) => {
   <Space wrap>
       <ConfigProvider componentSize={"large"}>
         <Dropdown.Button menu={menuProps} onClick={handleButtonClick} icon={<MenuOutlined />}>
-        Dropdown
+        Download metadata
         </Dropdown.Button>
       </ConfigProvider>
   </Space>
