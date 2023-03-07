@@ -11,7 +11,7 @@ openMINDS
 Wizard/Schemas
 # Make sure to not ignore the index file that is used to import all schemas
 !Wizard/Schemas/index.js
-
+!Wizard/Schemas/README.md
 
 # Downloaded data
 /server/data
