@@ -6,6 +6,7 @@ const atob          = require('atob');                  // atob is needed for de
 
 // Get local modules that are needed for the submission route
 var mailTransporter = require('../mail-setup/MailTransporter');
+const translateWizardFormdata = require('../internal/translateWizardFormdata');
 
 const confirmationEmailTemplate = require('../../templates/ConfirmationEmail');
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -182,9 +183,14 @@ function prepareMailAttachments(requestObject) {
 
   let mailAttachmentArray = []; // Initialize an empty list for attachments
 
+  let jsonObject = JSON.parse(requestObject.body.jsonData);
+  let openMINDSDocs = translateWizardFormdata(jsonObject[0]);
+
+  jsonStr = JSON.stringify([jsonObject[0], openMINDSDocs], null, 2);
+
   let jsonAttachment = { // utf-8 string as an attachment
     filename: 'ebrains_wizard_metadata.json',
-    content: requestObject.body.jsonData
+    content: jsonStr
   };
   mailAttachmentArray.push(jsonAttachment)
   
