@@ -5,6 +5,8 @@ import Cookies from 'universal-cookie'
 import ReactJson from 'react-json-view';
 import { notification } from 'antd';
 
+import WIZARD_VERSION from '../../version';
+
 import GeneralWizard from './Pages/GeneralWizard';
 import DatasetWizard from './Pages/DatasetWizard';
 import FundingWizard from './Pages/FundingWizard';
@@ -80,13 +82,13 @@ class Wizard extends React.Component {
       } else {
         switch (this.props.action) {
           case 'Load metadata from file':
-            this.loadJson();
+            this.loadFormDataFromJson();
             break;
           case 'Save metadata to file':
-            this.saveState();
+            this.saveFormDataToJson();
             break;
           case 'Reset form':
-            this.handleReset();
+            this.resetFormData();
             break;
           default:
             break;
@@ -131,7 +133,7 @@ class Wizard extends React.Component {
     this.ticketNumber = ticketNumber;
 
     if (jsonStr !== undefined) {
-      this.loadState( JSON.parse(jsonStr) );
+      this.replaceFormData( JSON.parse(jsonStr) );
     } 
 
     // Update the general form with ticketnumber from URL
@@ -312,7 +314,7 @@ class Wizard extends React.Component {
     return jsonStr;
   }
 
-  handleReset = () => {
+  resetFormData = () => {
     this.formData = this.initializeFormDataMap();
     this.previewImage = [];
     this.saveFormDatasInCookie();
@@ -321,7 +323,18 @@ class Wizard extends React.Component {
     this.validSteps = this.initializeValidSteps();
   };
 
-  loadJson = () => { // Consider moving this to a separate file (e.g. utils.js)
+  replaceFormData = formStates => {
+    // This function is used to update the form with existing data 
+    // (from cookies or an uploaded json file)
+    
+    this.formData = this.initializeFormDataMap(formStates);
+    this.validSteps = this.initializeValidSteps();
+    const skipFormValidation = true;
+    this.goToWizardStep( WIZARD_STEPS_LIST[0], skipFormValidation )
+  };
+
+  loadFormDataFromJson = () => { // Consider moving this to a separate file (e.g. utils.js)
+    
     let input = document.createElement("input");
     input.type = "file";
     input.accept=".json,application/json";
@@ -333,9 +346,13 @@ class Wizard extends React.Component {
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-          let data = JSON.parse(reader.result);
-          let formStates = data[0];
-          this.loadState(formStates);
+          let jsonObject = JSON.parse(reader.result);
+          
+          let formData = jsonObject.formData;
+
+          //let formStates = data[0];
+
+          this.replaceFormData(formData);
         }, false);        
 
         reader.readAsText(file);
@@ -344,15 +361,31 @@ class Wizard extends React.Component {
     input.click();
   };
 
-  loadState = formStates => {
-    this.formData = this.initializeFormDataMap(formStates);
-    this.validSteps = this.initializeValidSteps();
-    let skipFormValidation = true;
-    this.goToWizardStep( WIZARD_STEPS_LIST[0], skipFormValidation )
-  };
+  saveFormDataToJson = () => {
 
-  saveState = () => {
-    const jsonStr = this.createJsonStringFromFormData()
+    // Create a json string from data which user has entered.
+
+    const date = new Date();
+    const str = date.toLocaleString("en-us", {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    });
+
+    const jsonObject = {
+      "_type": "EBRAINS wizard form data",
+      "_version": WIZARD_VERSION,
+      "_lastModified": str,
+      "_createdAt": "DATE",
+      "formData": Object.fromEntries(this.formData)
+    }
+
+    //const jsonStr = this.createJsonStringFromFormData()
+    const jsonStr = JSON.stringify(jsonObject, null, 2);
     const blob = new Blob([jsonStr], {type: "data:text/json;charset=utf-8"});
     saveAs(blob, "ebrains_wizard_metadata.json")
   };
@@ -403,8 +436,8 @@ class Wizard extends React.Component {
 
     switch (this.state.currentStep) {
       case WIZARD_STEP_GENERAL:
-        wizardPageProps.onReset = this.handleReset;
-        wizardPageProps.loadState = this.loadJson;
+        wizardPageProps.onReset = this.resetFormData;
+        wizardPageProps.loadState = this.loadFormDataFromJson;
         break;
 
       case WIZARD_STEP_DATASET2:
@@ -445,7 +478,7 @@ class Wizard extends React.Component {
           );
                 
       case WIZARD_SUCCEEDED: case WIZARD_FAILED:
-        return ( <WizardComponent schema={schema} onReset={this.handleReset} onSave={this.saveState}/> );
+        return ( <WizardComponent schema={schema} onReset={this.resetFormData} onSave={this.saveFormDataToJson}/> );
 
       default:
         return ( <h1>Error</h1> );
