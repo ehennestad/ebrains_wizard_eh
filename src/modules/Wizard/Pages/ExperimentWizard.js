@@ -1,7 +1,5 @@
 import React from 'react';
 import Form from '@rjsf/core';
-//import Form from '@rjsf/antd';
-import TableField from "react-jsonschema-form-extras/lib/table";
 import RichTextWidget, {CustomArrayField} from '../../../components/customWidgets';
 
 import validator from "@rjsf/validator-ajv8";
