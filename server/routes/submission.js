@@ -22,16 +22,17 @@ router.post('/send_email', (req, res) => {
   console.log('Received form submission post request from client')
 
   let jsonObject = JSON.parse(req.body.jsonData);
-
+  let jsonFormData = jsonObject.formData;
+  
   const emailAddressCurationTeam = process.env.EMAIL_ADDRESS_CURATION_SUPPORT;
-  const emailAddressUser = getContactPersonEmailAddress(jsonObject);
+  const emailAddressUser = getContactPersonEmailAddress(jsonFormData);
 
   // Create a string array with email addresses for the curation team and the user submitting metadata.
   const emailRecipients = [emailAddressCurationTeam, emailAddressUser];
   
   // Need two email messages, one for user and one for curation team
-  let message = [createMetadataEmailMessage(jsonObject, req)];
-  message.push( rewriteMailBodyForUser(message[0], jsonObject) )
+  let message = [createMetadataEmailMessage(jsonFormData, req)];
+  message.push( rewriteMailBodyForUser(message[0], jsonFormData) )
 
   // Send the message to each of the emailRecipients. NOTE: The sendResponseToClient function is called after each email has been sent, 
   // but the response will only be sent to the client for the first email. This is fine, because it is only important for the client to know
@@ -111,15 +112,15 @@ function sendMetadataEmailMessage(emailRecipient, emailMessage, sendResponseToCl
 function getContactPersonEmailAddress(jsonObject) {
 
   let emailAddress = undefined;
-  emailAddress = jsonObject[0]["general"]["contactperson"]["email"];
+  emailAddress = jsonObject["general"]["contactperson"]["email"];
   return emailAddress;
 }
 
 function writeMailSubject(jsonObject) {
-  const dsTitle = jsonObject[0]["datasetinfo"]["dataset"]["fullName"];
+  const dsTitle = jsonObject["datasetinfo"]["dataset"]["fullName"];
   let mailSubjectStr = `[Wizard Metadata Submission] ${dsTitle}`;
 
-  let ticketNumber = jsonObject[0]["general"]["ticketNumber"];
+  let ticketNumber = jsonObject["general"]["ticketNumber"];
   if (ticketNumber) {
     ticketNumber = cleanTicketNumber(ticketNumber);
     mailSubjectStr = mailSubjectStr + ` [Ticket#${ticketNumber}]`;
@@ -133,10 +134,10 @@ function writeMailBody(jsonObject) {
   
     // TODO: use contact person if available
 
-  const dsTitle = jsonObject[0]["datasetinfo"]["dataset"]["fullName"];
-  const contactFirstName = jsonObject[0]["general"]["contactperson"]["firstName"];
-  const contactLastName = jsonObject[0]["general"]["contactperson"]["lastName"];
-  const contactEmail = jsonObject[0]["general"]["contactperson"]["email"];
+  const dsTitle = jsonObject["datasetinfo"]["dataset"]["fullName"];
+  const contactFirstName = jsonObject["general"]["contactperson"]["firstName"];
+  const contactLastName = jsonObject["general"]["contactperson"]["lastName"];
+  const contactEmail = jsonObject["general"]["contactperson"]["email"];
   
   let mailBodyStr = `Dataset information:
 
@@ -152,11 +153,11 @@ Attachments:
   
 function writeMailBodyConfirmation(jsonObject) {
 
-  const contactPersonName = jsonObject[0]["general"]["contactperson"]["firstName"];
-  const datasetTitle = jsonObject[0]["datasetinfo"]["dataset"]["fullName"];
+  const contactPersonName = jsonObject["general"]["contactperson"]["firstName"];
+  const datasetTitle = jsonObject["datasetinfo"]["dataset"]["fullName"];
 
   var ticketPrompt = "";
-  let ticketNumber = jsonObject[0]["general"]["ticketNumber"];
+  let ticketNumber = jsonObject["general"]["ticketNumber"];
   if (ticketNumber) {
     ticketNumber = cleanTicketNumber(ticketNumber);
     ticketPrompt = ", and please add the following ticket reference to the mail subject line: " + `[Ticket#${ticketNumber}]`;

@@ -59,8 +59,10 @@ class Wizard extends React.Component {
     // formdata for each wizard step in a Map:
     this.formData = this.initializeFormDataMap();
     // image for preview of dataset:
-    this.previewImage = [];       
-    // openMinds document for the dataset // Currently only used for testing                
+    this.previewImage = [];
+    // json file specification
+    this.jsonFile = null;
+    // openMinds document for the dataset // Currently only used for testing
     this.openMindsDocument = null;
     // list of valid steps                
     this.validSteps = this.initializeValidSteps(); 
@@ -81,11 +83,14 @@ class Wizard extends React.Component {
         return;
       } else {
         switch (this.props.action) {
-          case 'Load metadata from file':
+          case 'Upload form data':
             this.loadFormDataFromJson();
             break;
-          case 'Save metadata to file':
+          case 'Download form data':
             this.saveFormDataToJson();
+            break;
+          case 'Save metadata to file...':
+            this.saveFormDataToJsonAs();
             break;
           case 'Reset form':
             this.resetFormData();
@@ -290,8 +295,9 @@ class Wizard extends React.Component {
 
     // Add data to the formData map (after excel data has been removed)
     this.updateFormData(this.state.currentStep, data)
-
-    const jsonStr = this.createJsonStringFromFormData()
+    
+    //const jsonStr = this.createJsonStringFromFormData()
+    const jsonStr = this.createJsonFileStringFromFormData()
 
     // Create a FormData object in order to send data to the backend server
     let formData = new FormData();
@@ -318,6 +324,7 @@ class Wizard extends React.Component {
     this.formData = this.initializeFormDataMap();
     this.previewImage = [];
     this.saveFormDatasInCookie();
+    this.jsonFile = null;
     let skipValidation = true;
     this.goToWizardStep( WIZARD_STEPS_LIST[0], skipValidation )
     this.validSteps = this.initializeValidSteps();
@@ -326,7 +333,6 @@ class Wizard extends React.Component {
   replaceFormData = formStates => {
     // This function is used to update the form with existing data 
     // (from cookies or an uploaded json file)
-    
     this.formData = this.initializeFormDataMap(formStates);
     this.validSteps = this.initializeValidSteps();
     const skipFormValidation = true;
@@ -347,11 +353,12 @@ class Wizard extends React.Component {
 
         reader.addEventListener("load", () => {
           let jsonObject = JSON.parse(reader.result);
-          
+          this.validateJsonFile(jsonObject);
+
+          let loadedJsonFileSpec = this.getJsonFileSpec(jsonObject);
+          this.jsonFile = loadedJsonFileSpec;
+
           let formData = jsonObject.formData;
-
-          //let formStates = data[0];
-
           this.replaceFormData(formData);
         }, false);        
 
@@ -361,12 +368,64 @@ class Wizard extends React.Component {
     input.click();
   };
 
-  saveFormDataToJson = () => {
+  getJsonFileSpec = (jsonObjectSource) => {
 
+    let jsonObject = null;
+    
+    if (jsonObjectSource === undefined) {
+
+      jsonObject = {
+        _type: "EBRAINS wizard data",
+        _version: WIZARD_VERSION,
+        _createdAt: this.getDatetimeStamp(),
+        _lastModified: null,
+      }
+
+    } else {
+      jsonObject = {
+        _type: jsonObjectSource._type, 
+        _version: jsonObjectSource._version,
+        _createdAt: jsonObjectSource._createdAt,
+        _lastModified: null,
+      }
+    }
+
+    return jsonObject;
+  }
+
+  validateJsonFile = (jsonObject) => {
+    // Todo.
+    // Check if the json file is valid
+    // If not, then provide a message to the user
+  }
+
+  checkJsonVersion = (jsonObject) => {
+    // If version is not the same, then provide a message/warning to the user
+  }
+
+  createJsonFileStringFromFormData = () => {
     // Create a json string from data which user has entered.
 
+    let jsonObject = null;
+
+    if (!this.jsonFile) {
+      jsonObject = this.getJsonFileSpec();
+    } else {
+      jsonObject = this.jsonFile;
+    }
+
+    jsonObject._version = WIZARD_VERSION;
+    jsonObject._lastModified = this.getDatetimeStamp();
+    jsonObject.formData = Object.fromEntries(this.formData);
+
+    //const jsonStr = this.createJsonStringFromFormData()
+    const jsonStr = JSON.stringify(jsonObject, null, 2);
+    return jsonStr;
+  }
+
+  getDatetimeStamp = () => {
     const date = new Date();
-    const str = date.toLocaleString("en-us", {
+    const datetimeStr = date.toLocaleString("en-us", {
       hour12: false,
       hour: "2-digit",
       minute: "2-digit",
@@ -375,19 +434,53 @@ class Wizard extends React.Component {
       month: "numeric",
       year: "numeric",
     });
+    return datetimeStr;
+  }
 
-    const jsonObject = {
-      "_type": "EBRAINS wizard form data",
-      "_version": WIZARD_VERSION,
-      "_lastModified": str,
-      "_createdAt": "DATE",
-      "formData": Object.fromEntries(this.formData)
-    }
-
-    //const jsonStr = this.createJsonStringFromFormData()
-    const jsonStr = JSON.stringify(jsonObject, null, 2);
+  saveFormDataToJson = () => {
+    // Create a json string from data which user has entered.
+    const jsonStr = this.createJsonFileStringFromFormData()
     const blob = new Blob([jsonStr], {type: "data:text/json;charset=utf-8"});
     saveAs(blob, "ebrains_wizard_metadata.json")
+  };
+
+  saveFormDataToJsonAs = async () => {
+
+    const jsonStr = this.createJsonFileStringFromFormData()
+    const blob = new Blob([jsonStr], { type: "data:text/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+
+    try {
+      const stream = await fetch(url).then((res) =>
+        res.body
+      );
+      const options = {
+        suggestedName: "ebrains_wizard_metadata.json", // Default file name
+        types: [
+          {
+            description: "JSON files",
+            accept: {
+              "text/json": [".json"],
+            },
+          },
+        ],
+      };
+      const handle = await window.showSaveFilePicker(options);
+      const writable = await handle.createWritable();
+      await stream.pipeTo(writable);
+      await writable.close();
+    
+    } catch (err) {
+      // Fallback for browsers that don't support the File System Access API
+      // (e.g. Safari). This will download the file directly to downloads folder.
+      const filename = "ebrains_wizard_metadata.json"; // Default name of the file
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   onImageUploaded = (imageFileList) => {

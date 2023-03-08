@@ -1,15 +1,15 @@
 import { DownloadOutlined, UploadOutlined, DeleteOutlined, MenuOutlined } from '@ant-design/icons';
-import { Button, Dropdown, message, Space, Tooltip } from 'antd';
+import { Dropdown, Space } from 'antd';
 import ConfigProvider from './ConfigProvider';
 
 const items = [
   {
-    label: 'Load metadata from file',
+    label: 'Upload form data',
     key: '1',
     icon: <UploadOutlined />,
   },
   {
-    label: 'Save metadata to file',
+    label: 'Save metadata to file...',
     key: '2',
     icon: <DownloadOutlined />,
   },
@@ -26,7 +26,7 @@ const DropdownMenu = ({handleMenuSelection}) => {
     handleMenuSelection(items[item.key - 1].label) }
   
   const handleButtonClick = (e) => {
-    handleMenuSelection('Save metadata to file')
+    handleMenuSelection('Download form data')
     };
 
   const menuProps = {
@@ -38,7 +38,7 @@ const DropdownMenu = ({handleMenuSelection}) => {
   <Space wrap>
       <ConfigProvider componentSize={"large"}>
         <Dropdown.Button menu={menuProps} onClick={handleButtonClick} icon={<MenuOutlined />}>
-        Download metadata
+        Download form data
         </Dropdown.Button>
       </ConfigProvider>
   </Space>
