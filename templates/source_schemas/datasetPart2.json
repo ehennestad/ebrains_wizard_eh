@@ -19,15 +19,10 @@
                 "type": "string"
             }
         },
-        "howToCite": {
-            "title": "How to cite",
-            "type": "string",
-            "description": "Enter the preferred citation for this dataset version."
-        },
         "inputData": {
             "title": "Input data",
             "type": "string",
-            "description": "Add the data that was used as input for this dataset version. This is typically a DOI or reference to the original dataset from which the current dataset is derived (if applicable)."
+            "description": "If this dataset is derived from another published dataset, add the DOI or reference for the original dataset here. If this dataset is not derived from another dataset, leave this field empty."
         },
         "_relatedPublicationIntro": {
             "type": "string",
