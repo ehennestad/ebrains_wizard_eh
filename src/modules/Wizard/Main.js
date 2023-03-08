@@ -21,6 +21,7 @@ import { generalSchema, dataset1Schema, dataset2Schema, contributorsSchema, fund
   from './Schemas';
 
 const testfunc = () => {};
+const JSON_FILE_TYPE = "EBRAINS metadata wizard webform data";
 
 // Path for posting submission to the backend
 const SUBMISSION_PATH = "/api/submission/send_email";
@@ -375,7 +376,7 @@ class Wizard extends React.Component {
     if (jsonObjectSource === undefined) {
 
       jsonObject = {
-        _type: "EBRAINS wizard data",
+        _type: JSON_FILE_TYPE,
         _version: WIZARD_VERSION,
         _createdAt: this.getDatetimeStamp(),
         _lastModified: null,
@@ -437,15 +438,46 @@ class Wizard extends React.Component {
     return datetimeStr;
   }
 
+  generateJsonFilename = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    const hours = ('0' + date.getHours()).slice(-2);
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+    const seconds = ('0' + date.getSeconds()).slice(-2);
+    
+    const datetimeStr = `${year}_${month}_${day}_${hours}${minutes}${seconds}`;
+      
+    let filePostfix = "";
+    if (!!this.formData.get('datasetinfo')['datasetVersion']['shortName']) {
+      filePostfix = this.formData.get('datasetinfo')['datasetVersion']['shortName'];
+    } else if (!!this.formData.get('general')['contactperson']['lastName']) {
+      filePostfix = this.formData.get('general')['contactperson']['lastName'];
+    }
+
+    let filename = "";
+    if (!!filePostfix) {
+      filename = `ebrains_wizard_form_data_${filePostfix}_${datetimeStr}.json`;
+    } else {
+      filename = `ebrains_wizard_form_data_${datetimeStr}.json`;
+    }
+    // Replace spaces with underscores
+    filename = filename.replace(/ /g, "_");
+
+    return filename;
+  }
+
   saveFormDataToJson = () => {
     // Create a json string from data which user has entered.
+    const filename = this.generateJsonFilename();
     const jsonStr = this.createJsonFileStringFromFormData()
     const blob = new Blob([jsonStr], {type: "data:text/json;charset=utf-8"});
-    saveAs(blob, "ebrains_wizard_metadata.json")
+    saveAs(blob, filename)
   };
 
   saveFormDataToJsonAs = async () => {
-
+    // Note: Does not work in Safari :( 
     const jsonStr = this.createJsonFileStringFromFormData()
     const blob = new Blob([jsonStr], { type: "data:text/json;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -455,7 +487,7 @@ class Wizard extends React.Component {
         res.body
       );
       const options = {
-        suggestedName: "ebrains_wizard_metadata.json", // Default file name
+        suggestedName: this.generateJsonFilename(), // Default file name
         types: [
           {
             description: "JSON files",
@@ -473,7 +505,7 @@ class Wizard extends React.Component {
     } catch (err) {
       // Fallback for browsers that don't support the File System Access API
       // (e.g. Safari). This will download the file directly to downloads folder.
-      const filename = "ebrains_wizard_metadata.json"; // Default name of the file
+      const filename = this.generateJsonFilename(); // Default name of the file
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", filename);
