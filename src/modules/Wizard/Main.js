@@ -3,7 +3,7 @@ import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Cookies from 'universal-cookie'
 import ReactJson from 'react-json-view';
-import { notification } from 'antd';
+import { message, notification } from 'antd';
 
 import WIZARD_VERSION from '../../version';
 
@@ -361,6 +361,15 @@ class Wizard extends React.Component {
 
           let formData = jsonObject.formData;
           this.replaceFormData(formData);
+          const messageConfig = {
+            content: 'Form updated from uploaded JSON.',
+            duration: 5,
+            style: {'fontSize': '1.2em'},
+          }
+          message.success(messageConfig);
+
+          //message.success('Form updated from uploaded JSON.', 5);
+
         }, false);        
 
         reader.readAsText(file);
