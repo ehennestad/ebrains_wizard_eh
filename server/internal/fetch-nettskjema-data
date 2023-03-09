@@ -1,0 +1,22 @@
+API User: metadatafetch@api
+Token: 
+mfbrqulo09vr8ca9e9fi9trhel7c6jcknpgdfpoaqqni5c87f70vg9qb9sml9jlpuat2idc7igp5mvvs3j2g76s560vd83f63s7tegsrgirvjar2b65vnnkej05cpib6fju2
+Rights:
+READ_FORMS
+READ_SUBMISSIONS
+IP addresses: 129.240.0.0/16, 193.157.0.0/16, 84.215.74.127
+Examples for fetchin data from the old MINDS form, ID 125558:
+---
+curl "https://nettskjema.no/api/v2/submissions/14162976" -X GET -H "Authorization: Bearer mfbrqulo09vr8ca9e9fi9trhel7c6jcknpgdfpoaqqni5c87f70vg9qb9sml9jlpuat2idc7igp5mvvs3j2g76s560vd83f63s7tegsrgirvjar2b65vnnkej05cpib6fju2" > 14162976.json
+curl "https://nettskjema.no/api/v2/forms/125558/codebook" -X GET -H "Authorization: Bearer mfbrqulo09vr8ca9e9fi9trhel7c6jcknpgdfpoaqqni5c87f70vg9qb9sml9jlpuat2idc7igp5mvvs3j2g76s560vd83f63s7tegsrgirvjar2b65vnnkej05cpib6fju2" > codebook.json
+curl "https://nettskjema.no/api/v2/forms/125558/elements" -X GET -H "Authorization: Bearer mfbrqulo09vr8ca9e9fi9trhel7c6jcknpgdfpoaqqni5c87f70vg9qb9sml9jlpuat2idc7igp5mvvs3j2g76s560vd83f63s7tegsrgirvjar2b65vnnkej05cpib6fju2" > elements.json
+curl "https://nettskjema.no/api/v2/forms/125558/questions" -X GET -H "Authorization: Bearer mfbrqulo09vr8ca9e9fi9trhel7c6jcknpgdfpoaqqni5c87f70vg9qb9sml9jlpuat2idc7igp5mvvs3j2g76s560vd83f63s7tegsrgirvjar2b65vnnkej05cpib6fju2" > questions.json
+curl "https://nettskjema.no/api/v2/forms/125558/submissions" -X GET -H "Authorization: Bearer mfbrqulo09vr8ca9e9fi9trhel7c6jcknpgdfpoaqqni5c87f70vg9qb9sml9jlpuat2idc7igp5mvvs3j2g76s560vd83f63s7tegsrgirvjar2b65vnnkej05cpib6fju2" > submissions.json
+curl "https://nettskjema.no/api/v2/forms/125558" -X GET -H "Authorization: Bearer mfbrqulo09vr8ca9e9fi9trhel7c6jcknpgdfpoaqqni5c87f70vg9qb9sml9jlpuat2idc7igp5mvvs3j2g76s560vd83f63s7tegsrgirvjar2b65vnnkej05cpib6fju2" > form-125558.json
+EBRAINS curation request form ID: 104328
+https://nettskjema.no/user/form/104328
+Links
+https://www.uio.no/tjenester/it/adm-app/nettskjema/hjelp/api.html
+https://utv.uio.no/docs/nettskjema/api/
+https://nettskjema.no/user/api/index.html#/user
+https://nettskjema.no/user/form/permissions.html?id=125558
