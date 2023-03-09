@@ -20,3 +20,5 @@ Dockerfile
 /src/modules/Wizard/Schemas
 # Make sure to not ignore the index file that is used to import all schemas
 !/src/modules/Wizard/Schemas/index.js
+
+package_script_test.js

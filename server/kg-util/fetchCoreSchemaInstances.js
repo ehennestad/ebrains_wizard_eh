@@ -6,6 +6,19 @@ const path = require('path');//&&added by Archana&&//
 const getRequestOptions = require('./getRequestOptions')
 
 const OPENMINDS_VOCAB = "https://openminds.ebrains.eu/vocab";
+const INSTANCE_OUTPUT_DIRECTORY = path.join(__dirname, '..', 'data', 'kg-instances');
+
+fs.mkdir(INSTANCE_OUTPUT_DIRECTORY, { recursive: true }, (err) => {
+    if (err) {
+        if (err.code === 'EEXIST') {
+            console.log("Directory already exists.");
+        } else {
+            console.log(err);
+        }
+    } else {
+        console.log("New directory successfully created.");
+    }
+});
 
 // config instanceSpecification should contain the following properties:
 // - openMindsType
@@ -80,6 +93,7 @@ function parseAndSaveData(data, instanceName, propertyNameList) {
 
         const jsonStr = JSON.stringify(resultforjson, null, 2);
 
+        console.log('this too')
         saveFolder = process.cwd() + "/server" + "/data" + "/kg-instances/";
         const filePath = path.join(saveFolder, instanceName+'.json');
         
