@@ -36,10 +36,30 @@ function importControlledTerms(termNames) {
     return jsonObject;
 }
 
+// returns an object with all controlled terms as key value pairs
+function importInstances(instanceNames) {
+
+    const sourcePath = path.join(__dirname, '../data/kg-instances/');
+    const numInstances = instanceNames.length;
+
+    const filePaths = Array.from({ length: numInstances }, (_, i) => {
+        return path.join(sourcePath, instanceNames[i]+'.json');
+    })
+    
+    let jsonObject = {};
+    for (let i = 0; i < filePaths.length; i++) {
+        let thisFilepath = filePaths[i];
+        let thisInstance = instanceNames[i];
+        let jsonContent = JSON.parse(fs.readFileSync(thisFilepath));
+        jsonObject[thisInstance] = jsonContent;
+    };
+    return jsonObject;
+}
+
 function pascalCase2CamelCase(name) {
     return name.charAt(0).toLowerCase() + name.slice(1);
 }
 
-module.exports = {getControlledTerms, importControlledTerms};
+module.exports = {getControlledTerms, importControlledTerms, importInstances};
 
 

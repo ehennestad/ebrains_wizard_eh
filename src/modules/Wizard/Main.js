@@ -459,10 +459,14 @@ class Wizard extends React.Component {
     const datetimeStr = `${year}_${month}_${day}_${hours}${minutes}${seconds}`;
       
     let filePostfix = "";
-    if (!!this.formData.get('datasetinfo')['datasetVersion']['shortName']) {
-      filePostfix = this.formData.get('datasetinfo')['datasetVersion']['shortName'];
-    } else if (!!this.formData.get('general')['contactperson']['lastName']) {
-      filePostfix = this.formData.get('general')['contactperson']['lastName'];
+    if (!!this.formData.get('datasetinfo')['datasetVersion']) {
+      if (!!this.formData.get('datasetinfo')['datasetVersion']['shortName']) {
+        filePostfix = this.formData.get('datasetinfo')['datasetVersion']['shortName'];
+      }
+    } else if (!!this.formData.get('datasetinfo')['general']) {
+      if (!!this.formData.get('general')['contactperson']['lastName']) {
+        filePostfix = this.formData.get('general')['contactperson']['lastName'];
+      }
     }
 
     let filename = "";

@@ -51,6 +51,8 @@ export const transformErrors = errors => {
                 error.property.includes(".experimentalApproach") ||
                 error.property.includes(".technique") ) {
                 error.message = "Please select one of the values from the list.";
+            } else if (error.property.includes(".existingPerson") ) {
+                error.message = "Please select a person from the list.";
             }
 
         } else if ( error.property.includes(".studyTarget") ) {

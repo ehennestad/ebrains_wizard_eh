@@ -6,6 +6,8 @@ const path = require('path');//&&added by Archana&&//
 const getRequestOptions = require('./getRequestOptions')
 const studyTargetTerms = require('./constants');
 
+const OPENMINDS_VOCAB = "https://openminds.ebrains.eu/vocab";
+
 let fetchControlledTerms = async () => {
 
     // Create request header with authorization and options

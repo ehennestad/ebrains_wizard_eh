@@ -9,7 +9,20 @@
       "title": "E-mail address"
     },
 
-    "person": {
+    "existingPerson": {
+      "title": "Select a person from the EBRAINS Knowledge Graph:",
+      "type": "string",
+      "openMindsType": "Person",
+      "instanceProperties": ["familyName", "givenName"],
+      "labelTemplate": "${familyName}, ${givenName}",
+      "examples": [
+      ],
+      "exampleIDs": []
+    }, 
+
+    "newPerson": {
+      "title": "",
+      "description": "If the author is not available in the EBRAINS Knowledge Graph, please provide the following information:",
       "type": "object",
       "required": ["givenName", "familyName"],
 
@@ -60,9 +73,47 @@
           ]
         }
       }
+    },
+    "person": {
+      "type": "object",
+      "required": ["personMissing"],
+      "properties": {
+        "personMissing":{
+          "type": "boolean",
+          "title": "This person is not available in the EBRAINS Knowledge Graph",
+          "default": false
+        }
+      },
+      "dependencies":{
+        "personMissing":{
+          "oneOf":[
+            {
+              "required": ["existingPerson"],
+              "properties":{
+                "existingPerson": {
+                  "$ref": "#/definitions/existingPerson"
+                },
+                "personMissing": {
+                  "const": false
+                }
+              }
+            },
+            {
+              "required": ["newPerson"],
+              "properties":{
+                "newPerson": {
+                  "$ref": "#/definitions/newPerson"
+                },
+                "personMissing": {
+                  "const": true
+                }
+              }
+            }
+          ]
+        }
+      }
     }
   },
-
   "properties": {
     "dataset": {
       "title": "",
