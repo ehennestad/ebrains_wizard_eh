@@ -3,7 +3,11 @@ var fetchCoreSchemaInstances = require('./server/kg-util/fetchCoreSchemaInstance
 
 const {exec} = require('child_process');
 
-setup();
+if (process.env.NODE_ENV === 'docker-build') {
+    console.log ('Skipping setup for docker build process.')
+} else {
+    setup();
+}
 
 async function setup() {
     // Fetch controlled terms from KG
