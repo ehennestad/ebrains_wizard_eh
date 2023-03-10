@@ -1,0 +1,166 @@
+{
+  "title": "",
+  "type": "object",
+  "definitions" : {
+    
+    "email": {
+      "type": "string",
+      "format": "email",
+      "title": "E-mail address"
+    },
+
+    "existingPerson": {
+      "title": "Select a person from the EBRAINS Knowledge Graph:",
+      "type": "string",
+      "openMindsType": "Person",
+      "instanceProperties": ["familyName", "givenName"],
+      "labelTemplate": "${familyName}, ${givenName}",
+      "examples": [
+      ],
+      "exampleIDs": []
+    }, 
+
+    "newPerson": {
+      "title": "",
+      "description": "If the author is not available in the EBRAINS Knowledge Graph, please provide the following information:",
+      "type": "object",
+      "required": ["givenName", "familyName"],
+
+      "properties": {
+        "givenName": {
+          "type": "string",
+          "title": "First name"
+        },
+        "familyName": {
+          "type": "string",
+          "title": "Last name"
+        },
+        "digitalIdentifier": {
+          "type": "string",
+          "title": "ORCID"
+        },
+        "affiliation": {
+          "type": "string",
+          "title": "Affiliation"
+        },
+        "emailMissing":{
+          "type": "boolean",
+          "title": "This author does not have an email address",
+          "default": false
+        }
+      },
+      "dependencies":{
+        "emailMissing":{
+          "oneOf":[
+            {
+              "required": ["email"],
+              "properties":{
+                "email": {
+                  "$ref": "#/definitions/email"
+                },
+                "emailMissing": {
+                  "const": false
+                }
+              }
+            },
+            {
+              "properties":{
+                "emailMissing": {
+                  "const": true
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "person": {
+      "type": "object",
+      "required": ["personMissing"],
+      "properties": {
+        "personMissing":{
+          "type": "boolean",
+          "title": "This person is not available in the EBRAINS Knowledge Graph",
+          "default": false
+        }
+      },
+      "dependencies":{
+        "personMissing":{
+          "oneOf":[
+            {
+              "required": ["existingPerson"],
+              "properties":{
+                "existingPerson": {
+                  "$ref": "#/definitions/existingPerson"
+                },
+                "personMissing": {
+                  "const": false
+                }
+              }
+            },
+            {
+              "required": ["newPerson"],
+              "properties":{
+                "newPerson": {
+                  "$ref": "#/definitions/newPerson"
+                },
+                "personMissing": {
+                  "const": true
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "dataset": {
+      "title": "",
+      "type": "object",
+      "required": ["authors"],
+      "properties": {
+        "authors": {
+          "type": "array",
+          "title": "Dataset authors",
+          "description": "Please list all authors who have contributed to the dataset, in the order you would like them to appear on the data publication. Please note that the list of authors may be different for this data publication as compared to a journal article based on the data.",
+          "minItems": 1, 
+          "items": {
+            "_name": "Author",
+            "$ref": "#/definitions/person"
+          }
+        }
+      }
+    },
+    "datasetVersion": {
+      "title": "",
+      "type": "object",
+      "properties": {
+        "otherContribution": {
+          "type": "array",
+          "title": "Other contributors",
+          "description": "Please list all other contributors to this dataset. This could be technicians, data managers, etc.",
+          "items": {
+            "_name": "Other contributor",
+            "type": "object",
+            "required": ["contributor", "contributionType"],
+    
+            "properties": {
+              "contributor": {
+                "title": "",
+                "$ref": "#/definitions/person"
+              },
+              "contributionType":{
+                "type": "string",
+                "title": "Contribution type",
+                "controlledTerm": "contributionType",
+                "examples": [],
+                "exampleIDs": []
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

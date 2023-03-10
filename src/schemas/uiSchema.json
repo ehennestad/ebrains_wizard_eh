@@ -11,12 +11,9 @@
             "ui:widget": "select"
         }
     },
-    "datasetinfo": {
-        "summary": {
-            "ui:widget": "textarea",
-            "ui:options": {
-                "rows": 5
-            }
+    "datasetVersion": {
+        "dataType": {
+            "ui:widget": "checkboxes"
         },
         "embargo": {
             "ui:widget": "radio"
@@ -24,157 +21,33 @@
         "placeholder": {
             "ui:placeholder": "This is a placeholder"
         },
+        "copyrightStatus": {
+            "isCopyrighted" : {
+                "ui:widget": "radio"
+            }
+        },
+        "supportChannel": {
+            "ui:options":  {
+                "orderable": false
+            }
+        },
+        "_relatedPublicationIntro": {
+            "ui:widget": "richtext"
+        },
+        "relatedPublication": {
+            "ui:options":  {
+                "orderable": false
+            }
+        },
         "color": {
             "ui:widget": "color"
         },
-        "multipleChoicesList": {
-            "ui:widget": "radio"
-        }
-    },
-    "secret": {
-        "ui:widget": "hidden"
-    },
-    "disabled": {
-        "ui:disabled": true
-    },
-    "readonly": {
-        "ui:readonly": true
-    },
-    "widgetOptions": {
-        "ui:options": {
-            "backgroundColor": "yellow"
-        }
-    },
-    "selectWidgetOptions": {
-        "ui:options": {
-            "backgroundColor": "pink"
-        }
-    },
-    "dataType": {
-        "ui:widget": "checkboxes"
-    },
-    "sharedAlready": {
-        "sharedAlready": {
-            "ui:widget": "radio"
-        }
-    },
-    "embargo": {
-        "embargo": {
-            "ui:widget": "radio"
-        }    
-    },
-    "licenseImage": {
-        "ui:widget": "img"
-    },
-    "versions": {
-        "versions": {
-            "ui:widget": "radio"
-        }    
-    },
-    "versionInnovation": {
-        "ui:widget": "textarea",
-        "ui:options": {
-            "rows": 3
-        }
-    },
-    "dataCollection": {
-        "ui:widget": "radio"
-    },
-    "affiliation": {
-        "ui:widget": "radio"
-    },
-    "taskID": {
-        "ui:help": "If your data are related to more than one task ID, please list them separated by a semicolon (;)."
-    },
-    "fundingPhase": {
-        "ui:widget": "checkboxes"
-    },
-    "publications": {
-        "ui:options":  {
-            "orderable": false
-          }   
-    },
-
-    "subjectExpMetadata": {
-
-        "subjectsExist": {
-            "ui:widget": "radio"
-        },
-
-        "subjectsTable": {
-            "subjectRows": {
-                "ui:field": "table",
-                "table": {
-                    "striped": true,
-                    "hover": true,
-                    "search": true,
-                    "keyBoardNav": {
-                        "enterToEdit": true
-                    },
-                    "cellEdit": {
-                        "mode": "click",
-                        "blurToSave": true
-                    },
-                    "insertRow": true,
-                    "deleteRow": true,
-                    "selectRow": {
-                        "mode": "checkbox",
-                        "clickToSelect": true,
-                        "bgColor": "rgb(251, 238, 172)",
-                        "hideSelectColumn": false 
-                      },
-                    "expandColumnOptions": { 
-                        "expandColumnVisible": false
-                    },
-                    "tableCols": [
-                      {
-                        "dataField": "subjectID",
-                        "dataSort": true,
-                        "width": 200
-                      },
-                      {
-                        "dataField": "species"
-                      },
-                      {
-                        "dataField": "sex"
-                      },
-                      {
-                        "dataField": "ageCategory"
-                      },
-                      {
-                        "dataField": "age"
-                      },
-                      {
-                        "dataField": "weight"
-                      },
-                      {
-                        "dataField": "strain"
-                      },
-                      {
-                        "dataField": "pathology"
-                      },
-                      {
-                        "dataField": "phenotype"
-                      }
-                    ]              
-    
-                  }            
-            }
-        },
-
-        "externalTable": {
-            "ui:widget": "richtext"
-        }    
-
-    },
-
-    "datasetExpMetadata": {
         "experimentalApproach": {
             "ui:options":  {
                 "orderable": false
             }
         },
-        "preparationType": {
+        "preparationDesign": {
             "ui:options":  {
                 "orderable": false
             }
@@ -184,11 +57,51 @@
                 "orderable": false
             }
         },
-        "keywords": {
+        "keyword": {
             "ui:options":  {
                 "orderable": false
             }
-        }      
-    }
+        },
+        "otherContribution":{
+            "contributionType": {
+                "ui:options":  {
+                    "orderable": false
+                }
+            }
+        },
+        "studyTarget": {
+            "ui:options":  {
+                "orderable": false
+            }
+        }
+    }, 
+    "subjectExpMetadata": {
 
+        "subjectsExist": {
+            "ui:widget": "radio"
+        },
+        "uploadedExcelFile": {
+            "ui:widget": "file",
+            "ui:options": {
+                "accept": ".xlsx, .xls"
+          }
+        },
+        "externalTable": {
+            "ui:widget": "richtext"
+        }
+    },
+    
+    "submissionCompletedText": {
+        "ui:widget": "richtext"
+    },
+
+    "submissionFailedText": {
+        "ui:widget": "richtext"
+    }, 
+    "previewImage": {
+        "ui:widget": "richtext"
+    }, 
+    "licenseImage": {
+        "ui:widget": "img"
+    }
 }

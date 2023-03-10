@@ -1,3 +1,48 @@
+/* Add some variables containing theme colors and page layout */
+:root{
+  --form-background-color: #F5F7FA; /* original: ebebeb alternative: F5F7FA ffffff */ 
+
+  --ebrains-color-light: #9CE142;
+  --ebrains-color-medium: #00C959;
+  --ebrains-color-dark: #00A595;
+
+  /* Color variations are obtained by inserting the main color in 
+  Ant Design's theme editor https://ant.design/theme-editor */
+
+  /* Color on buttons on official ebrains page: */
+  --button-color-primary: #45b07c; 
+  --button-color-primary-hover: #68bd91;
+  --button-color-primary-active-hover: #2f8a61;
+  --button-color-primary-active: #2f8a61e0;
+
+  /* Using the ebrains-color-dark: */
+  /* --button-color-primary: #00a595;
+  --button-color-primary-hover: #1db39f;
+  --button-color-primary-active-hover: #008077;
+  --button-color-primary-active: #008077e0; */
+
+  --button-color-secondary: #00c959;
+  --button-color-secondary-hover: #22d66d;
+  --button-color-secondary-active-hover: #00a34f;
+  --button-color-secondary-active: #00a34fe0;
+  
+  /* Light red (not used) */
+  --button-color-error: #ff4d68;
+  --button-color-error-hover: #ff7585;
+  --button-color-error-active-hover: #d93654;
+  --button-color-error-active: #d93654e0;
+
+  --button-color-error: #a94442;
+  --button-color-error-hover: #b56864;
+  --button-color-error-active-hover: #822c2e;
+  --button-color-error-active: #822c2ee0;
+
+  --input-focus-color: #686868;
+  --input-tick-color: var(--button-color-primary);
+
+  --max-content-width: 980px;  
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -9,7 +54,7 @@
   }
 }
 
-.App-header {  
+.app-header {  
   min-height: 5vh;
   display: flex;
   flex-direction: column;
@@ -19,8 +64,17 @@
   color: white;
 }
 
+.app-footer {
+  color: #ffffff;
+  background-color:#1F2933;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 30px;
+}
+
 .gradient {
-  background-image: linear-gradient(to right, #00A595, #00C959, #9CE142);
+  background-image: linear-gradient(to left,  var(--ebrains-color-light), var(--ebrains-color-medium), var(--ebrains-color-dark));
   min-height: 1vh;
   display: flex;
   flex-direction: column;
@@ -28,6 +82,43 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.subheader {
+  background-color: var(--form-background-color);
+  margin-bottom: 40px;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  z-index: 9999;
+  top: 0;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px, rgba(0, 0, 0, 0.05) 0px 1px 4px 0px, rgba(0, 0, 0, 0.05) 0px 2px 8px 0px;
+}
+
+.privacy-notice {
+  width: 80%;
+  display: inline-block;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.subheader-menu {
+  width: 20%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: inline-block;
+  text-align: right;
+  vertical-align: top;
+}
+
+.notice {
+  background-color: var(--form-background-color);
+}
+.notice-content {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px 0px 10px 0px;
 }
 
 .App-link {
@@ -43,39 +134,256 @@
   }
 }
 
-.form {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  padding: 40px 60px 60px 60px;
-  background-color: #ebebeb;
+/* Specify style of main containers */
+
+.content-container {
+  margin-top: 0px;
+  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px 60px 5px 60px;
+  max-width: var(--max-content-width);;
+}
+
+.container-header {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0px 60px 0px 60px;
+  max-width: var(--max-content-width);
   border-radius: 20px;
+}
+
+.container-form {
+  margin-top: 20px;
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 40px 60px 60px 60px;
+  max-width: var(--max-content-width);
+  background-color: var(--form-background-color);
+  border-radius: 20px;
+}
+
+.container-footer {
+  margin: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-top: 5px;
+  color: #ffffff;
+}
+
+/* Some specific component styling */
+
+/* links */
+a {
+  color: var(--button-color-primary);
+}
+
+/* inputs */
+/* input:focus { 
+  border-color: var(--button-color-primary);
+  outline-color: var(--button-color-primary);
+  box-shadow: 0 0 3px var(--button-color-primary);
+  outline-offset: 0px;
+  outline: none;
+} */
+
+.form-control:focus { 
+  border-color: var(--input-focus-color);
+  outline-color: var(--input-focus-color);
+  box-shadow: 0 0 3px var(--input-focus-color);
+  outline-offset: 0px;
+  outline: none;
+}
+
+input[type=checkbox] {
+  accent-color: var(--input-tick-color);
+}
+input[type=radio] {
+  accent-color: var(--input-tick-color);
 }
 
 .result .react-json-view {
   padding-bottom: 10px;
 }
 
-.download-btn {
+.ant-steps-item-process {
+  border-color: var(--button-color-primary);
+}
+.ant-steps .ant-steps-item-process .ant-steps-item-icon >.ant-steps-icon .ant-steps-icon-dot {
+  background: var(--button-color-primary);
+}
+.ant-steps .ant-steps-item-process .ant-steps-item-icon {
+  border-color: var(--button-color-primary);
+}
+
+/* 
+.ant-steps-icon-dot {
+  background: var(--button-color-primary);
+}
+.ant-steps-item-icon {
+  background: var(--button-color-primary);
+  border-color: var(--button-color-primary);
+}
+.ant-steps-item-tail {
+  background-color: var(--button-color-primary);
+}
+.ant-steps-item-tail::after {
+  background-color: var(--button-color-primary);
+} 
+*/
+
+
+
+/* General style for all buttons */
+.btn {
+  padding: 6px 12px 6px 12px;
+  border-width: 1px;
+  font-size: medium;
+  font-weight: 600;
+}
+.btn:hover {
+  padding: 5px 11px 5px 11px;
+  border-width: 2px;
+  font-size: medium;
+}
+
+/* Styles for the next button */
+.btn-primary {
+  color: #ffffff;
+  min-width: 100px;
+  background-color: var(--button-color-primary);
+  border-color: var(--button-color-primary);
+}
+.btn-primary:hover {
+  background-color: var(--button-color-primary-hover);
+  border-color: var(--button-color-primary-hover);
+}
+.btn-primary:active {
+  background-color: var(--button-color-primary-active);
+  border-color: var(--button-color-primary-active);
+}
+.btn-primary:hover:active {
+  background-color: var(--button-color-primary-active-hover);
+  border-color: var(--button-color-primary-active-hover);
+}
+.btn-primary:hover:disabled {
+  background-color: var(--button-color-primary-active-hover);
+  border-color: var(--button-color-primary-active-hover);
+}
+
+/* Variation where button is gray-bluish (keep just in case) */
+/* .btn-default {
   margin-right: 10px;
+  color: #1F2933;
+  border-color: #1f29338a;
+  background-color: var(--form-background-color);
+} */
+
+.btn-default {
+  color: var(--button-color-primary);
+  background-color: #ffffff;
+  border-color: var(--button-color-primary);
+  background-color: var(--form-background-color);
+}
+.btn-default:hover {
+  color: var(--button-color-primary-hover);
+  border-color: var(--button-color-primary-hover);
+  background-color: var(--form-background-color);
+}
+.btn-default:active {
+  color: var(--button-color-primary-active);
+  border-color: var(--button-color-primary-active);
+  background-color: var(--form-background-color);
+}
+.btn-default:hover:active {
+  color: var(--button-color-primary-active-hover);
+  border-color: var(--button-color-primary-active-hover);
+  background-color: var(--form-background-color);
 }
 
-.loaddata-btn {
-  margin-right: 10px;
-  background-color: #ff8e24;
-  border-color: #f09527;
-
+.link-button {
+  padding: 0px 0px 0px 0px;
+  border-width: 0px;
+  font-size: small;
+  font-weight: 600;
+  color: var(--button-color-primary);
+  background-color: transparent;
+  padding-right: 15px;
+  background: url(./components/icons/up_arrow.svg) no-repeat;
+  background: url(./components/icons/down_arrow.svg) no-repeat;
+  background-position: 100% 50%;
 }
 
-.loaddata-btn:hover {
-  background-color: #ff7f00;
-  border-color: #e97502;
+.link-button:hover {
+  text-decoration: underline;
 }
 
-.upload-btn {
-  margin-right: 10px;
+/* Buttons in the array list */
+
+.array-item-add .btn-add {
+  content:'Add Item'; 
+  float: right;
+  min-width: 50px;
+  max-width: 50px;
+  margin-right: calc(1% + 11px);  /* 15 + 10 + 1 to align with remove button */
+  color: var(--button-color-primary);
+  border-color: var(--button-color-primary);
+  background-color: var(--form-background-color);
+}
+.array-item-add .btn-add:hover {
+  color: var(--button-color-primary-hover);
+  border-color: var(--button-color-primary-hover);
+  background-color: var(--form-background-color);
+}
+.array-item-add .btn-add:active {
+  color: var(--button-color-primary-active);
+  border-color: var(--button-color-primary-active);
+  background-color: var(--form-background-color);
+}
+.array-item-add .btn-add:hover:active {
+  color: var(--button-color-primary-active-hover);
+  border-color: var(--button-color-primary-active-hover);
+  background-color: var(--form-background-color);
 }
 
-.form .form-group.field .row.array-item-list .array-item {
+.array-item-toolbox {
+  float: right;
+  padding-right:1%;
+}
+
+.array-item-toolbox .btn-group {
+  float: right;
+}
+
+.array-item-toolbox .btn-danger {
+  margin: 0px 1px 0px 1px;
+  min-width: 50px;
+  color: var(--button-color-error);
+  border-color: var(--button-color-error);
+  background-color: var(--form-background-color);
+}
+.array-item-toolbox .btn-danger:hover {
+  margin: 0px 0px 0px 0px;
+  color: var(--button-color-error-hover);
+  border-color: var(--button-color-error-hover);
+  background-color: var(--form-background-color);
+}
+.array-item-toolbox .btn-danger:active {
+  color: var(--button-color-error-active);
+  border-color: var(--button-color-error-active);
+  background-color: var(--form-background-color);
+}
+.array-item-toolbox .btn-danger:hover:active {
+  color: var(--button-color-error-active-hover);
+  border-color: var(--button-color-error-active-hover);
+  background-color: var(--form-background-color);
+}
+
+
+.container-form .form-group.field .row.array-item-list .array-item {
   border: 1px solid #e5e5e5;
   display: flex;
   position: relative;
@@ -86,28 +394,34 @@
   width: calc(100% - 30px);
 }
 
-.form .footer button {
-  min-width: 140px;
+/* Components in the form's footer i.e nav buttons etc */
+
+.container-form .footer button {
+  margin-top: 10px;
+  min-width: 120px;
+}
+.container-form .footer button.btn-default {
+  margin-right: 10px;
+  background-color: #ffffff;
 }
 
-.form .footer .back-panel {
+.container-form .footer .back-panel {
   padding-left: 0;
 }
 
-.form .footer .submit-panel {
+.container-form .footer .submit-panel {
   text-align: right;
   padding-right: 0;
 }
 
-.app-footer {
-  background-color:#cae3e1;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 30px;
+/* Text in page footer */
+.text-muted {
+  color: #CCCED0;
 }
 
-.footer-container {
-  margin: 0;
-  padding-top: 5px;
+.container-footer a {
+  color: var(--button-color-primary);
+}
+.container-footer a:hover {
+  color: #CCCED0;
 }

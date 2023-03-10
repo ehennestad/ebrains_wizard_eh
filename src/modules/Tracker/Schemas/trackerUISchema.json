@@ -1,0 +1,15 @@
+{
+    "welcomeText": {
+        "ui:widget": "richtext"
+    },
+
+    "wizardLink": {
+        "ui:readonly": true
+    },
+    "emailMessage": {
+        "ui:widget": "textarea",
+        "ui:options": {
+            "rows": 10
+        }
+    }
+}
