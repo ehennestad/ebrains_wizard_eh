@@ -90,7 +90,7 @@ class Wizard extends React.Component {
           case 'Download form data':
             this.saveFormDataToJson();
             break;
-          case 'Save metadata to file...':
+          case 'Download form data as...':
             this.saveFormDataToJsonAs();
             break;
           case 'Reset form':

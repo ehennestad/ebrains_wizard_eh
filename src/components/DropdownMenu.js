@@ -9,7 +9,7 @@ const items = [
     icon: <UploadOutlined />,
   },
   {
-    label: 'Save metadata to file...',
+    label: 'Download form data as...',
     key: '2',
     icon: <DownloadOutlined />,
   },
