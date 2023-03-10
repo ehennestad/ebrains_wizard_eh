@@ -30,7 +30,8 @@ let fetchControlledTerms = async () => {
     // IMPORTANT: DatasetLicense should not be a part of this list because it is a manual
     // entry that does not correspond with any openMINDS schema.
     let CONTROLLED_TERMS = ["PreparationType", "Technique", "ContributionType", 
-                            "SemanticDataType", "ExperimentalApproach"];
+                            "SemanticDataType", "ExperimentalApproach", 
+                            "StimulationApproach", "StimulationTechnique"];
     CONTROLLED_TERMS = CONTROLLED_TERMS.concat(studyTargetTerms);
     
     return new Promise((resolve, reject) => {

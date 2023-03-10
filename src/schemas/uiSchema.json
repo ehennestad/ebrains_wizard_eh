@@ -73,6 +73,14 @@
             "ui:options":  {
                 "orderable": false
             }
+        },
+        "behaviorProtocol": {
+            "description": {
+                "ui:widget": "textarea",
+                "ui:options": {
+                    "rows": 5
+                }
+            }
         }
     }, 
     "subjectExpMetadata": {

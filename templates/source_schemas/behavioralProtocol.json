@@ -1,0 +1,66 @@
+{
+  "title": "Protocols",
+  "type": "object",
+  "definitions": {
+    "stimulation": {
+      "type": "object",
+      "subtitle": "Stimulation",
+      "controlledTermSet": [
+        "StimulationApproach",
+        "StimulationTechnique"]
+    }
+  },
+  "properties": {
+    "datasetVersion": {
+      "type": "object",
+      "title": "",
+      "properties": {
+        "behaviorProtocol": {
+          "type": "array",
+          "title": "",
+          "description": "Please list all protocols for this project.",
+          "items": {
+            "type": "object",
+            "required": ["name", "description"],
+      
+            "properties": {
+              "description": {
+                "type": "string",
+                "title": "Description",
+                "description": "Enter a description of this behavioral protocol."
+              },
+              "name": {
+                "type": "string",
+                "title": "Name",
+                "description": "Enter a descriptive name for this behavioral protocol."
+              },
+              "describedIn": {
+                "type": "string",
+                "title": "Described in",
+                "description": "Enter a link to a publication that describes this behavioral protocol."
+              },
+              "internalIdentifier": {
+                "type": "string",
+                "title": "Internal identifier",
+                "description": "Enter the identifier (or label) of this behavioral protocol that is used within the corresponding data files to identify this behavioral protocol."
+              },
+              "stimulationIntro": {
+                "type": "null",
+                "title": "Stimulation",
+                "description": "Add all stimulation approaches and/or techniques used within this behavioral protocol."
+              },
+              "stimulation": {
+                "title": "",
+                "type": "array",
+                "items": {
+                  "title": "",
+                  "$ref": "#/definitions/stimulation"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
