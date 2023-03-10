@@ -1,11 +1,12 @@
-//const axios = require('axios');
+
 const fetch = require("node-fetch")
-const fs = require('fs');//&&added by Archana&&//
-const path = require('path');//&&added by Archana&&//
+const fs = require('fs');
+const path = require('path');
 
 const getRequestOptions = require('./getRequestOptions')
 
 const OPENMINDS_VOCAB = "https://openminds.ebrains.eu/vocab";
+
 const INSTANCE_OUTPUT_DIRECTORY = path.join(__dirname, '..', 'data', 'kg-instances');
 
 fs.mkdir(INSTANCE_OUTPUT_DIRECTORY, { recursive: true }, (err) => {
@@ -21,10 +22,10 @@ fs.mkdir(INSTANCE_OUTPUT_DIRECTORY, { recursive: true }, (err) => {
 });
 
 // config instanceSpecification should contain the following properties:
-// - openMindsType
-// - instanceProperties
+// - openMindsType // Rename to openMindsSchemaType
+// - instanceProperties // Rename to openMindsSchemaProperties
 
-// Todo: Support array input for instanceSpecification
+// Todo: Support array (list) input for instanceSpecification
 
 let fetchCoreSchemaInstances = async (instanceSpecification) => {
 
@@ -61,9 +62,16 @@ function fetchInstance(apiQueryUrl, requestOptions, instanceName, propertyNames)
 
     return new Promise((resolve, reject) => {
         fetch(apiQueryUrl, requestOptions)
-            .then( response => response.json() )             // Get response promise
+            .then( response => {
+                if (response.status===200) {
+                    return response.json() 
+                } else {
+                    console.log('Error fetching instances for ' + instanceName + '. Status code: ' + response.status);
+                    reject()
+                }
+                }) // Get response promise
                 .then( data => parseAndSaveData(data, instanceName, propertyNames).then( (instances) => resolve(instances) ) )
-            .catch( error => {reject(error); console.log(error.type) } )
+                .catch( error => {reject(error); console.log(error) } )
     });
 }
 
@@ -71,31 +79,25 @@ function fetchInstance(apiQueryUrl, requestOptions, instanceName, propertyNames)
 function parseAndSaveData(data, instanceName, propertyNameList) {
     return new Promise((resolve, reject) => {
 
-        const resultforjson=[];
+        const schemaInstanceList = [];
 
-        for (let datainstance of data.data){
-            let newInstance = {"identifier": datainstance["@id"]};
+        for (let thisInstance of data.data){
+            let newInstance = {"identifier": thisInstance["@id"]};
 
             for (let i in propertyNameList) {
                 vocabName = OPENMINDS_VOCAB + "/" + propertyNameList[i];
-                if (datainstance[vocabName] != undefined) {
-                    newInstance[propertyNameList[i]] = datainstance[vocabName];
+                if (thisInstance[vocabName] != undefined) {
+                    newInstance[propertyNameList[i]] = thisInstance[vocabName];
                 }
             }
-            resultforjson.push( newInstance );       
+            schemaInstanceList.push( newInstance );       
         }
-        // console.log('instanceName, resultforjson', instanceName, resultforjson[0])
-        // resolve(resultforjson)
+        
+        // Save results to json file
+        const jsonStr = JSON.stringify(schemaInstanceList, null, 2);
 
-        // Todo: Consider whether to save the instances to a file or to return them as a json object.
-        // Make first letter of instance name lowercase
-        //instanceName = instanceName.charAt(0).toLowerCase() + instanceName.slice(1);
-
-        const jsonStr = JSON.stringify(resultforjson, null, 2);
-
-        console.log('this too')
-        saveFolder = process.cwd() + "/server" + "/data" + "/kg-instances/";
-        const filePath = path.join(saveFolder, instanceName+'.json');
+        const filename = instanceName + '.json';
+        const filePath = path.join(INSTANCE_OUTPUT_DIRECTORY, filename);
         
         fs.writeFile(filePath, jsonStr, (err) => {
             if (err) {
