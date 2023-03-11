@@ -41,18 +41,31 @@ let fetchCoreSchemaInstances = async (instanceSpecification) => {
         const QUERY_PARAMS = ["stage=RELEASED", "space=common", "type=https://openminds.ebrains.eu/core/"];
         
         //const CORE_SCHEMAS = ["Person", "URL"]
-        const CORE_SCHEMAS = [instanceSpecification.openMindsType];
+        const CORE_SCHEMAS = instanceSpecification.map((item) => item.openMindsType);
 
         // Loop through core schemas terms and fetch their instances
         for (let i = 0; i < CORE_SCHEMAS.length; i++){
+
+            var completedRequests = 0;
 
             // Assemble Query URL
             let queryUrl = API_BASE_URL + API_ENDPOINT + "?" + QUERY_PARAMS.join("&") + CORE_SCHEMAS[i];
             let instanceName = CORE_SCHEMAS[i];
 
+            const propNames = instanceSpecification[i].instanceProperties;
+
             // Fetch instances
-            fetchInstance(queryUrl, requestOptions, instanceName, instanceSpecification.instanceProperties)
-            .then( (data) => resolve(data) )
+            fetchInstance(queryUrl, requestOptions, instanceName, propNames)
+                .then(() => {
+                    completedRequests++;
+                    if (completedRequests === CORE_SCHEMAS.length) {
+                        resolve();
+                    }
+                })
+                .catch(err => {
+                    console.log('Error fetching core instances: ' + err);
+                    reject(err);
+                })
         }
     });
 }

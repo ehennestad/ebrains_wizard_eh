@@ -38,7 +38,7 @@ function assembleRJSFSchemas () {
 
     // Object with all controlled terms as key value pairs.
     const controlledTerms = importControlledTerms(controlledTermNames)
-    const instances = importInstances(["Person"]);
+    const instances = importInstances(["Person", "Organization"]);
 
     const populateSchema = schema => {
 

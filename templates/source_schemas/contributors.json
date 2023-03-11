@@ -9,16 +9,42 @@
       "title": "E-mail address"
     },
 
+    "affiliation": {
+      "type": "object",
+      "title": "",
+      "required": ["memberOf"],
+      "properties": {
+        "memberOf": {
+          "type": "string",
+          "title": "Name of institution or organization",
+          "openMindsType": "Organization",
+          "instanceProperties": ["fullName"],
+          "labelTemplate": "${fullName}",
+          "examples": [],
+          "exampleIDs": []
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Start date"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date",
+          "title": "End date"
+        }
+      }
+    },
+
     "existingPerson": {
       "title": "Select a person from the EBRAINS Knowledge Graph:",
       "type": "string",
       "openMindsType": "Person",
       "instanceProperties": ["familyName", "givenName"],
       "labelTemplate": "${familyName}, ${givenName}",
-      "examples": [
-      ],
+      "examples": [],
       "exampleIDs": []
-    }, 
+    },
 
     "newPerson": {
       "title": "",
@@ -39,9 +65,18 @@
           "type": "string",
           "title": "ORCID"
         },
+        "affiliationIntro": {
+          "type": "null",
+          "title": "Affiliation",
+          "description": "Please provide the affiliation of the author at the time of the data collection. If the author has multiple affiliations, please provide the most relevant one."
+        },
+
         "affiliation": {
-          "type": "string",
-          "title": "Affiliation"
+          "type": "array",
+          "title": "",
+          "items": {
+            "$ref": "#/definitions/affiliation"
+          }
         },
         "emailMissing":{
           "type": "boolean",

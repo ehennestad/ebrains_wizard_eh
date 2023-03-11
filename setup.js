@@ -15,10 +15,17 @@ async function setup() {
 
     var startTime = performance.now()
 
-    configObject = {
-        openMindsType: "Person",
-        instanceProperties: ["familyName", "givenName"]
-    }
+    configObject = [ 
+        {
+            openMindsType: "Person",
+            instanceProperties: ["familyName", "givenName"]
+        },
+        {
+            openMindsType: "Organization",
+            instanceProperties: ["fullName"]
+        }
+    ];
+
     console.log('Fetching openMINDS instances...')
     fetchCoreSchemaInstances(configObject)
         .then( () => {

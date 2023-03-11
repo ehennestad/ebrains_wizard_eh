@@ -10,10 +10,16 @@ async function setup() {
     let date = new Date();
     console.log("Running update - ", date);
     
-    instanceSpecificationObject = {
-        openMindsType: "Person",
-        instanceProperties: ["familyName", "givenName"]
-    }
+    instanceSpecificationObject = [ 
+        {
+            openMindsType: "Person",
+            instanceProperties: ["familyName", "givenName"]
+        },
+        {
+            openMindsType: "Organization",
+            instanceProperties: ["fullName"]
+        }
+    ];
     await fetchCoreSchemaInstances(instanceSpecificationObject)
     await fetchControlledTerms();
     await assembleRJSFSchemas();
