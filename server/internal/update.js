@@ -4,6 +4,7 @@ var assembleRJSFSchemas = require('./formSchemaAssembler');
 const {exec} = require('child_process');
 
 // Todo: make sure nothing is synchronous here 
+// Todo: Make sure this does not redo the react-build if fetching from KG fails
 
 async function setup() {
     // Log current date and time
