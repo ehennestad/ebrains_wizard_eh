@@ -31,7 +31,7 @@ const App = () => {
           <a href="/"><img src="EBRAINS-Curation-Services.png" alt="EBRAINS Curation Services Logo" width="100%" style={{"margin":"10px","display":"block","marginLeft":"auto","marginRight":"auto"}} /></a>
         </div>
       </header>
-      <div className="container-gradient"></div>
+      <div className="gradient"></div>
 
       <BrowserRouter>
         <Routes>
@@ -43,7 +43,7 @@ const App = () => {
           
           <Route path="/" element={ 
             <div>
-              <div className="container-subheader">
+              <div className="subheader">
                 <div className="content-container">
                   <div className="privacy-notice">
                     <PrivacyBanner />
