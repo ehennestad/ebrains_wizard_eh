@@ -62,9 +62,6 @@
                 "supportChannel": {
                     "$ref": "#/definitions/supportChannel"
                 },
-                "howToCite": {
-                    "$ref": "#/definitions/howToCite"
-                },
                 "inputData": {
                     "$ref": "#/definitions/inputData"
                 },

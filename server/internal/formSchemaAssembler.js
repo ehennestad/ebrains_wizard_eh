@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-const {importControlledTerms} = require('../kg-util/getControlledTerms');
+const {importControlledTerms, importInstances} = require('../kg-util/getControlledTerms');
 
 // Todo: import on demand
 const controlledTermNames = [
@@ -38,7 +38,8 @@ function assembleRJSFSchemas () {
 
     // Object with all controlled terms as key value pairs.
     const controlledTerms = importControlledTerms(controlledTermNames)
-    
+    const instances = importInstances(["Person"]);
+
     const populateSchema = schema => {
 
         if (typeof schema === "object") {
@@ -66,8 +67,10 @@ function assembleRJSFSchemas () {
                         schema = addControlledTermInstancesToSchema(schema);
                     } else if (schema.textModule) {
                         schema.text = getHtmlString( schema.textModule );
+                    } else if (schema.openMindsType) {
+                        addOpenMindsInstanceToSchema(schema)
                     }
-                
+
                     break;
                 default:
                     break;
@@ -127,13 +130,34 @@ function assembleRJSFSchemas () {
         
         if (schema.examples) {
             schema.examples = controlledTermInstances.map(term => term.name);
-            schema.exampleIDs = controlledTermInstances.map(term => term.identifier);    
-            schema.pattern = "^(" + schema.examples.join("|") + ")$";   
+            schema.exampleIDs = controlledTermInstances.map(term => term.identifier);
+            schema.pattern = "^(" + schema.examples.join("|") + ")$";
         } else {
             schema.enum = controlledTermInstances.map(term => term.identifier);
             schema.enumNames = controlledTermInstances.map(term => term.name);
         }
         return schema;
+    }
+
+    function addOpenMindsInstanceToSchema (formSchema) {
+        let instanceList = instances[formSchema.openMindsType];
+    
+        const formatObjectForDisplay = (instance) => {
+            const propertyNames = formSchema.instanceProperties
+            let formattedString = formSchema.labelTemplate
+
+            for (let i = 0; i < propertyNames.length; i++) {
+                const propName = propertyNames[i];
+                const propValue = instance[propName];
+            
+                formattedString = formattedString.replace(new RegExp(`\\$\\{${propName}\\}`, 'g'), propValue);
+            }
+            return formattedString
+        }
+        
+        formSchema.examples = instanceList.map( term => formatObjectForDisplay(term));
+        formSchema.exampleIDs = instanceList.map(term => term.identifier);
+        formSchema.pattern = "^(" + formSchema.examples.join("|") + ")$";   
     }
 
     return new Promise( (resolve, reject) => {

@@ -1,91 +1,114 @@
-//const axios = require('axios');
+
 const fetch = require("node-fetch")
-const fs = require('fs');//&&added by Archana&&//
-const path = require('path');//&&added by Archana&&//
+const fs = require('fs');
+const path = require('path');
 
 const getRequestOptions = require('./getRequestOptions')
 
-// Todo: Load openMINDS json.tpl schemas and extract property names that are part of the schema. 
+const OPENMINDS_VOCAB = "https://openminds.ebrains.eu/vocab";
 
-let fetchCoreSchemaInstances = async () => {
+const INSTANCE_OUTPUT_DIRECTORY = path.join(__dirname, '..', 'data', 'kg-instances');
+
+fs.mkdir(INSTANCE_OUTPUT_DIRECTORY, { recursive: true }, (err) => {
+    if (err) {
+        if (err.code === 'EEXIST') {
+            console.log("Directory already exists.");
+        } else {
+            console.log(err);
+        }
+    } else {
+        console.log("New directory successfully created.");
+    }
+});
+
+// config instanceSpecification should contain the following properties:
+// - openMindsType // Rename to openMindsSchemaType
+// - instanceProperties // Rename to openMindsSchemaProperties
+
+// Todo: Support array (list) input for instanceSpecification
+
+let fetchCoreSchemaInstances = async (instanceSpecification) => {
 
     // Create request header with authorization and options
     const requestOptions = await getRequestOptions();
 
-    // Define some api constants
-    const API_BASE_URL = "https://core.kg.ebrains.eu/";
-    const API_ENDPOINT = "v3/instances";
+    return new Promise((resolve, reject) => {
 
-    const QUERY_PARAMS = ["stage=RELEASED", "space=common", "type=https://openminds.ebrains.eu/core/"];
-    
-    const CORE_SCHEMAS = ["Person", "URL"]
+        // Define some api constants
+        const API_BASE_URL = "https://core.kg.ebrains.eu/";
+        const API_ENDPOINT = "v3/instances";
 
-    // Loop through core schemas terms and fetch their instances
-    for (let i = 0; i < CORE_SCHEMAS.length; i++){
-
-        // Assemble Query URL
-        let queryUrl = API_BASE_URL + API_ENDPOINT + "?" + QUERY_PARAMS.join("&") + CORE_SCHEMAS[i];
-        let instanceName = CORE_SCHEMAS[i];
-
-        // Fetch instances
-        fetchInstance(queryUrl, requestOptions, instanceName) //&&modified by Archana&&//
-    }
-}
-
-// function to get controlled terms instances from api
-function fetchInstance(apiQueryUrl, requestOptions, instanceName) { //&&modified by Archana&&//
-    
-    fetch(apiQueryUrl, requestOptions)
-        .then( response => response.json() )             // Get response promise
-            .then( data => parseAndSaveData(data, instanceName) )//&&modified by Archana&&//
-        .catch( error => console.log(error.status) )
-}
-
-//&&Archana's awesome function to parse data from api and save to json file
-function parseAndSaveData(data, instanceName) {
-    const resultforjson=[];
-
-    //console.log(data.data)
-    for (let datainstance of data.data){
+        const QUERY_PARAMS = ["stage=RELEASED", "space=common", "type=https://openminds.ebrains.eu/core/"];
         
-        for (const i in datainstance){
-            if(i=='@id'){
-                var identifier=datainstance[i]
-            }
-            if(i=='https://openminds.ebrains.eu/vocab/givenName'){
-                var givenName=datainstance[i]
-            }
-            if(i=='https://openminds.ebrains.eu/vocab/familyName'){
-                var familyName=datainstance[i]
-            }            
-        }
-        resultforjson.push( datainstance );       
-    }
+        //const CORE_SCHEMAS = ["Person", "URL"]
+        const CORE_SCHEMAS = [instanceSpecification.openMindsType];
 
-    // Sort by name alphabetically
-    //resultforjson.sort((a, b) => a.givenName.localeCompare(b.givenName))
+        // Loop through core schemas terms and fetch their instances
+        for (let i = 0; i < CORE_SCHEMAS.length; i++){
 
-    // Make first letter of instance name lowercase
-    instanceName = instanceName.charAt(0).toLowerCase() + instanceName.slice(1);
+            // Assemble Query URL
+            let queryUrl = API_BASE_URL + API_ENDPOINT + "?" + QUERY_PARAMS.join("&") + CORE_SCHEMAS[i];
+            let instanceName = CORE_SCHEMAS[i];
 
-    const jsonStr = JSON.stringify(resultforjson, null, 2);
-
-    saveFolder = process.cwd() + "/server" + "/data" + "/kg" + "/core-instances/";
-    const filePath = path.join(saveFolder, instanceName+'.json');
-    
-    fs.writeFile(filePath, jsonStr, (err) => {
-        if (err) {
-            console.log('Failed for ' + instanceName)
-            console.error(err);
-        } else {
-            console.log('File with instances for ' + instanceName + ' written successfully');
+            // Fetch instances
+            fetchInstance(queryUrl, requestOptions, instanceName, instanceSpecification.instanceProperties)
+            .then( (data) => resolve(data) )
         }
     });
 }
 
-module.exports = fetchCoreSchemaInstances;
+// function to get schema instances from kg api
+function fetchInstance(apiQueryUrl, requestOptions, instanceName, propertyNames) {
 
-// - - - Simple api query using axios
-// apiURL = "https://api.github.com/repos/HumanBrainProject/openMINDS/commits/documentation";
-// axios.get( apiURL )
-// .then( response => console.log(response) )
+    return new Promise((resolve, reject) => {
+        fetch(apiQueryUrl, requestOptions)
+            .then( response => {
+                if (response.status===200) {
+                    return response.json() 
+                } else {
+                    console.log('Error fetching instances for ' + instanceName + '. Status code: ' + response.status);
+                    reject()
+                }
+                }) // Get response promise
+                .then( data => parseAndSaveData(data, instanceName, propertyNames).then( (instances) => resolve(instances) ) )
+                .catch( error => {reject(error); console.log(error) } )
+    });
+}
+
+// Parse and save schema instances
+function parseAndSaveData(data, instanceName, propertyNameList) {
+    return new Promise((resolve, reject) => {
+
+        const schemaInstanceList = [];
+
+        for (let thisInstance of data.data){
+            let newInstance = {"identifier": thisInstance["@id"]};
+
+            for (let i in propertyNameList) {
+                vocabName = OPENMINDS_VOCAB + "/" + propertyNameList[i];
+                if (thisInstance[vocabName] != undefined) {
+                    newInstance[propertyNameList[i]] = thisInstance[vocabName];
+                }
+            }
+            schemaInstanceList.push( newInstance );       
+        }
+        
+        // Save results to json file
+        const jsonStr = JSON.stringify(schemaInstanceList, null, 2);
+
+        const filename = instanceName + '.json';
+        const filePath = path.join(INSTANCE_OUTPUT_DIRECTORY, filename);
+        
+        fs.writeFile(filePath, jsonStr, (err) => {
+            if (err) {
+                console.error(err);
+                reject(err)
+            } else {
+                console.log('File with instances for ' + instanceName + ' written successfully');
+                resolve()
+            }
+        });
+    });
+}
+
+module.exports = fetchCoreSchemaInstances;

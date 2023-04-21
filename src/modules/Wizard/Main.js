@@ -3,7 +3,9 @@ import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Cookies from 'universal-cookie'
 import ReactJson from 'react-json-view';
-import { notification } from 'antd';
+import { message, notification } from 'antd';
+
+import WIZARD_VERSION from '../../version';
 
 import GeneralWizard from './Pages/GeneralWizard';
 import DatasetWizard from './Pages/DatasetWizard';
@@ -13,16 +15,13 @@ import ExperimentWizard from './Pages/ExperimentWizard.js';
 import SubmissionCompletedWizard from './Pages/SubmissionCompletedWizard.js';
 
 import ProgressBar from '../../components/ProgressBar';
-//import testfunc from '../../helpers/test/test-doc-generator.js';
 
 import { generalSchema, dataset1Schema, dataset2Schema, contributorsSchema, fundingSchema, 
          experimentSchema, submissionSuccededSchema, submissionFailedSchema } 
   from './Schemas';
 
 const testfunc = () => {};
-
-// Todo: 
-// [ ] Bug when reseting form. Ticket number will not be updated from query parameter. Attempted fix, but needs testing.
+const JSON_FILE_TYPE = "EBRAINS metadata wizard webform data";
 
 // Path for posting submission to the backend
 const SUBMISSION_PATH = "/api/submission/send_email";
@@ -60,11 +59,11 @@ class Wizard extends React.Component {
     this.ticketNumber = this.getTicketNumberFromUrlParameter();
     // formdata for each wizard step in a Map:
     this.formData = this.initializeFormDataMap();
-    // json string of the whole formdata // Todo: What is this used for? Remove??? Duplicate of formData
-    this.jsonStr = null;     
     // image for preview of dataset:
-    this.previewImage = [];       
-    // openMinds document for the dataset // Currently only used for testing                
+    this.previewImage = [];
+    // json file specification
+    this.jsonFile = null;
+    // openMinds document for the dataset // Currently only used for testing
     this.openMindsDocument = null;
     // list of valid steps                
     this.validSteps = this.initializeValidSteps(); 
@@ -75,7 +74,33 @@ class Wizard extends React.Component {
 
     // Some internal states that are not used for rendering
     this.isInitialized = false;
-    this.needUserConfirmation = false; 
+    this.needUserConfirmation = false;
+  }
+  
+  componentDidUpdate(prevProps) {
+
+    if (!!this.props.action) {
+      if (prevProps.updateKey === this.props.updateKey) {
+        return;
+      } else {
+        switch (this.props.action) {
+          case 'Upload form data':
+            this.loadFormDataFromJson();
+            break;
+          case 'Download form data':
+            this.saveFormDataToJson();
+            break;
+          case 'Download form data as...':
+            this.saveFormDataToJsonAs();
+            break;
+          case 'Reset form':
+            this.resetFormData();
+            break;
+          default:
+            break;
+        };
+      }
+    }
   }
 
   initializeFormDataMap = (formStates) => {
@@ -114,7 +139,7 @@ class Wizard extends React.Component {
     this.ticketNumber = ticketNumber;
 
     if (jsonStr !== undefined) {
-      this.loadState( JSON.parse(jsonStr) );
+      this.replaceFormData( JSON.parse(jsonStr) );
     } 
 
     // Update the general form with ticketnumber from URL
@@ -271,23 +296,13 @@ class Wizard extends React.Component {
 
     // Add data to the formData map (after excel data has been removed)
     this.updateFormData(this.state.currentStep, data)
-
-    let dataset = Object.fromEntries(this.formData) // convert formData Map to object
-    let datasetFlattened = Object.keys(dataset).reduce(function (value, key) {
-      return {...value, ...dataset[key]}; // flatten object
-    }, []);
-
-    //const res = generateDocumentsFromDataset(datasetFlattened);
-    //const res = createOpenMindsDocuments(dataset)
-    const res = {'documents': null};
-
-    // // Create a json string from data which user has entered.
-    const jsonData = JSON.stringify([dataset, res], null, 2);
-    this.jsonStr = jsonData;
+    
+    //const jsonStr = this.createJsonStringFromFormData()
+    const jsonStr = this.createJsonFileStringFromFormData()
 
     // Create a FormData object in order to send data to the backend server
     let formData = new FormData();
-    formData.append('jsonData', jsonData) // Json data is in the form of a string
+    formData.append('jsonData', jsonStr) // Json data is in the form of a string
     formData.append('excelData', subjectExcelData) // Excel data is in the form of a dataURL
     formData.append('previewImage', previewImageFile)
 
@@ -297,17 +312,36 @@ class Wizard extends React.Component {
       .catch( error => {console.log(error); this.goToWizardStep(WIZARD_FAILED) } );
   }
 
-  handleReset = () => {
+  createJsonStringFromFormData = () => {
+    let dataset = Object.fromEntries(this.formData) // convert formData Map to object
+    const res = {'documents': null}; // todo: remove, but dependencies on backend need to be removed first
+
+    // // Create a json string from data which user has entered.
+    const jsonStr = JSON.stringify([dataset, res], null, 2);
+    return jsonStr;
+  }
+
+  resetFormData = () => {
     this.formData = this.initializeFormDataMap();
-    this.jsonStr = null;
     this.previewImage = [];
     this.saveFormDatasInCookie();
+    this.jsonFile = null;
     let skipValidation = true;
     this.goToWizardStep( WIZARD_STEPS_LIST[0], skipValidation )
     this.validSteps = this.initializeValidSteps();
   };
 
-  loadJson = () => { // Consider moving this to a separate file (e.g. utils.js)
+  replaceFormData = formStates => {
+    // This function is used to update the form with existing data 
+    // (from cookies or an uploaded json file)
+    this.formData = this.initializeFormDataMap(formStates);
+    this.validSteps = this.initializeValidSteps();
+    const skipFormValidation = true;
+    this.goToWizardStep( WIZARD_STEPS_LIST[0], skipFormValidation )
+  };
+
+  loadFormDataFromJson = () => { // Consider moving this to a separate file (e.g. utils.js)
+    
     let input = document.createElement("input");
     input.type = "file";
     input.accept=".json,application/json";
@@ -319,9 +353,23 @@ class Wizard extends React.Component {
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-          let data = JSON.parse(reader.result);
-          let formStates = data[0];
-          this.loadState(formStates);
+          let jsonObject = JSON.parse(reader.result);
+          this.validateJsonFile(jsonObject);
+
+          let loadedJsonFileSpec = this.getJsonFileSpec(jsonObject);
+          this.jsonFile = loadedJsonFileSpec;
+
+          let formData = jsonObject.formData;
+          this.replaceFormData(formData);
+          const messageConfig = {
+            content: 'Form updated from uploaded JSON.',
+            duration: 5,
+            style: {'fontSize': '1.2em'},
+          }
+          message.success(messageConfig);
+
+          //message.success('Form updated from uploaded JSON.', 5);
+
         }, false);        
 
         reader.readAsText(file);
@@ -330,16 +378,154 @@ class Wizard extends React.Component {
     input.click();
   };
 
-  loadState = formStates => {
-    this.formData = this.initializeFormDataMap(formStates);
-    this.validSteps = this.initializeValidSteps();
-    let skipFormValidation = true;
-    this.goToWizardStep( WIZARD_STEPS_LIST[0], skipFormValidation )
+  getJsonFileSpec = (jsonObjectSource) => {
+
+    let jsonObject = null;
+    
+    if (jsonObjectSource === undefined) {
+
+      jsonObject = {
+        _type: JSON_FILE_TYPE,
+        _version: WIZARD_VERSION,
+        _createdAt: this.getDatetimeStamp(),
+        _lastModified: null,
+      }
+
+    } else {
+      jsonObject = {
+        _type: jsonObjectSource._type, 
+        _version: jsonObjectSource._version,
+        _createdAt: jsonObjectSource._createdAt,
+        _lastModified: null,
+      }
+    }
+
+    return jsonObject;
+  }
+
+  validateJsonFile = (jsonObject) => {
+    // Todo.
+    // Check if the json file is valid
+    // If not, then provide a message to the user
+  }
+
+  checkJsonVersion = (jsonObject) => {
+    // If version is not the same, then provide a message/warning to the user
+  }
+
+  createJsonFileStringFromFormData = () => {
+    // Create a json string from data which user has entered.
+
+    let jsonObject = null;
+
+    if (!this.jsonFile) {
+      jsonObject = this.getJsonFileSpec();
+    } else {
+      jsonObject = this.jsonFile;
+    }
+
+    jsonObject._version = WIZARD_VERSION;
+    jsonObject._lastModified = this.getDatetimeStamp();
+    jsonObject.formData = Object.fromEntries(this.formData);
+
+    //const jsonStr = this.createJsonStringFromFormData()
+    const jsonStr = JSON.stringify(jsonObject, null, 2);
+    return jsonStr;
+  }
+
+  getDatetimeStamp = () => {
+    const date = new Date();
+    const datetimeStr = date.toLocaleString("en-us", {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    });
+    return datetimeStr;
+  }
+
+  generateJsonFilename = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    const hours = ('0' + date.getHours()).slice(-2);
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+    const seconds = ('0' + date.getSeconds()).slice(-2);
+    
+    const datetimeStr = `${year}_${month}_${day}_${hours}${minutes}${seconds}`;
+      
+    let filePostfix = "";
+    if (!!this.formData.get('datasetinfo')['datasetVersion']) {
+      if (!!this.formData.get('datasetinfo')['datasetVersion']['shortName']) {
+        filePostfix = this.formData.get('datasetinfo')['datasetVersion']['shortName'];
+      }
+    } else if (!!this.formData.get('datasetinfo')['general']) {
+      if (!!this.formData.get('general')['contactperson']['lastName']) {
+        filePostfix = this.formData.get('general')['contactperson']['lastName'];
+      }
+    }
+
+    let filename = "";
+    if (!!filePostfix) {
+      filename = `ebrains_wizard_form_data_${filePostfix}_${datetimeStr}.json`;
+    } else {
+      filename = `ebrains_wizard_form_data_${datetimeStr}.json`;
+    }
+    // Replace spaces with underscores
+    filename = filename.replace(/ /g, "_");
+
+    return filename;
+  }
+
+  saveFormDataToJson = () => {
+    // Create a json string from data which user has entered.
+    const filename = this.generateJsonFilename();
+    const jsonStr = this.createJsonFileStringFromFormData()
+    const blob = new Blob([jsonStr], {type: "data:text/json;charset=utf-8"});
+    saveAs(blob, filename)
   };
 
-  saveState = () => {
-    const blob = new Blob([this.jsonStr], {type: "data:text/json;charset=utf-8"});
-    saveAs(blob, "ebrains_wizard_metadata.json")
+  saveFormDataToJsonAs = async () => {
+    // Note: Does not work in Safari :( 
+    const jsonStr = this.createJsonFileStringFromFormData()
+    const blob = new Blob([jsonStr], { type: "data:text/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+
+    try {
+      const stream = await fetch(url).then((res) =>
+        res.body
+      );
+      const options = {
+        suggestedName: this.generateJsonFilename(), // Default file name
+        types: [
+          {
+            description: "JSON files",
+            accept: {
+              "text/json": [".json"],
+            },
+          },
+        ],
+      };
+      const handle = await window.showSaveFilePicker(options);
+      const writable = await handle.createWritable();
+      await stream.pipeTo(writable);
+      await writable.close();
+    
+    } catch (err) {
+      // Fallback for browsers that don't support the File System Access API
+      // (e.g. Safari). This will download the file directly to downloads folder.
+      const filename = this.generateJsonFilename(); // Default name of the file
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   onImageUploaded = (imageFileList) => {
@@ -353,6 +539,7 @@ class Wizard extends React.Component {
   }
 
   render() {
+
     if (process.env.NODE_ENV === "development") {
       switch (this.state.currentStep) {
         case TEST:
@@ -387,8 +574,8 @@ class Wizard extends React.Component {
 
     switch (this.state.currentStep) {
       case WIZARD_STEP_GENERAL:
-        wizardPageProps.onReset = this.handleReset;
-        wizardPageProps.loadState = this.loadJson;
+        wizardPageProps.onReset = this.resetFormData;
+        wizardPageProps.loadState = this.loadFormDataFromJson;
         break;
 
       case WIZARD_STEP_DATASET2:
@@ -422,14 +609,14 @@ class Wizard extends React.Component {
 
         return (
             <>
-            { (process.env.NODE_ENV === "development") ? <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button> : null }
+            { (process.env.NODE_ENV === "dev") ? <button type="button" className="btn btn-default" onClick={this.onTest}>Test</button> : null }
               <ProgressBar step={stepNum} status={this.validSteps} onChanged={this.goToWizardStep} />
               <WizardComponent {...wizardPageProps} />
             </>
           );
                 
       case WIZARD_SUCCEEDED: case WIZARD_FAILED:
-        return ( <WizardComponent schema={schema} onReset={this.handleReset} onSave={this.saveState}/> );
+        return ( <WizardComponent schema={schema} onReset={this.resetFormData} onSave={this.saveFormDataToJson}/> );
 
       default:
         return ( <h1>Error</h1> );

@@ -4,11 +4,18 @@ var assembleRJSFSchemas = require('./formSchemaAssembler');
 const {exec} = require('child_process');
 
 // Todo: make sure nothing is synchronous here 
+// Todo: Make sure this does not redo the react-build if fetching from KG fails
 
 async function setup() {
     // Log current date and time
     let date = new Date();
     console.log("Running update - ", date);
+    
+    instanceSpecificationObject = {
+        openMindsType: "Person",
+        instanceProperties: ["familyName", "givenName"]
+    }
+    await fetchCoreSchemaInstances(instanceSpecificationObject)
     await fetchControlledTerms();
     await assembleRJSFSchemas();
     // Redo the build of the react app in order for the updated terms to reach the frontend

@@ -17,7 +17,7 @@ export const RichTextWidget = function(props){
 export default RichTextWidget;
 
 const CustomArraySchemaField = function(props) {
-  const { index, registry } = props;
+  const { registry } = props;
   const { SchemaField } = registry.fields;
   //const name = `Entry ${index+1}`;
   //const name = props.name.replace(/-(\d+)/g, (match, number) => ` ${Number(number) + 1}`);

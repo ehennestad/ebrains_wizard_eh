@@ -1,6 +1,6 @@
 import {ConfigProvider} from 'antd';
 
-const EbrainsConfigProvider = (props) => {
+const EbrainsConfigProvider = ({children, ...props}) => {
     return ( 
         <ConfigProvider
         theme={{
@@ -8,8 +8,9 @@ const EbrainsConfigProvider = (props) => {
             colorPrimary: '#45b07c',
         },
         }}
+        {...props}
         >
-            {props.children}
+            {children}
         </ConfigProvider>
     )
 }
