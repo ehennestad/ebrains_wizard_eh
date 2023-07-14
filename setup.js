@@ -19,6 +19,13 @@ async function setup() {
         openMindsType: "Person",
         instanceProperties: ["familyName", "givenName"]
     }
+    // Temporary to retrieve strains for the workbench:
+    // configObject = {
+    //     openMindsType: "Strain",
+    //     instanceProperties: ["name", "description"],
+    //     space: "dataset"
+    // }
+
     console.log('Fetching openMINDS instances...')
     fetchCoreSchemaInstances(configObject)
         .then( () => {

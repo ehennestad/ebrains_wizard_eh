@@ -22,8 +22,9 @@ fs.mkdir(INSTANCE_OUTPUT_DIRECTORY, { recursive: true }, (err) => {
 });
 
 // config instanceSpecification should contain the following properties:
-// - openMindsType // Rename to openMindsSchemaType
+// - openMindsType // Rename to openMindsSchemaType e.g: "Person"
 // - instanceProperties // Rename to openMindsSchemaProperties
+// - space // Optional, defaults to "common"
 
 // Todo: Support array (list) input for instanceSpecification
 
@@ -38,7 +39,12 @@ let fetchCoreSchemaInstances = async (instanceSpecification) => {
         const API_BASE_URL = "https://core.kg.ebrains.eu/";
         const API_ENDPOINT = "v3/instances";
 
-        const QUERY_PARAMS = ["stage=RELEASED", "space=common", "type=https://openminds.ebrains.eu/core/"];
+        let spaceName = "common";
+        if (instanceSpecification.space != undefined) {
+            spaceName = instanceSpecification.space;
+        }
+
+        const QUERY_PARAMS = ["stage=RELEASED", `space=${spaceName}`, "type=https://openminds.ebrains.eu/core/"];
         
         //const CORE_SCHEMAS = ["Person", "URL"]
         const CORE_SCHEMAS = [instanceSpecification.openMindsType];
