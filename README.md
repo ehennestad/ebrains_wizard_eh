@@ -1,4 +1,4 @@
-## EBRAINS Metadata Wizard
+## EBRAINS Metadata Wizard 
 
 The [EBRAINS Metadata Wizard](https://ebrains-metadata-wizard.apps.hbp.eu) is a web form that helps you describe key aspects of your research data so that other researchers will be able to find, reuse and cite your work once you share it on [EBRAINS](https://search.kg.ebrains.eu/?category=Dataset). 
 
