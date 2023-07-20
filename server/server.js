@@ -47,6 +47,8 @@ app.get('/*', function(req, res) {
 });
 
 // console.log that the server is up and running
+let date = new Date();
+console.log("Initialising server - ", date);
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // Start the scheduled updater which updates the controlled terms every 24 hours
