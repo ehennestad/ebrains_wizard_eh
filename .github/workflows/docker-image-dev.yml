@@ -2,8 +2,7 @@ name: Build and Push Dev Image
 
 on:
   push:
-    branches:
-      - dev
+    branches: [ "dev" ]
 
 jobs:
   build-and-push:
