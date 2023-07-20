@@ -1,5 +1,5 @@
 var fetchControlledTerms = require('./server/kg-util/fetchControlledTerms');
-var fetchCoreSchemaInstances = require('./server/kg-util/fetchCoreSchemaInstances'); // Todo?
+var fetchCoreSchemaInstances = require('./server/kg-util/fetchCoreSchemaInstances'); //   Todo?
 
 const {exec} = require('child_process');
 
