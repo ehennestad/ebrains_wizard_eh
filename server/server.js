@@ -46,7 +46,7 @@ app.get('/*', function(req, res) {
   res.sendFile( indexFile, err => { onIndexFileSent(err, res) } )
 });
 
-// console.log that the server is up and running and display the date
+// console.log that the date and inform that server is up and running 
 let date = new Date();
 console.log("Initialising server - ", date);
 app.listen(port, () => console.log(`Listening on port ${port}`));
