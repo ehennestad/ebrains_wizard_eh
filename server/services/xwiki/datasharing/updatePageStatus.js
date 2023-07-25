@@ -80,51 +80,59 @@ const get_fp_status_message_dict = () => {
 }
 
 
-function update_front_page (collab_name, key, value) {
-    key = key.replace('_', '-')
+async function update_front_page(collab_name, key, value) {
 
-    let msg_dict = get_fp_status_message_dict()
+    return new Promise(async (resolve, reject) => {
+        key = key.replace('_', '-')
 
-    let page_content_promise = get_page_content(collab_name, "")
+        let msg_dict = get_fp_status_message_dict()
 
-    page_content_promise.then((page_content) => {
+        let page_content_promise = get_page_content(collab_name, "")
+        console.log('updating front page')
+        page_content_promise.then((page_content) => {
+            if (value) {
+                page_content = page_content.replace(msg_dict[key]['off'], msg_dict[key]['on'])
+            } else {
+                page_content = page_content.replace(msg_dict[key]['on'], msg_dict[key]['off'])
+            }
 
-        if (value) {
-            page_content = page_content.replace(msg_dict[key]['off'], msg_dict[key]['on'])
-        } else {
-            page_content = page_content.replace(msg_dict[key]['on'], msg_dict[key]['off'])
-        }
-
-        replace_page(collab_name, page_content, path="")
+            replace_page(collab_name, page_content, path="")
+            resolve()
+        })
     })
 }
 
 
-const update_sub_page = (collab_name, key, value) => {
-    key = key.replace('_', '-')
-    
-    let msg_dict = get_status_message_dict()
-    
-    let page_path = "/" + key
+async function update_sub_page(collab_name, key, value) {
+    return new Promise(async (resolve, reject) => {
 
-    let page_content_promise = get_page_content(collab_name, page_path)
-    
-    page_content_promise.then((page_content) => {
+        key = key.replace('_', '-')
+        console.log('updating sub page')
 
-        // Get rid of /r which is added when editing and saving from source mode on wiki page
-        page_content = page_content.replace( '{{error}}\r\n', '{{error}}\n' )
-        page_content = page_content.replace( '\r\n{{/error}}', '\n{{/error}}' )
-        page_content = page_content.replace( '{{success}}\r\n', '{{success}}\n' )
-        page_content = page_content.replace( '\r\n{{/success}}', '\n{{/success}}' )
+        let msg_dict = get_status_message_dict()
         
-        if (value){
-            page_content = page_content.replace(msg_dict[key]['off'], msg_dict[key]['on'])
-        }
-        else{
-            page_content = page_content.replace(msg_dict[key]['on'], msg_dict[key]['off'])
-        }
+        let page_path = "/" + key
+
+        let page_content_promise = get_page_content(collab_name, page_path)
         
-        replace_page(collab_name, page_content, path=page_path)
+        page_content_promise.then((page_content) => {
+
+            // Get rid of /r which is added when editing and saving from source mode on wiki page
+            page_content = page_content.replace( '{{error}}\r\n', '{{error}}\n' )
+            page_content = page_content.replace( '\r\n{{/error}}', '\n{{/error}}' )
+            page_content = page_content.replace( '{{success}}\r\n', '{{success}}\n' )
+            page_content = page_content.replace( '\r\n{{/success}}', '\n{{/success}}' )
+            
+            if (value){
+                page_content = page_content.replace(msg_dict[key]['off'], msg_dict[key]['on'])
+            }
+            else{
+                page_content = page_content.replace(msg_dict[key]['on'], msg_dict[key]['off'])
+            }
+            
+            replace_page(collab_name, page_content, path=page_path)
+        })
+        resolve()
     })
 }
 

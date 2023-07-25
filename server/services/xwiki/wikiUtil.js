@@ -3,21 +3,31 @@
 
 const fetch = require("node-fetch")
 
+// Create an HTTP Agent to enable connection reuse
+const http = require('http');
+const https = require('https');
 
-const getTokenFromServiceAccount = require("../iam-ebrains/getToken.js")
+const httpAgent = new http.Agent({ keepAlive: true });
+const httpsAgent = new https.Agent({ keepAlive: true });
+const agent = (_parsedURL) => _parsedURL.protocol == 'http:' ? httpAgent : httpsAgent;
+
+//const getTokenFromServiceAccount = require("../iam-ebrains/getToken.js")
+let token = process.env.EBRAINS_ACCESS_TOKEN
+token.trim()
+console.log('token:', token)
+
+
 const _build_url = require("./buildPath.js")
 
-
 async function get_page(collab_id, path="/") {
-    let token = await getTokenFromServiceAccount()
-    console.log(token)
+    //let token = await getTokenFromServiceAccount()
 
     const headers = {
       "Authorization": `Bearer ${token}`,
       "Accept": "application/json"
     };
     const url = _build_url(collab_id, path);
-    const response = await fetch(url, { headers });
+    const response = await fetch(url, { headers, agent });
     if (response.ok) {
       return response.json();
     } else {
@@ -32,7 +42,7 @@ async function get_page(collab_id, path="/") {
   }
   
   async function replace_page(collab_id, new_content, path="/") {
-    let token = await getTokenFromServiceAccount()
+    //let token = await getTokenFromServiceAccount()
 
     const url = _build_url(collab_id, path);
     const headers = {
@@ -40,17 +50,46 @@ async function get_page(collab_id, path="/") {
       "Content-Type": "text/plain",
       "Accept": "application/json"
     };
-    assert(typeof new_content === "string");
-    assert(new_content.length < 1e6);
-    const response = await fetch(url, { headers, method: "PUT", body: new_content });
+    //assert(typeof new_content === "string");
+    //assert(new_content.length < 1e6);
+
+    const response = await fetch(url, { headers, method: "PUT", body: new_content, agent });
     if (![201, 202].includes(response.status)) {
       const errors = await response.json();
       throw new Error(`${errors.code} ${errors.reasonPhrase}: ${errors.description}`);
     }
   }
 
+  // function replace_page(collab_id, new_content, path = "/") {
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       //let token = await getTokenFromServiceAccount()
+  
+  //       const url = _build_url(collab_id, path);
+  //       const headers = {
+  //         "Authorization": `Bearer ${token}`,
+  //         "Content-Type": "text/plain",
+  //         "Accept": "application/json"
+  //       };
+  //       //assert(typeof new_content === "string");
+  //       const response = await fetch(url, { headers, method: "PUT", body: new_content });
+  
+  //       if (![201, 202].includes(response.status)) {
+  //         const errors = await response.json();
+  //         reject(errors)
+  //         // throw new Error(`${errors.code} ${errors.reasonPhrase}: ${errors.description}`);
+  //       }
+  
+  //       resolve(); // Resolve the Promise if everything is successful
+  //     } catch (error) {
+  //       reject(error); // Reject the Promise if there's an error
+  //     }
+  //   });
+  // }
+  
+
   async function create_page(collab_id, path, title, content) {
-    let token = await getTokenFromServiceAccount()
+    //let token = await getTokenFromServiceAccount()
 
     assert(path.startsWith("/"));
     assert(path.length > 2);
@@ -64,7 +103,7 @@ async function get_page(collab_id, path="/") {
       "title": title,
       "content": content
     };
-    const response = await fetch(url, { headers, method: "PUT", body: JSON.stringify(data) });
+    const response = await fetch(url, { headers, method: "PUT", body: JSON.stringify(data), agent });
     if (response.status !== 201) {
       const errors = await response.json();
       throw new Error(`${errors.code} ${errors.reasonPhrase}: ${errors.description}`);
