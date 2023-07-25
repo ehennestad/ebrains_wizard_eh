@@ -1,3 +1,4 @@
+var fetchCoreSchemaInstances = require('../kg-util/fetchCoreSchemaInstances');
 var fetchControlledTerms = require('../kg-util/fetchControlledTerms');
 var assembleRJSFSchemas = require('./formSchemaAssembler');
 
@@ -11,15 +12,20 @@ async function setup() {
     let date = new Date();
     console.log("Running update - ", date);
     
-    instanceSpecificationObject = {
+    let instanceSpecificationObject = {
         openMindsType: "Person",
         instanceProperties: ["familyName", "givenName"]
     }
-    await fetchCoreSchemaInstances(instanceSpecificationObject)
-    await fetchControlledTerms();
-    await assembleRJSFSchemas();
-    // Redo the build of the react app in order for the updated terms to reach the frontend
-    exec('npm run build') 
+    try {
+        await fetchCoreSchemaInstances(instanceSpecificationObject)
+        await fetchControlledTerms();
+        await assembleRJSFSchemas();
+        // Redo the build of the react app in order for the updated terms to reach the frontend
+        exec('npm run build')
+    } catch (error) {
+        console.log("Failed to run scheduled update")
+        console.log(error)
+    }
 }
 
 // Run timer that fetches controlled terms instances from openMINDS every 24 hours
