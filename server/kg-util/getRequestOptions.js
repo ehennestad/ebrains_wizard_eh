@@ -19,6 +19,10 @@ async function getRequestOptions() {
 
 async function getTokenFromServiceAccount() {
 
+    // Temporary, as service account token stopped working:
+    return process.env.EBRAINS_ACCESS_TOKEN
+
+
     let endpointURL = "https://iam.ebrains.eu/auth/realms/hbp/protocol/openid-connect/token";
     let secret = process.env.OIDC_CLIENT_SECRET;
 
