@@ -59,6 +59,7 @@ let fetchCoreSchemaInstances = async (instanceSpecification) => {
             // Fetch instances
             fetchInstance(queryUrl, requestOptions, instanceName, instanceSpecification.instanceProperties)
             .then( (data) => resolve(data) )
+            .catch( (error) => reject(error) )
         }
     });
 }
@@ -73,6 +74,7 @@ function fetchInstance(apiQueryUrl, requestOptions, instanceName, propertyNames)
                     return response.json() 
                 } else {
                     console.log('Error fetching instances for ' + instanceName + '. Status code: ' + response.status);
+                    throw new Error('Error fetching instances for ' + instanceName + '. Status code: ' + response.status)
                     reject()
                 }
                 }) // Get response promise
