@@ -111,6 +111,17 @@ class Wizard extends React.Component {
       if (formStates === undefined) {
         if (iFormName === 'general') {
           formData.set(iFormName, {ticketNumber: this.ticketNumber})
+        } else if (iFormName === 'experiment') {
+          // Need to initialize the experiment form with empty values for the
+          // experimentalApproachIntro and techniqueIntro fields as these are 
+          // required fields in the schema (but not in the form itself).
+          formData.set(iFormName, { 
+              datasetVersion: {
+                "experimentalApproachIntro": null,
+                "techniqueIntro": null
+              }
+            }
+          )
         } else {
           formData.set(iFormName, {})
         }
