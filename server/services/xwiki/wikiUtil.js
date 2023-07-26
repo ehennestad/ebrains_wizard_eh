@@ -3,31 +3,24 @@
 
 const fetch = require("node-fetch")
 
-// Create an HTTP Agent to enable connection reuse
-const http = require('http');
-const https = require('https');
-
-const httpAgent = new http.Agent({ keepAlive: true });
-const httpsAgent = new https.Agent({ keepAlive: true });
-const agent = (_parsedURL) => _parsedURL.protocol == 'http:' ? httpAgent : httpsAgent;
-
-//const getTokenFromServiceAccount = require("../iam-ebrains/getToken.js")
-let token = process.env.EBRAINS_ACCESS_TOKEN
-token.trim()
-console.log('token:', token)
-
-
 const _build_url = require("./buildPath.js")
+const getTokenFromServiceAccount = require("../iam-ebrains/getToken.js")
 
 async function get_page(collab_id, path="/") {
     //let token = await getTokenFromServiceAccount()
+    let token = process.env.EBRAINS_ACCESS_TOKEN
+    //console.log(token)
 
     const headers = {
       "Authorization": `Bearer ${token}`,
       "Accept": "application/json"
     };
-    const url = _build_url(collab_id, path);
-    const response = await fetch(url, { headers, agent });
+    let url = _build_url(collab_id, path);
+
+    console.log(url)
+    const response = await fetch(url, { headers });
+    //console.log(response)
+
     if (response.ok) {
       return response.json();
     } else {
@@ -43,6 +36,7 @@ async function get_page(collab_id, path="/") {
   
   async function replace_page(collab_id, new_content, path="/") {
     //let token = await getTokenFromServiceAccount()
+    let token = process.env.EBRAINS_ACCESS_TOKEN
 
     const url = _build_url(collab_id, path);
     const headers = {
@@ -52,8 +46,7 @@ async function get_page(collab_id, path="/") {
     };
     //assert(typeof new_content === "string");
     //assert(new_content.length < 1e6);
-
-    const response = await fetch(url, { headers, method: "PUT", body: new_content, agent });
+    const response = await fetch(url, { headers, method: "PUT", body: new_content });
     if (![201, 202].includes(response.status)) {
       const errors = await response.json();
       throw new Error(`${errors.code} ${errors.reasonPhrase}: ${errors.description}`);
