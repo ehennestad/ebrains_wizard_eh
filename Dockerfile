@@ -20,8 +20,8 @@ RUN npm install --force
 ENV NODE_ENV=""
 
 # Run the app as a non-privileged user
-RUN chown -R 1001:0 . && chmod -R gu+s+rw .
 USER 1001
+RUN chown -R 1001:0 . && chmod -R gu+s+rw .
 
 # Expose server at port ( accessible outside of container)
 EXPOSE 8080 
