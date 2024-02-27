@@ -15,14 +15,24 @@ async function setup() {
 
     var startTime = performance.now()
 
-    configObject = {
-        openMindsType: "Person",
-        instanceProperties: ["familyName", "givenName"]
-    }
+    configObject = [
+        {
+            openMindsType: "Person",
+            typeProperties: ["familyName", "givenName"]
+        },
+        {
+            openMindsType: "Organization",
+            typeProperties: ["fullName"]
+        },
+        {
+            openMindsType: "Consortium",
+            typeProperties: ["fullName"]
+        },
+    ]
     // Temporary to retrieve strains for the workbench:
     // configObject = {
     //     openMindsType: "Strain",
-    //     instanceProperties: ["name", "description"],
+    //     typeProperties: ["name", "description"],
     //     space: "dataset"
     // }
 
