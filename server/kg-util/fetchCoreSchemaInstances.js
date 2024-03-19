@@ -87,13 +87,18 @@ function parseAndSaveData(data, typeName, propertyNameList) {
         for (let thisInstance of data.data){
             let newInstance = {"identifier": thisInstance["@id"]};
 
+            let isEmpty = true;
+
             for (let i in propertyNameList) {
                 vocabName = OPENMINDS_VOCAB + "/" + propertyNameList[i];
                 if (thisInstance[vocabName] != undefined) {
+                    isEmpty = false;
                     newInstance[propertyNameList[i]] = thisInstance[vocabName];
                 }
             }
-            typeInstanceList.push( newInstance );       
+            if (!isEmpty) {
+                typeInstanceList.push( newInstance ); 
+            }     
         }
         
         // Save results to json file
