@@ -1,5 +1,6 @@
 {
   "type": "object",
+  "title": "",
   "required": [
     "personMissing"
   ],
@@ -28,11 +29,11 @@
             "existingPerson"
           ],
           "properties": {
-            "existingPerson": {
-              "$ref": "existingPerson.json"
-            },
             "personMissing": {
               "const": false
+            },
+            "existingPerson": {
+              "$ref": "existingPerson.json"
             }
           }
         },
@@ -41,11 +42,11 @@
             "newPerson"
           ],
           "properties": {
-            "newPerson": {
-              "$ref": "newPerson.json"
-            },
             "personMissing": {
               "const": true
+            },
+            "newPerson": {
+              "$ref": "newPerson.json"
             }
           }
         }

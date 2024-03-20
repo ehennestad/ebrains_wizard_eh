@@ -7,15 +7,20 @@
       "title": "",
       "description": "Please list all funding sources for this project.",
       "items": {
-        "_name": "Funding source",
         "type": "object",
-        "required": ["funder"],
-  
+        "required": [
+          "funder"
+        ],
         "properties": {
           "funder": {
-            "type": "string",
-            "title": "Funder name",
-            "description": "Please state the full name of the funder you received funding from (no abbreviations)."
+            "type": "object",
+            "title": "",
+            "subtitle": "Funder type",
+            "schemaTypeSet": [
+              "Organization",
+              "Person"
+            ],
+            "defaultInstanceType": "Organization"
           },
           "awardNumber": {
             "type": "string",

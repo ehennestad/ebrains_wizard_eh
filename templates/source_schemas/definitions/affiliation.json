@@ -1,5 +1,5 @@
 {
-  "title": "",
+  "title": "Enter affiliation details",
   "description": "Enter affiliation details",
   "type": "object",
   "required": [
@@ -8,7 +8,8 @@
   "properties": {
     "memberOf": {
       "type": "object",
-      "title": "Full name",
+      "title": "",
+      "subtitle": "Affiliation type",
       "instanceTypeSet": [
         "Organization",
         "Consortium"

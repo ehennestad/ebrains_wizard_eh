@@ -1,5 +1,5 @@
 {
-  "title": "",
+  "title": "Enter personal details",
   "description": "If the author is not available in the EBRAINS Knowledge Graph, please provide the following information:",
   "type": "object",
   "required": [
@@ -25,7 +25,13 @@
       "default": false
     },
     "affiliation": {
-      "$ref": "affiliation.json"
+      "type": "array",
+      "title": "",
+      "description": "Please list all affiliations for this person.",
+      "items": {
+        "_name": "Affiliation",
+        "$ref": "affiliation.json"
+      }
     }
   },
   "dependencies": {
@@ -36,11 +42,11 @@
             "email"
           ],
           "properties": {
-            "email": {
-              "$ref": "email.json"
-            },
             "emailMissing": {
               "const": false
+            },
+            "email": {
+              "$ref": "email.json"
             }
           }
         },

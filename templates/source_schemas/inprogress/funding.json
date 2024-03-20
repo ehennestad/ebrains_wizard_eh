@@ -8,10 +8,9 @@
       "type": "object",
       "title": "",
       "subtitle": "Funder type",
-      "instanceTypeSet": [
+      "schemaTypeSet": [
         "Organization",
-        "Person",
-        "Consortium"
+        "Person"
       ],
       "defaultInstanceType": "Organization"
     },

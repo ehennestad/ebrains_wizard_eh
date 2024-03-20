@@ -1,5 +1,6 @@
 {
   "type": "object",
+  "title": "",
   "required": [
     "organizationMissing"
   ],
@@ -28,11 +29,11 @@
             "existingOrganization"
           ],
           "properties": {
-            "existingOrganization": {
-              "$ref": "existingOrganization.json"
-            },
             "organizationMissing": {
               "const": false
+            },
+            "existingOrganization": {
+              "$ref": "existingOrganization.json"
             }
           }
         },
@@ -41,11 +42,11 @@
             "newOrganization"
           ],
           "properties": {
-            "newOrganization": {
-              "$ref": "newOrganization.json"
-            },
             "organizationMissing": {
               "const": true
+            },
+            "newOrganization": {
+              "$ref": "newOrganization.json"
             }
           }
         }
