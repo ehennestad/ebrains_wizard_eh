@@ -19,6 +19,7 @@ src/modules/Wizard/Schemas
 # Temporary files
 /tmp/upload
 /tmp
+/temporary
 
 # dependencies
 /node_modules

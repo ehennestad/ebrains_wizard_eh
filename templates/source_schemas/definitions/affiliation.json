@@ -1,0 +1,29 @@
+{
+  "title": "",
+  "description": "Enter affiliation details",
+  "type": "object",
+  "required": [
+    "memberOf"
+  ],
+  "properties": {
+    "memberOf": {
+      "type": "object",
+      "title": "Full name",
+      "instanceTypeSet": [
+        "Organization",
+        "Consortium"
+      ],
+      "defaultInstanceType": "Organization"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date",
+      "title": "Start date"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date",
+      "title": "End date"
+    }
+  }
+}

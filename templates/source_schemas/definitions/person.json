@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "required": [
+    "personMissing"
+  ],
+  "properties": {
+    "personMissing": {
+      "type": "boolean",
+      "title": "Select person from the EBRAINS Knowledge Graph or enter details for a new person",
+      "oneOf": [
+        {
+          "title": "Person exists in the EBRAINS Knowledge Graph",
+          "const": false
+        },
+        {
+          "title": "Enter details for a new person",
+          "const": true
+        }
+      ],
+      "default": false
+    }
+  },
+  "dependencies": {
+    "personMissing": {
+      "oneOf": [
+        {
+          "required": [
+            "existingPerson"
+          ],
+          "properties": {
+            "existingPerson": {
+              "$ref": "existingPerson.json"
+            },
+            "personMissing": {
+              "const": false
+            }
+          }
+        },
+        {
+          "required": [
+            "newPerson"
+          ],
+          "properties": {
+            "newPerson": {
+              "$ref": "newPerson.json"
+            },
+            "personMissing": {
+              "const": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}

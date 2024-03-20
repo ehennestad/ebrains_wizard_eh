@@ -1,0 +1,12 @@
+{
+  "title": "Select a person from the EBRAINS Knowledge Graph:",
+  "type": "string",
+  "openMindsType": "Person",
+  "instanceProperties": [
+    "familyName",
+    "givenName"
+  ],
+  "labelTemplate": "${familyName}, ${givenName}",
+  "examples": [],
+  "exampleIDs": []
+}

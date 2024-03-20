@@ -1,0 +1,23 @@
+{
+  "title": "",
+  "description": "If the organization is not available in the EBRAINS Knowledge Graph, please provide the following information:",
+  "type": "object",
+  "required": [
+    "fullName",
+    "digitalIdentifier"
+  ],
+  "properties": {
+    "fullName": {
+      "type": "string",
+      "title": "Full name"
+    },
+    "shortName": {
+      "type": "string",
+      "title": "Short name"
+    },
+    "digitalIdentifier": {
+      "type": "string",
+      "title": "GRIDID or RORID"
+    }
+  }
+}

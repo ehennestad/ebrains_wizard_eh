@@ -1,0 +1,57 @@
+{
+  "title": "",
+  "description": "If the author is not available in the EBRAINS Knowledge Graph, please provide the following information:",
+  "type": "object",
+  "required": [
+    "givenName",
+    "familyName"
+  ],
+  "properties": {
+    "givenName": {
+      "type": "string",
+      "title": "First name"
+    },
+    "familyName": {
+      "type": "string",
+      "title": "Last name"
+    },
+    "digitalIdentifier": {
+      "type": "string",
+      "title": "ORCID"
+    },
+    "emailMissing": {
+      "type": "boolean",
+      "title": "This author does not have an email address",
+      "default": false
+    },
+    "affiliation": {
+      "$ref": "affiliation.json"
+    }
+  },
+  "dependencies": {
+    "emailMissing": {
+      "oneOf": [
+        {
+          "required": [
+            "email"
+          ],
+          "properties": {
+            "email": {
+              "$ref": "email.json"
+            },
+            "emailMissing": {
+              "const": false
+            }
+          }
+        },
+        {
+          "properties": {
+            "emailMissing": {
+              "const": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}

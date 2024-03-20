@@ -1,0 +1,11 @@
+{
+    "personMissing": {
+        "ui:title": "",
+        "ui:label": false,
+        "ui:widget": "radio"
+    },
+    "existingPerson": {
+        "ui:title": "",
+        "ui:placeholder": "Enter a name to search..."
+    }
+}
