@@ -70,6 +70,7 @@ class Wizard extends React.Component {
     
     this.state = { 
       currentStep: WIZARD_STEPS_LIST[0],
+      formData: this.formData,
     }
 
     // Some internal states that are not used for rendering
@@ -111,6 +112,17 @@ class Wizard extends React.Component {
       if (formStates === undefined) {
         if (iFormName === 'general') {
           formData.set(iFormName, {ticketNumber: this.ticketNumber})
+        } else if (iFormName === 'experiment') {
+          // Need to initialize the experiment form with empty values for the
+          // experimentalApproachIntro and techniqueIntro fields as these are 
+          // required fields in the schema (but not in the form itself).
+          formData.set(iFormName, { 
+              datasetVersion: {
+                "experimentalApproachIntro": null,
+                "techniqueIntro": null
+              }
+            }
+          )
         } else {
           formData.set(iFormName, {})
         }
@@ -222,9 +234,69 @@ class Wizard extends React.Component {
   }
 
   // METHODS FOR HANDLING FORM DATA
-  onFormChanged = (formData) => {
+  onFormChanged = (formData, id) => {
+
+    let triggerReRender = false;
+
+    let formName = STEP_MAP.get(this.state.currentStep).name;
+    let oldFormData = undefined;
+
+    switch (this.state.currentStep) {
+
+      case WIZARD_STEP_FUNDING:
+        oldFormData = this.formData.get(formName);
+
+        for (let i = 0; i < formData.datasetVersion.funding.length; i++) {
+
+          if (oldFormData.datasetVersion.funding[i] === undefined) {
+            continue
+          }
+
+          let newFunderType = formData.datasetVersion.funding[i].funder.term;
+          let oldFunderType = oldFormData.datasetVersion.funding[i].funder.term;
+
+          if (newFunderType !== oldFunderType) {
+            if (newFunderType === "Person") {
+              formData.datasetVersion.funding[i].funder.instance = {"personMissing":false};
+            } else if (newFunderType === "Organisation") {
+              formData.datasetVersion.funding[i].funder.instance = {"organizationMissing":false};
+            }
+            triggerReRender = true;
+          }
+        }
+        break
+
+      case WIZARD_STEP_EXPERIMENT:
+        oldFormData = this.formData.get(formName);
+  
+        // Check if the value of term in the datasetVersion.studyTarget array has changed
+        // if so, then update the value of datasetVersion.studyTarget.instance for the respective term
+
+        for (let i = 0; i < formData.datasetVersion.studyTarget.length; i++) {
+          if (oldFormData.datasetVersion.studyTarget[i] === undefined) {
+            continue
+          }
+
+          let newTerm = formData.datasetVersion.studyTarget[i].term;
+          let oldTerm = oldFormData.datasetVersion.studyTarget[i].term;
+
+          if (newTerm !== oldTerm) {
+            formData.datasetVersion.studyTarget[i].instance = '';
+            triggerReRender = true;
+          }
+        }
+        break
+
+      default:
+        //pass
+    }
+
     // Update formData for current wizard step
     this.updateFormData(this.state.currentStep, formData)
+
+    if (triggerReRender) {
+      this.setState({formData: this.formData });
+    }
   }
 
   updateFormData = (wizardStep, formData) => {

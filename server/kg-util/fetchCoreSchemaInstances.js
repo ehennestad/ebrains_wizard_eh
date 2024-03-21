@@ -21,57 +21,48 @@ fs.mkdir(INSTANCE_OUTPUT_DIRECTORY, { recursive: true }, (err) => {
     }
 });
 
-// config instanceSpecification should contain the following properties:
-// - openMindsType // Rename to openMindsSchemaType
-// - instanceProperties // Rename to openMindsSchemaProperties
+// typeSpecification object should contain the following properties:
+// - openMindsType // short name for the openminds type, e.g: "Person"
+// - typeProperties // list of properties to save for this type, e.g: ["familyName", "givenName"]
+// - space // Optional, defaults to "common" (KG space to search for instances)
 
-// Todo: Support array (list) input for instanceSpecification
-
-let fetchCoreSchemaInstances = async (instanceSpecification) => {
-
+let fetchCoreSchemaInstances = async (typeSpecifications) => {
     // Create request header with authorization and options
     const requestOptions = await getRequestOptions();
 
     return new Promise((resolve, reject) => {
-
+        
         // Define some api constants
         const API_BASE_URL = "https://core.kg.ebrains.eu/";
         const API_ENDPOINT = "v3/instances";
 
-        const QUERY_PARAMS = ["stage=RELEASED", "space=common", "type=https://openminds.ebrains.eu/core/"];
-        
-        //const CORE_SCHEMAS = ["Person", "URL"]
-        const CORE_SCHEMAS = instanceSpecification.map((item) => item.openMindsType);
+        typeSpecifications.forEach(async (typeSpecification) => {
+            let spaceName = "common";
+            if (typeSpecification.space !== undefined) {
+                spaceName = typeSpecification.space;
+            }
 
-        // Loop through core schemas terms and fetch their instances
-        for (let i = 0; i < CORE_SCHEMAS.length; i++){
+            const QUERY_PARAMS = ["stage=RELEASED", `space=${spaceName}`, "type=https://openminds.ebrains.eu/core/"];
+            const TYPE_NAME = typeSpecification.openMindsType;
 
             var completedRequests = 0;
 
             // Assemble Query URL
-            let queryUrl = API_BASE_URL + API_ENDPOINT + "?" + QUERY_PARAMS.join("&") + CORE_SCHEMAS[i];
-            let instanceName = CORE_SCHEMAS[i];
+            let queryUrl = `${API_BASE_URL}${API_ENDPOINT}?${QUERY_PARAMS.join("&")}${TYPE_NAME}`;
 
-            const propNames = instanceSpecification[i].instanceProperties;
-
-            // Fetch instances
-            fetchInstance(queryUrl, requestOptions, instanceName, propNames)
-                .then(() => {
-                    completedRequests++;
-                    if (completedRequests === CORE_SCHEMAS.length) {
-                        resolve();
-                    }
-                })
-                .catch(err => {
-                    console.log('Error fetching core instances: ' + err);
-                    reject(err);
-                })
-        }
+            try {
+                // Fetch instances
+                const data = await fetchInstances(queryUrl, requestOptions, TYPE_NAME, typeSpecification.typeProperties);
+                resolve(data);
+            } catch (error) {
+                reject(error);
+            }
+        });
     });
 }
 
 // function to get schema instances from kg api
-function fetchInstance(apiQueryUrl, requestOptions, instanceName, propertyNames) {
+function fetchInstances(apiQueryUrl, requestOptions, typeName, propertyNames) {
 
     return new Promise((resolve, reject) => {
         fetch(apiQueryUrl, requestOptions)
@@ -79,37 +70,43 @@ function fetchInstance(apiQueryUrl, requestOptions, instanceName, propertyNames)
                 if (response.status===200) {
                     return response.json() 
                 } else {
-                    console.log('Error fetching instances for ' + instanceName + '. Status code: ' + response.status);
+                    console.log('Error fetching instances for ' + typeName + '. Status code: ' + response.status);
+                    throw new Error('Error fetching instances for ' + typeName + '. Status code: ' + response.status)
                     reject()
                 }
                 }) // Get response promise
-                .then( data => parseAndSaveData(data, instanceName, propertyNames).then( (instances) => resolve(instances) ) )
+                .then( data => parseAndSaveData(data, typeName, propertyNames).then( (instances) => resolve(instances) ) )
                 .catch( error => {reject(error); console.log(error) } )
     });
 }
 
 // Parse and save schema instances
-function parseAndSaveData(data, instanceName, propertyNameList) {
+function parseAndSaveData(data, typeName, propertyNameList) {
     return new Promise((resolve, reject) => {
 
-        const schemaInstanceList = [];
+        const typeInstanceList = [];
 
         for (let thisInstance of data.data){
             let newInstance = {"identifier": thisInstance["@id"]};
 
+            let isEmpty = true;
+
             for (let i in propertyNameList) {
                 vocabName = OPENMINDS_VOCAB + "/" + propertyNameList[i];
                 if (thisInstance[vocabName] != undefined) {
+                    isEmpty = false;
                     newInstance[propertyNameList[i]] = thisInstance[vocabName];
                 }
             }
-            schemaInstanceList.push( newInstance );       
+            if (!isEmpty) {
+                typeInstanceList.push( newInstance ); 
+            }     
         }
         
         // Save results to json file
-        const jsonStr = JSON.stringify(schemaInstanceList, null, 2);
+        const jsonStr = JSON.stringify(typeInstanceList, null, 2);
 
-        const filename = instanceName + '.json';
+        const filename = typeName + '.json';
         const filePath = path.join(INSTANCE_OUTPUT_DIRECTORY, filename);
         
         fs.writeFile(filePath, jsonStr, (err) => {
@@ -117,7 +114,7 @@ function parseAndSaveData(data, instanceName, propertyNameList) {
                 console.error(err);
                 reject(err)
             } else {
-                console.log('File with instances for ' + instanceName + ' written successfully');
+                console.log('File with instances for ' + typeName + ' written successfully');
                 resolve()
             }
         });

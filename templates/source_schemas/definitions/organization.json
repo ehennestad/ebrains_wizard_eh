@@ -1,0 +1,56 @@
+{
+  "type": "object",
+  "title": "",
+  "required": [
+    "organizationMissing"
+  ],
+  "properties": {
+    "organizationMissing": {
+      "type": "boolean",
+      "title": "Organization is not available in the EBRAINS Knowledge Graph",
+      "oneOf": [
+        {
+          "title": "Organization exists in the EBRAINS Knowledge Graph",
+          "const": false
+        },
+        {
+          "title": "Enter details for a new organization",
+          "const": true
+        }
+      ],
+      "default": false
+    }
+  },
+  "dependencies": {
+    "organizationMissing": {
+      "oneOf": [
+        {
+          "required": [
+            "existingOrganization"
+          ],
+          "properties": {
+            "organizationMissing": {
+              "const": false
+            },
+            "existingOrganization": {
+              "$ref": "existingOrganization.json"
+            }
+          }
+        },
+        {
+          "required": [
+            "newOrganization"
+          ],
+          "properties": {
+            "organizationMissing": {
+              "const": true
+            },
+            "newOrganization": {
+              "$ref": "newOrganization.json"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

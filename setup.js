@@ -1,5 +1,5 @@
 var fetchControlledTerms = require('./server/kg-util/fetchControlledTerms');
-var fetchCoreSchemaInstances = require('./server/kg-util/fetchCoreSchemaInstances'); // Todo?
+var fetchCoreSchemaInstances = require('./server/kg-util/fetchCoreSchemaInstances'); //   Todo?
 
 const {exec} = require('child_process');
 
@@ -15,16 +15,30 @@ async function setup() {
 
     var startTime = performance.now()
 
-    configObject = [ 
+    configObject = [
         {
             openMindsType: "Person",
-            instanceProperties: ["familyName", "givenName"]
+            typeProperties: ["familyName", "givenName"]
         },
         {
             openMindsType: "Organization",
-            instanceProperties: ["fullName"]
-        }
-    ];
+            typeProperties: ["fullName"]
+        },
+        {
+            openMindsType: "Consortium",
+            typeProperties: ["fullName"]
+        },
+        {
+            openMindsType: "Funding",
+            typeProperties: ["awardTitle", "awardNumber"]
+        },
+    ]
+    // Temporary to retrieve strains for the workbench:
+    // configObject = {
+    //     openMindsType: "Strain",
+    //     typeProperties: ["name", "description"],
+    //     space: "dataset"
+    // }
 
     console.log('Fetching openMINDS instances...')
     fetchCoreSchemaInstances(configObject)
@@ -36,7 +50,7 @@ async function setup() {
                     console.log(`Fetched all instance and controlled terms in: ${(endTime - startTime)/1000} seconds`)
                     
                     // Make this import here, because the controlled term files are needed before the module can be properly imported
-                    var assembleRJSFSchemas = require('./server/internal/formSchemaAssembler');
+                    var assembleRJSFSchemas = require('./server/internal/createFormSchemas');
 
                     assembleRJSFSchemas()
                     .then( () => {

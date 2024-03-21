@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "required": [
+    "funder"
+  ],
+  "properties": {
+    "funder": {
+      "type": "object",
+      "title": "",
+      "subtitle": "Funder type",
+      "schemaTypeSet": [
+        "Organization",
+        "Person"
+      ],
+      "defaultInstanceType": "Organization"
+    },
+    "awardNumber": {
+      "type": "string",
+      "title": "Grant ID / Award number",
+      "description": "Please state the grant ID for the funding you have received."
+    }
+  }
+}

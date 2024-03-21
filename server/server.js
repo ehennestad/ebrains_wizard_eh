@@ -46,7 +46,9 @@ app.get('/*', function(req, res) {
   res.sendFile( indexFile, err => { onIndexFileSent(err, res) } )
 });
 
-// console.log that the server is up and running
+// console.log that the date and inform that server is up and running 
+let date = new Date();
+console.log("Initialising server - ", date);
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // Start the scheduled updater which updates the controlled terms every 24 hours

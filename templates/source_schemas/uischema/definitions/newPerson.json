@@ -1,0 +1,23 @@
+{
+    "ui:order": ["givenName", "familyName", "digitalIdentifier", "email", "emailMissing", "affiliation"],
+    "givenName": {
+        "ui:label": false,
+        "ui:placeholder": "Enter first name (given name)"
+    },                   
+    "familyName": {
+        "ui:label": false,
+        "ui:placeholder": "Enter last name (family name)"
+    },
+    "digitalIdentifier": {
+        "ui:label": false,
+        "ui:placeholder": "Enter ORCID, i.e 0000-0002-1825-0097"
+    },
+    "email": {
+        "ui:label": false,
+        "ui:placeholder": "Enter an email adress"
+    },
+    "affiliation": {
+        "ui:label": true
+    }
+
+}

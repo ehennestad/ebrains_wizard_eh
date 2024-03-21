@@ -55,7 +55,13 @@ function assembleRJSFSchemas () {
                         });
                     });
                     if (schema.controlledTermSet) {
-                        schema = addControlledTermSetToSchema(schema);
+                        const data = importControlledTerms(schema.controlledTermSet)
+                        schema = addControlledTermSetToSchema(schema, data);
+                    } else if (schema.instanceTypeSet) {
+                        let data = importInstances(schema.instanceTypeSet);
+                        // create name for each object array in the data
+                        data = convertPropertiesToName(data);
+                        schema = addControlledTermSetToSchema(schema, data);
                     }
                     break;
                 case "array":
@@ -79,7 +85,7 @@ function assembleRJSFSchemas () {
         return schema;
     };
 
-    function addControlledTermSetToSchema(schema) {
+    function addControlledTermSetToSchema(schema, data) {
         // Inspired by rjsf playground : "schema dependencies"
     
         // This function takes a schema object and adds a controlled term set to it. 
@@ -89,9 +95,9 @@ function assembleRJSFSchemas () {
         // selects the term from a dropdown and a new dropdown appears with the 
         // instances of the selected term. The user then selects an instance from the 
         // new dropdown.
-    
-        const data = importControlledTerms(schema.controlledTermSet)
-    
+
+        // Note: changed to also work for kg instances
+        
         schema.type = "object";
         schema.properties = {term: {title: schema.subtitle, type: "string", enum: Object.keys(data) } };
         schema.required = ["term"];
@@ -111,7 +117,8 @@ function assembleRJSFSchemas () {
                 instance: {
                   "title": term, 
                   "type": "string",
-                  "enum": instances.map( (instance) => (instance.name) )
+                  "examples": instances.map( (instance) => (instance.name) )
+                  //"enum": instances.map( (instance) => (instance.name) )
                 }
               },
               "required": [
@@ -137,6 +144,19 @@ function assembleRJSFSchemas () {
             schema.enumNames = controlledTermInstances.map(term => term.name);
         }
         return schema;
+    }
+
+    function convertPropertiesToName (data) {
+
+        // for each property in data, create a new object with a name property
+        let newData = {};
+        Object.entries(data).forEach(([key, value]) => {
+            newData[key] = value.map( instance => {
+                instance.name = instance.fullName || instance.familyName + ", " + instance.givenName;
+                return instance;
+            });
+        });
+        return newData;
     }
 
     function addOpenMindsInstanceToSchema (formSchema) {

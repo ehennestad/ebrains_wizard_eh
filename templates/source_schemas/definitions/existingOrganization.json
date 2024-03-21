@@ -1,0 +1,11 @@
+{
+  "title": "Select an organization from the EBRAINS Knowledge Graph:",
+  "type": "string",
+  "openMindsType": "Organization",
+  "instanceProperties": [
+    "fullName"
+  ],
+  "labelTemplate": "${fullName}",
+  "examples": [],
+  "exampleIDs": []
+}

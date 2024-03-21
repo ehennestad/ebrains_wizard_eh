@@ -4,7 +4,7 @@ const fs = require('fs');//&&added by Archana&&//
 const path = require('path');//&&added by Archana&&//
 
 const getRequestOptions = require('./getRequestOptions')
-const studyTargetTerms = require('./constants');
+const {studyTargetTerms, keywordSet} = require('./constants');
 
 const OPENMINDS_VOCAB = "https://openminds.ebrains.eu/vocab";
 
@@ -32,6 +32,10 @@ let fetchControlledTerms = async () => {
     let CONTROLLED_TERMS = ["PreparationType", "Technique", "ContributionType", 
                             "SemanticDataType", "ExperimentalApproach"];
     CONTROLLED_TERMS = CONTROLLED_TERMS.concat(studyTargetTerms);
+    CONTROLLED_TERMS = CONTROLLED_TERMS.concat(keywordSet);
+
+    // Make sure list of controlled terms is unique
+    CONTROLLED_TERMS = [...new Set(CONTROLLED_TERMS)];
     
     return new Promise((resolve, reject) => {
         // Loop through controlled terms and fetch them
