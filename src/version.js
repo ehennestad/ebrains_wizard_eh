@@ -1,2 +1,2 @@
-const wizardVersion = '2.0.1';
+const wizardVersion = '2.1.0';
 export default wizardVersion 
