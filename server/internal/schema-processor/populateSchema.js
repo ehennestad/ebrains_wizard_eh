@@ -44,11 +44,13 @@ async function populateSchema(schema) {
                 if (schema.controlledTermSet) {
                     const data = importControlledTerms(schema.controlledTermSet)
                     schema = addControlledTermSetToSchema(schema, data);
+
                 } else if (schema.instanceTypeSet) {
                     let data = importInstances(schema.instanceTypeSet);
                     // create name for each object array in the data
                     data = convertPropertiesToName(data);
                     schema = addControlledTermSetToSchema(schema, data);
+
                 } else if (schema.schemaTypeSet) {
                     let data = await importSchemas(schema.schemaTypeSet);
                     // create name for each object array in the data
@@ -63,6 +65,9 @@ async function populateSchema(schema) {
                 const controlledTerm = schema.controlledTerm && controlledTerms[schema.controlledTerm];
                 if (schema.controlledTerm) {
                     schema = addControlledTermInstancesToSchema(schema);
+                } else if (schema.keywordSet) {
+                    const data = importControlledTerms(schema.keywordSet)
+                    schema = addKeywordSetSetToSchema(schema, data);
                 } else if (schema.textModule) {
                     schema.text = getHtmlString( schema.textModule );
                 } else if (schema.openMindsType) {
@@ -128,6 +133,22 @@ function addControlledTermSetToSchema(schema, data) {
     return schema;
 }
 
+
+function addKeywordSetSetToSchema(schema, data) {
+
+    console.log('here')
+    // flatten the controlled term set to a list of instances
+    let controlledTermInstances = [];
+    Object.values(data).forEach( instances => {
+        controlledTermInstances = controlledTermInstances.concat(instances);
+    });
+
+    if (schema.examples) {
+        schema.examples = controlledTermInstances.map(term => term.name);
+        schema.exampleIDs = controlledTermInstances.map(term => term.identifier);
+    }
+}
+
 function addReferencedSchemas(schema, data) {
     // Inspired by rjsf playground : "schema dependencies"
 
@@ -153,8 +174,6 @@ function addReferencedSchemas(schema, data) {
     schema.dependencies = {term: {oneOf: []}};
     
     Object.entries(data).forEach(([term, instance]) => {
-
-        console.log(instance)
 
         // if instances is empty
         if (instance.length !== 0) {
