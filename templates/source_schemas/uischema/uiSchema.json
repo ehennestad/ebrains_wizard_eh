@@ -1,0 +1,201 @@
+{
+    "welcomeText": {
+        "ui:widget": "richtext"
+    },
+
+    "boolean": {
+        "radio": {
+            "ui:widget": "radio"
+        },
+        "select": {
+            "ui:widget": "select"
+        }
+    },
+    "dataset": {
+        "authors":{
+            "items": {
+                "personMissing": {
+                    "$ref": "./definitions/personMissing.json"
+                },
+                "existingPerson": {
+                    "$ref": "./definitions/existingPerson.json"
+                }, 
+                "newPerson": {
+                    "$ref": "./definitions/newPerson.json"
+                }
+            }
+        }
+    },
+    "datasetVersion": {
+        "dataType": {
+            "ui:widget": "checkboxes"
+        },
+        "embargo": {
+            "ui:widget": "radio"
+        },
+        "copyrightStatus": {
+            "isCopyrighted" : {
+                "ui:widget": "radio"
+            }
+        },
+        "_relatedPublicationIntro": {
+            "ui:widget": "richtext"
+        },
+        "relatedPublication": {
+            "ui:options":  {
+                "orderable": false,
+                "label": false
+            }
+        },
+        "_supportChannelIntro": {
+            "ui:widget": "richtext"
+        },
+        "supportChannel": {
+            "ui:options":  {
+                "orderable": false,
+                "label": false
+            }
+        },
+        "funding": {
+            "ui:label": false,
+            "items": {
+                "funder":{
+                    "instance":{
+                        "ui:order":["organizationMissing", "existingOrganization", "newOrganization", "personMissing", "existingPerson", "newPerson"],
+                        "existingOrganization": {
+                            "ui:placeholder": "Enter a name to search......."
+                        },
+                        "personMissing": {
+                            "$ref": "./definitions/personMissing.json"
+                        },
+                        "existingPerson": {
+                            "$ref": "./definitions/existingPerson.json"
+                        }, 
+                        "newPerson": {
+                            "$ref": "./definitions/newPerson.json"
+                        },
+                        "organizationMissing": {
+                            "ui:title": "",
+                            "ui:label": false,
+                            "ui:widget": "radio"
+                        }
+                    }
+                }
+            }
+        },
+        "otherContribution":{
+            "contributionType": {
+                "ui:options":  {
+                    "orderable": false
+                }
+            },
+            "items": {
+                "contributor":{
+                    "personMissing": {
+                        "$ref": "./definitions/personMissing.json"
+                    },
+                    "existingPerson": {
+                        "$ref": "./definitions/existingPerson.json"
+                    }, 
+                    "newPerson": {
+                        "$ref": "./definitions/newPerson.json"
+                    }
+                }
+            }
+        },
+        "_experimentalApproachIntro": {
+            "ui:widget": "richtext"
+        },
+        "experimentalApproach": {
+            "ui:orderable": false,
+            "ui:label": false,
+            "items": {
+                "ui:label": false,
+                "ui:placeholder": "Search for an experimental approach"
+            }
+        },
+        "_preparationDesignIntro": {
+            "ui:widget": "richtext"
+        },
+        "preparationDesign": {
+            "ui:orderable": false,
+            "ui:label": false,
+            "items": {
+                "ui:label": false,
+                "ui:placeholder": "Select a value"
+            }
+        },
+        "_techniqueIntro": {
+            "ui:widget": "richtext"
+        },
+        "technique": {
+            "ui:orderable": false,
+            "ui:label": false,
+            "items": {
+                "ui:label": false,
+                "ui:placeholder": "Search for a technique"
+            }
+        },
+        "_studyTargetIntro": {
+            "ui:widget": "richtext"
+        },
+        "studyTarget": {
+            "ui:orderable": false,
+            "ui:label": false,
+            "items": {
+                "term": {
+                    "ui:placeholder": "Select a category"
+                },
+                "instance": {
+                    "ui:placeholder": "Search for a name"
+                }
+            }
+        },
+        "_keywordIntro": {
+            "ui:widget": "richtext"
+        },
+        "keyword": {
+            "ui:orderable": false,
+            "ui:label": false,
+            "items": {
+                "ui:label": false,
+                "ui:placeholder": "Search for a keyword"
+            }
+        },
+        "placeholder": {
+            "ui:placeholder": "This is a placeholder"
+        },
+        "color": {
+            "ui:widget": "color"
+        }
+    }, 
+    "subjectExpMetadata": {
+
+        "subjectsExist": {
+            "ui:widget": "radio"
+        },
+        "uploadedExcelFile": {
+            "ui:widget": "file",
+            "ui:options": {
+                "accept": ".xlsx, .xls"
+          }
+        },
+        "externalTable": {
+            "ui:widget": "richtext"
+        }
+    },
+    
+    "submissionCompletedText": {
+        "ui:widget": "richtext"
+    },
+
+    "submissionFailedText": {
+        "ui:widget": "richtext"
+    }, 
+    "previewImage": {
+        "ui:widget": "richtext"
+    }, 
+    "licenseImage": {
+        "ui:widget": "img"
+    }
+}

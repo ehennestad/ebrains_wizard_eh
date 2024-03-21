@@ -34,6 +34,7 @@
           "description": "Please list all other contributors to this dataset. This could be technicians, data managers, etc.",
           "items": {
             "_name": "Other contributor",
+            "title": "",
             "type": "object",
             "required": ["contributor", "contributionType"],
     

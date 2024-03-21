@@ -1,12 +1,13 @@
 {
   "title": "Funding Information",
+  "description": "Please list all funding sources for this project.",
   "type": "object",
   "definitions": {
     "funding": {
       "type": "array",
       "title": "",
-      "description": "Please list all funding sources for this project.",
       "items": {
+        "title": "",
         "type": "object",
         "required": [
           "funder"
@@ -26,6 +27,11 @@
             "type": "string",
             "title": "Grant ID / Award number",
             "description": "Please state the grant ID for the funding you have received."
+          },
+          "awardTitle": {
+              "type": "string",
+              "title": "Award Title",
+              "description": "Please state the award title for the funding you have received."
           }
         }
       }

@@ -1,6 +1,6 @@
 {
-  "title": "Enter affiliation details",
-  "description": "Enter affiliation details",
+  "title": "",
+  "description": "",
   "type": "object",
   "required": [
     "memberOf"

@@ -55,10 +55,11 @@
                 "homepage": {
                     "$ref": "#/definitions/homepage"
                 },
-                "supportChannelIntro": {
-                    "type": "null",
-                    "title": "Support channel"
-                  },
+                "_supportChannelIntro": {
+                    "type": "string",
+                    "title": "Support channel",
+                    "text": "Enter all channels through which a user can receive support for handling this research product (if applicable). This could for example be a link to a website or a contact email address."
+                },
                 "supportChannel": {
                     "$ref": "#/definitions/supportChannel"
                 },

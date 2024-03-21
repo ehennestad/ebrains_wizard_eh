@@ -26,7 +26,7 @@
     },
     "affiliation": {
       "type": "array",
-      "title": "",
+      "title": "Enter affiliation details",
       "description": "Please list all affiliations for this person.",
       "items": {
         "_name": "Affiliation",

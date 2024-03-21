@@ -26,5 +26,6 @@
             "ui:label": false,
             "ui:placeholder": "Enter an email adress"
         }
+
     }
 }

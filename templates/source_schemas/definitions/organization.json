@@ -14,7 +14,7 @@
           "const": false
         },
         {
-          "title": "Enter a new organization",
+          "title": "Enter details for a new organization",
           "const": true
         }
       ],
