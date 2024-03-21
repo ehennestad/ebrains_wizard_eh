@@ -28,6 +28,10 @@ async function setup() {
             openMindsType: "Consortium",
             typeProperties: ["fullName"]
         },
+        {
+            openMindsType: "Funding",
+            typeProperties: ["awardTitle", "awardNumber"]
+        },
     ]
     // Temporary to retrieve strains for the workbench:
     // configObject = {
@@ -46,7 +50,7 @@ async function setup() {
                     console.log(`Fetched all instance and controlled terms in: ${(endTime - startTime)/1000} seconds`)
                     
                     // Make this import here, because the controlled term files are needed before the module can be properly imported
-                    var assembleRJSFSchemas = require('./server/internal/formSchemaAssembler');
+                    var assembleRJSFSchemas = require('./server/internal/createFormSchemas');
 
                     assembleRJSFSchemas()
                     .then( () => {
