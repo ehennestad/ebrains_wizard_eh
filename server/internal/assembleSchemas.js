@@ -1,2 +1,2 @@
-var assembleRJSFSchemas = require('./formSchemaAssembler');
+var assembleRJSFSchemas = require('./createFormSchemas');
 assembleRJSFSchemas()
