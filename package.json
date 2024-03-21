@@ -42,7 +42,7 @@
     "react-jsonschema-form-extras": "^0.9.67",
     "react-router-dom": "^6.6.1",
     "react-rte": "^0.15.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.1",
     "require-all": "^3.0.0",
     "save": "^2.5.0",
     "universal-cookie": "^4.0.4",
@@ -52,12 +52,12 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
+    "build": "react-scripts build",
     "postinstall": "node setup.js",
     "devstart": "export NODE_ENV=development && nodemon server/server.js",
     "start": "export NODE_ENV=production && node server/server.js",
     "dockerstart": "export NODE_ENV=production && node setup.js && node server/server.js",
-    "dev": "node server/internal/assembleSchemas.js && export SET NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
+    "dev": "node server/internal/assembleSchemas.js && react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src/"
