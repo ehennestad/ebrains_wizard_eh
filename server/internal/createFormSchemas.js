@@ -83,6 +83,8 @@ async function assembleRJSFSchemas () {
     console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -')
     sourceDirectory = path.join(SCHEMA_TEMPORARY_DIRECTORY, 'uischema');
     targetDirectory = path.join(ROOT_DIR, 'src', 'schemas');
+    await mkdirIfNotExists(targetDirectory);
+
     process.chdir(sourceDirectory); 
     await processSchemas(sourceDirectory, targetDirectory, $RefParser.dereference, 'Dereferenced');
 
