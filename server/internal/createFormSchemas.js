@@ -78,6 +78,7 @@ async function assembleRJSFSchemas () {
     process.chdir(sourceDirectory); 
     await processSchemas(sourceDirectory, targetDirectory, dereferenceSchema, 'Dereferenced');
 
+    process.chdir(CURRENT_WD);
     await postProcessFundingSchema()
 
     // Resolve and include all external references for uischema
