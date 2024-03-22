@@ -97,11 +97,6 @@ async function assembleRJSFSchemas () {
     console.log('\n')
     console.log('Deleting temporary folder.')
     console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -')
-    fse.remove(SCHEMA_TEMPORARY_DIRECTORY, err => {
-        if (err) return console.error(err);
-        console.log('Deleted temporary folder');
-    });
-
     try {
         await fse.remove(SCHEMA_TEMPORARY_DIRECTORY)
         console.log('Deleted temporary folder');

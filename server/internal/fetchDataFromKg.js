@@ -31,8 +31,6 @@ configObject = [
 module.exports = fetchDataFromKg;
 
 async function fetchDataFromKg() {
-    console.log('Fetching openMINDS instances...')
-    await fetchCoreSchemaInstances(configObject)
-    console.log('Fetching controlled term instances...')
-    await fetchControlledTerms()
+    console.log('Fetching data from KG')
+    await Promise.all( [fetchCoreSchemaInstances(configObject), fetchControlledTerms()] )
 }

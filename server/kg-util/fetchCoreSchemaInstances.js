@@ -29,37 +29,30 @@ fs.mkdir(INSTANCE_OUTPUT_DIRECTORY, { recursive: true }, (err) => {
 let fetchCoreSchemaInstances = async (typeSpecifications) => {
     // Create request header with authorization and options
     const requestOptions = await getRequestOptions();
+    const API_BASE_URL = "https://core.kg.ebrains.eu/";
+    const API_ENDPOINT = "v3/instances";
 
-    return new Promise((resolve, reject) => {
-        
-        // Define some api constants
-        const API_BASE_URL = "https://core.kg.ebrains.eu/";
-        const API_ENDPOINT = "v3/instances";
+    const fetchPromises = typeSpecifications.map(async (typeSpecification) => {
+        let spaceName = typeSpecification.space !== undefined ? typeSpecification.space : "common";
+        const QUERY_PARAMS = ["stage=RELEASED", `space=${spaceName}`, "type=https://openminds.ebrains.eu/core/"];
+        const TYPE_NAME = typeSpecification.openMindsType;
 
-        typeSpecifications.forEach(async (typeSpecification) => {
-            let spaceName = "common";
-            if (typeSpecification.space !== undefined) {
-                spaceName = typeSpecification.space;
-            }
+        // Assemble Query URL
+        let queryUrl = `${API_BASE_URL}${API_ENDPOINT}?${QUERY_PARAMS.join("&")}${TYPE_NAME}`;
 
-            const QUERY_PARAMS = ["stage=RELEASED", `space=${spaceName}`, "type=https://openminds.ebrains.eu/core/"];
-            const TYPE_NAME = typeSpecification.openMindsType;
-
-            var completedRequests = 0;
-
-            // Assemble Query URL
-            let queryUrl = `${API_BASE_URL}${API_ENDPOINT}?${QUERY_PARAMS.join("&")}${TYPE_NAME}`;
-
-            try {
-                // Fetch instances
-                const data = await fetchInstances(queryUrl, requestOptions, TYPE_NAME, typeSpecification.typeProperties);
-                resolve(data);
-            } catch (error) {
-                reject(error);
-            }
-        });
+        try {
+            // Fetch instances
+            await fetchInstances(queryUrl, requestOptions, TYPE_NAME, typeSpecification.typeProperties);
+        } catch (error) {
+            // Handle error for this specific fetch
+            console.error(`Error fetching instances for ${TYPE_NAME}:`, error);
+        }
     });
-}
+
+    // Wait for all fetch operations to complete
+    await Promise.all(fetchPromises);
+};
+
 
 // function to get schema instances from kg api
 function fetchInstances(apiQueryUrl, requestOptions, typeName, propertyNames) {

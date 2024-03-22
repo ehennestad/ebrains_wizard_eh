@@ -17,7 +17,6 @@ async function setup() {
 
     var startTime = performance.now()
 
-    console.log('Fetching openMINDS instances...')
     fetchDataFromKg()
         .then( () => {
             var endTime = performance.now()
@@ -29,6 +28,7 @@ async function setup() {
             assembleRJSFSchemas()
             .then( () => {
                 console.log('Assembled form schemas from templates and controlled terms.')
+                console.log('')
 
                 // Redo the build in order for the updated terms to be used by the frontend
                 console.log('Creating a production build for the React App...')           
