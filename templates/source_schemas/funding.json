@@ -3,6 +3,22 @@
   "description": "Please list all funding sources for this project.",
   "type": "object",
   "definitions": {
+    "awardInfo": {
+      "type": "object",
+      "title": "Award Details",
+      "properties": {
+          "awardNumber": {
+              "type": "string",
+              "title": "Grant ID / Award number",
+              "description": "Please state the grant ID for the funding you have received."
+          },
+          "awardTitle": {
+              "type": "string",
+              "title": "Award Title",
+              "description": "Please state the award title for the funding you have received."
+          }
+      }
+    },
     "funding": {
       "type": "array",
       "title": "",

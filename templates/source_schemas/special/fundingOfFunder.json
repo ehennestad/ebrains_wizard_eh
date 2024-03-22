@@ -1,0 +1,59 @@
+{
+    "type": "object",
+    "title": "",
+    "required": [
+      "fundingMissing"
+    ],
+    "properties": {
+      "fundingMissing": {
+        "type": "boolean",
+        "title": "Funding does not exist, create a new funding entry",
+        "oneOf": [
+          {
+            "title": "Funding exists in the EBRAINS Knowledge Graph",
+            "const": false
+          },
+          {
+            "title": "Enter details for a new funding",
+            "const": true
+          }
+        ],
+        "default": false
+      }
+    },
+    "dependencies": {
+      "fundingMissing": {
+        "oneOf": [
+          {
+            "required": [
+              "existingFunding"
+            ],
+            "properties": {
+              "fundingMissing": {
+                "const": false
+              },
+              "existingFunding": {
+                "title": "Select a funding item from the EBRAINS Knowledge Graph:",
+                "type": "string",
+                "examples": [],
+                "exampleIDs": []
+              }
+            }
+          },
+          {
+            "required": [
+              "newFunding"
+            ],
+            "properties": {
+              "fundingMissing": {
+                "const": true
+              },
+              "newFunding": {
+                "$ref": "#/definitions/awardInfo"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }

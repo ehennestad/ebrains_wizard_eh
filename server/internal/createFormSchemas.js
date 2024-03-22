@@ -3,6 +3,7 @@ const fse = require('fs-extra');
 
 const mkdirIfNotExists = require('./fscustom/mkDirIfNotExists');
 const processSchemas = require('./processSchemas');
+const postProcessFundingSchema = require('./postProcessFundingSchema');
 
 const $RefParser = require("@apidevtools/json-schema-ref-parser")
 const dereferenceSchema = $RefParser.bundle;
@@ -76,6 +77,8 @@ async function assembleRJSFSchemas () {
     targetDirectory = path.join(ROOT_DIR, 'src', 'modules', 'Wizard', 'Schemas');
     process.chdir(sourceDirectory); 
     await processSchemas(sourceDirectory, targetDirectory, dereferenceSchema, 'Dereferenced');
+
+    await postProcessFundingSchema()
 
     // Resolve and include all external references for uischema
     console.log('\n')

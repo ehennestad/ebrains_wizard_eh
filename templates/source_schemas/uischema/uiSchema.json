@@ -61,7 +61,7 @@
             "items": {
                 "funder":{
                     "instance":{
-                        "ui:order":["organizationMissing", "existingOrganization", "newOrganization", "personMissing", "existingPerson", "newPerson"],
+                        "ui:order":["organizationMissing", "existingOrganization", "newOrganization", "personMissing", "existingPerson", "newPerson", "funding"],
                         "existingOrganization": {
                             "ui:placeholder": "Enter a name to search......."
                         },
