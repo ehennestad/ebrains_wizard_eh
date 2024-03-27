@@ -2,9 +2,9 @@
 // user-submitted metadata to the ebrains curation team
 
 // Get installed node modules that are needed for the server
-const express         = require('express');           // Express is a framework for creating web apps
-const path            = require('path');              // Path is used for creating file paths
-const sceduledUpdater = require('./internal/update'); // Module that is used for updating the controlled terms
+const express           = require('express');           // Express is a framework for creating web apps
+const path              = require('path');              // Path is used for creating file paths
+const {sceduledUpdater} = require('./internal/update'); // Module that is used for updating the controlled terms
 
 // Path to the static files that are served by the server
 const STATIC_DIR = path.join(__dirname, '..', '/build');
