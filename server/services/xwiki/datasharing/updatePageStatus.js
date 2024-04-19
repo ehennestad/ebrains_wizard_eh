@@ -87,18 +87,17 @@ async function update_front_page(collab_name, key, value) {
 
         let msg_dict = get_fp_status_message_dict()
 
-        let page_content_promise = get_page_content(collab_name, "")
+        let page_content = await get_page_content(collab_name, "")
         console.log('updating front page')
-        page_content_promise.then((page_content) => {
-            if (value) {
-                page_content = page_content.replace(msg_dict[key]['off'], msg_dict[key]['on'])
-            } else {
-                page_content = page_content.replace(msg_dict[key]['on'], msg_dict[key]['off'])
-            }
+    
+        if (value) {
+            page_content = page_content.replace(msg_dict[key]['off'], msg_dict[key]['on'])
+        } else {
+            page_content = page_content.replace(msg_dict[key]['on'], msg_dict[key]['off'])
+        }
 
-            replace_page(collab_name, page_content, path="")
-            resolve()
-        })
+        await replace_page(collab_name, page_content, path="")
+        resolve()
     })
 }
 
@@ -113,25 +112,24 @@ async function update_sub_page(collab_name, key, value) {
         
         let page_path = "/" + key
 
-        let page_content_promise = get_page_content(collab_name, page_path)
+        let page_content = await get_page_content(collab_name, page_path)
         
-        page_content_promise.then((page_content) => {
 
-            // Get rid of /r which is added when editing and saving from source mode on wiki page
-            page_content = page_content.replace( '{{error}}\r\n', '{{error}}\n' )
-            page_content = page_content.replace( '\r\n{{/error}}', '\n{{/error}}' )
-            page_content = page_content.replace( '{{success}}\r\n', '{{success}}\n' )
-            page_content = page_content.replace( '\r\n{{/success}}', '\n{{/success}}' )
+        // Get rid of /r which is added when editing and saving from source mode on wiki page
+        page_content = page_content.replace( '{{error}}\r\n', '{{error}}\n' )
+        page_content = page_content.replace( '\r\n{{/error}}', '\n{{/error}}' )
+        page_content = page_content.replace( '{{success}}\r\n', '{{success}}\n' )
+        page_content = page_content.replace( '\r\n{{/success}}', '\n{{/success}}' )
             
-            if (value){
-                page_content = page_content.replace(msg_dict[key]['off'], msg_dict[key]['on'])
-            }
-            else{
-                page_content = page_content.replace(msg_dict[key]['on'], msg_dict[key]['off'])
-            }
-            
-            replace_page(collab_name, page_content, path=page_path)
-        })
+        if (value){
+            page_content = page_content.replace(msg_dict[key]['off'], msg_dict[key]['on'])
+        }
+        else{
+            page_content = page_content.replace(msg_dict[key]['on'], msg_dict[key]['off'])
+        }
+        
+        await replace_page(collab_name, page_content, path=page_path)
+        
         resolve()
     })
 }
