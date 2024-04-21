@@ -19,12 +19,12 @@ import getToken from './authentication/authenticationUtilities'
 import './App.css';
 
 
-const Loading = () => {
+const Loading = ({message}) => {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
       <ConfigProvider componentSize={"large"}>
         <Spin size='large' style={{marginBottom:'6rem'}}>
-          <h1  style={{marginTop:'10rem'}}>Loading...</h1>
+          <h1  style={{marginTop:'10rem'}}>{message ? message : 'Please wait...'}</h1>
           <div className="content" />
         </Spin>
       </ConfigProvider>
@@ -43,6 +43,7 @@ const App = () => {
   const [loading, setLoading] = React.useState(true)
   const [token, setToken] = React.useState(null)
   const [user, setUser] = React.useState(null)
+  const [message, setMessage] = React.useState("Loading...")
 
 
   function handleMenuSelection(selectedOption) {
@@ -55,6 +56,7 @@ const App = () => {
   function handleTokenReceived(token) {
     ///window.history.pushState({}, document.title, "/") // clear url 
     setToken(token)
+    setMessage("Retrieving user info...")
     return token
   }
 
@@ -67,10 +69,12 @@ const App = () => {
     // console.log('useEffect')
     // only authenticate if we are not already authenticated
     if (!window.location.href.includes('code=') && !window.location.href.includes('error=')) {
+      setMessage("Loading...")
       authenticate()
     } else if (window.location.href.includes('error=')) {
       setLoading(false)
     } else {
+      setMessage("Authenticating...")
       getToken()
       .then( (token) => handleTokenReceived(token) )
         .then( (token) => getUser(token) )
@@ -120,7 +124,7 @@ const App = () => {
                 <div style={{marginTop:"20px", marginBottom:"20px"}}>
                 </div>
                 <div className="container container-form">
-                  <Wizard user={user} action={selectedAction} updateKey={updateKey}/>
+                  {loading ? <Loading message={message}/> : <Wizard user={user} action={selectedAction} updateKey={updateKey}/>}
                 </div>
               </div>
               } />
