@@ -2,18 +2,21 @@ import { Button } from "antd";
 import { LoginOutlined, LogoutOutlined, LoadingOutlined } from '@ant-design/icons';
 
 import ConfigProvider from './ConfigProvider';
+import { useUserContext } from '../contexts/UserContext';
+import {login, logout} from "../authentication/authenticate"; 
 
+const LoginToggleButton = () => {
 
-const LoginToggleButton = ({loading, user, login, logout}) => {
-    if (loading) {
+    const { user, isAuthenticating } = useUserContext();
+
+    if (isAuthenticating) {
         return (
             <ConfigProvider>
                 <Button
                     className="custom-button"
                     icon={<LoadingOutlined />}
-                    loading
                 >
-                    Authenticating...
+                    Log-in
                 </Button>
             </ConfigProvider>
         );
@@ -25,7 +28,7 @@ const LoginToggleButton = ({loading, user, login, logout}) => {
                     icon={user ? <LogoutOutlined /> : <LoginOutlined />}
                     onClick={user ? logout : login}
                 >
-                    {user ? 'Logout' : 'Login'}
+                    {user ? 'Log-out' : 'Log-in'}
                 </Button>
             </ConfigProvider>
         );

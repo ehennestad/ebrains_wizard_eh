@@ -30,7 +30,7 @@ async function getToken(req, res) {
       let redirectUrl = process.env.WIZARD_OIDC_CLIENT_REDIRECT_URL;
       const clientId = process.env.WIZARD_OIDC_CLIENT_ID;
       const clientSecret = process.env.WIZARD_OIDC_CLIENT_SECRET;
-  
+
       // Validate input parameters
       if (!authorizationCode || !redirectUrl || !clientId || !clientSecret) {
         throw new Error('Missing required parameters.');
@@ -41,8 +41,12 @@ async function getToken(req, res) {
         delete req.query.code;
         delete req.query.session_state;
         delete req.query.iss;
-        redirectUrl += '?' + new URLSearchParams(req.query).toString();
-    }
+        
+        const searchParamString = new URLSearchParams(req.query).toString();
+        if (searchParamString) {
+          redirectUrl += '?' + searchParamString;
+        }
+      }
 
       // Construct request parameters
       const params = new URLSearchParams({
@@ -147,9 +151,11 @@ async function getLoginUrl(req, res) {
 
       // Extract potential url parameters from the request and add them to the redirect url
       if (req.query && Object.keys(req.query).length > 0) {
-            delete req.query.error;
-            redirectUrl += '?' + new URLSearchParams(req.query).toString();
+        const searchParamString = new URLSearchParams(req.query).toString();
+        if (searchParamString) {
+          redirectUrl += '?' + searchParamString;
         }
+      }
 
       // Construct request parameters
       const params = new URLSearchParams({
@@ -171,11 +177,19 @@ async function getLoginUrl(req, res) {
 async function getLogOutUrl(req, res) {
     try {
       // Extract required parameters
-      const redirectUrl = process.env.WIZARD_OIDC_CLIENT_REDIRECT_URL;
+      let redirectUrl = process.env.WIZARD_OIDC_CLIENT_REDIRECT_URL;
   
       // Validate environment parameters
       if (!redirectUrl) {
         throw new Error('Missing required parameters.');
+      }
+
+      // Extract potential url parameters from the request and add them to the redirect url
+      if (req.query && Object.keys(req.query).length > 0) {
+        const searchParamString = new URLSearchParams(req.query).toString();
+        if (searchParamString) {
+          redirectUrl += '?' + searchParamString;
+        }
       }
   
       // Construct request parameters

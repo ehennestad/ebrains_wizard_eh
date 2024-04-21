@@ -39,8 +39,12 @@ async function login() {
 }
 
 async function logout() {
+    const urlParams = new URLSearchParams(window.location.search);
+
     try {
-        const url = 'api/auth/logouturl'
+        let url = 'api/auth/logouturl'
+        url += '?' + urlParams.toString();
+        
         const logoutResponse = await fetch(url)
         if (!logoutResponse.ok) {
             // Handle non-2xx status codes
