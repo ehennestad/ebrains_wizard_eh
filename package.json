@@ -17,6 +17,7 @@
     "axios": "^0.27.2",
     "bootstrap": "4.6.0",
     "child_process": "^1.0.2",
+    "dotenv": "^16.4.5",
     "ejs": "^2.6.1",
     "express": "^4.18.1",
     "express-fileupload": "^1.4.0",
@@ -49,12 +50,13 @@
     "web-vitals": "^1.1.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "https-localhost": "^4.7.1"
   },
   "scripts": {
     "build": "react-scripts build",
     "postinstall": "node setup.js",
-    "devstart": "export NODE_ENV=development && nodemon server/server.js",
+    "devstart": "HTTPS=true export NODE_ENV=development && nodemon server/server.js",
     "start": "export NODE_ENV=production && node server/server.js",
     "dockerstart": "export NODE_ENV=production && node setup.js && node server/server.js",
     "dev": "node server/internal/assembleSchemas.js && react-scripts start",
@@ -62,7 +64,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "https://localhost:8080",
   "eslintConfig": {
     "extends": [
       "react-app",

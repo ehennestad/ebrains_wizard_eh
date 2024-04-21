@@ -4,6 +4,8 @@
 // Get installed node modules that are needed for the server
 const express           = require('express');           // Express is a framework for creating web apps
 const path              = require('path');              // Path is used for creating file paths
+const dotenv = require('dotenv');
+
 const {sceduledUpdater} = require('./internal/update'); // Module that is used for updating the controlled terms
 
 // Path to the static files that are served by the server
@@ -14,11 +16,19 @@ const STATIC_DIR = path.join(__dirname, '..', '/build');
 const ip = process.env.IP || '0.0.0.0';
 const port = process.env.PORT || 8080;
 
+// Load environment variables in development mode
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config({ path: '.env.local' });
+  var app = require('https-localhost')()
+}
+else {
+  var app = express()
+}
 
 // Create and configure the express app
 // - - - - - - - - - - - - - - - - - - - - - - - - 
 
-const app = express()
+//const app = express()
 
 // Specify that the root directory for serving the files are the 
 // build folder (Important!) When index.html refers to the static files,
@@ -28,6 +38,10 @@ app.use(express.static(STATIC_DIR));
 // Define "api" routes for the frontend client. These routes are defined before 
 // the static file serving, so that the static file serving does not override 
 // the api routes
+
+const authRouter = require('./routes/auth');
+app.use('/api/auth', authRouter);
+
 const submissionRouter = require('./routes/submission');
 app.use('/api/submission', submissionRouter);
 
@@ -36,6 +50,7 @@ app.use('/api/upload', uploadRouter);
 
 const consoleRouter = require('./routes/console');
 app.use('/api/console', consoleRouter);
+
 
 app.get('/test' , (req, res) => { res.send('Ok') }) // Test route
 

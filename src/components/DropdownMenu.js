@@ -50,7 +50,7 @@ const DropdownMenu = ({handleMenuSelection}) => {
 
   return (
   <Space wrap>
-      <ConfigProvider componentSize={"large"}>
+      <ConfigProvider>
         <Dropdown.Button menu={menuProps} onClick={handleButtonClick} icon={<MenuOutlined />} title={'Download form data'}>
         { isCollapsed ? <DownloadOutlined /> : "Download form data" }
         </Dropdown.Button>

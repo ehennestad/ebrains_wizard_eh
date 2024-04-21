@@ -36,9 +36,9 @@ src/schemas/uiSchema.json
 # misc
 .vscode
 .DS_Store
+
 .env.local
 .env.development.local
-.env.test.local
 .env.production.local
 
 npm-debug.log*

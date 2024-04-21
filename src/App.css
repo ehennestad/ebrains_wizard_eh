@@ -99,7 +99,7 @@
 }
 
 .privacy-notice {
-  width: 70%;
+  width: 60%;
   display: inline-block;
   text-align: left;
   margin: 0 auto;
@@ -107,6 +107,17 @@
 
 .subheader-menu {
   width: 30%;
+  margin-right: 0px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: inline-block;
+  text-align: right;
+  vertical-align: top;
+}
+
+.subheader-login {
+  width: 10%;
   padding-right: 0px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -147,6 +158,16 @@
   margin-left: auto;
   margin-right: auto;
   padding: 5px 60px 5px 60px;
+  max-width: var(--max-content-width);
+}
+
+
+.container-content-subheader {
+  margin-top: 0px;
+  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px 20px 5px 20px;
   max-width: var(--max-content-width);
 }
 
@@ -278,6 +299,10 @@ input[type=radio] {
 .btn-primary:hover:disabled {
   background-color: var(--button-color-primary-active-hover);
   border-color: var(--button-color-primary-active-hover);
+}
+
+.custom-button .anticon {
+  vertical-align: middle;
 }
 
 /* Variation where button is gray-bluish (keep just in case) */

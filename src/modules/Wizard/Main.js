@@ -54,6 +54,8 @@ const cookies = new Cookies();
 class Wizard extends React.Component {
   constructor(props) {
     super(props);
+
+    this.user = props.user;
     
     // ticket number of the submission:
     this.ticketNumber = this.getTicketNumberFromUrlParameter();
@@ -79,6 +81,29 @@ class Wizard extends React.Component {
   }
   
   componentDidUpdate(prevProps) {
+
+    if (this.props.user) {
+      if (this.props.user !== prevProps.user) {
+        // Update the general form with user information
+        let generalForm = this.formData.get('general');
+        generalForm["contactperson"] = {
+          "firstName": this.props.user.given_name,
+          "lastName": this.props.user.family_name,
+          "email": this.props.user.email,
+        }
+
+        // Create a new Map object to trigger a re-render
+        this.formData.set('general', generalForm);
+
+        // Ideally this would work, but the form does not re-render
+        //this.setState({formData: newFormData });
+
+        // Instead we brute force it...
+        this.goToWizardStep(WIZARD_STEPS_LIST[1], true, true)
+        // add small pause to allow the form to re-render
+        setTimeout(() => { this.goToWizardStep(WIZARD_STEPS_LIST[0], true, true) }, 100);
+      }
+    }
 
     if (!!this.props.action) {
       if (prevProps.updateKey === this.props.updateKey) {
@@ -157,6 +182,16 @@ class Wizard extends React.Component {
     // Update the general form with ticketnumber from URL
     var generalForm = this.formData.get('general');
     generalForm.ticketNumber = ticketNumber;
+
+    if (this.user) {
+      // Update the general form with user information
+      generalForm.contactperson = {
+        "firstName": this.user.given_name,
+        "lastName": this.user.family_name,
+        "email": this.user.email,
+      }
+    }
+
     this.formData.set('general', generalForm);
 
     // Trigger a re-render to make sure ticket number shows correctly
@@ -610,8 +645,8 @@ class Wizard extends React.Component {
     this.goToWizardStep(TEST);
   }
 
-  render() {
 
+  render() {
     if (process.env.NODE_ENV === "development") {
       switch (this.state.currentStep) {
         case TEST:

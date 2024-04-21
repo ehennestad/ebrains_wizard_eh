@@ -1,6 +1,9 @@
-# Ignore the docket files
+# Ignore the docker files
 .dockerignore
 Dockerfile
+
+# Ignore the .env file
+.env.local
 
 # Ignore node modules which will anyway be created when we run npm install
 /node_modules
