@@ -53,6 +53,7 @@ const UserProvider = ({ children }) => {
     const url = new URL(window.location.href);
     url.searchParams.delete('error');
     window.history.replaceState({}, document.title, url.toString());
+    setIsAuthenticating(false)
   }
 
   React.useEffect(() => {
@@ -62,7 +63,6 @@ const UserProvider = ({ children }) => {
 
     } else {
       if (window.location.href.includes('error=')) {
-        setIsAuthenticating(false)
         handleLoginError()
 
       } else if (window.location.href.includes('code=')) {
@@ -72,7 +72,7 @@ const UserProvider = ({ children }) => {
             .then( (token) => getUser(token) )
               .then( (user) => handleUserReceived(user) )
       } else {
-        setIsAuthenticating(false)
+        //pass
       }
     }
   }, [])
