@@ -81,7 +81,6 @@ class Wizard extends React.Component {
   }
   
   componentDidUpdate(prevProps) {
-
     if (this.props.user) {
       if (this.props.user !== prevProps.user) {
         // Update the general form with user information
@@ -131,7 +130,6 @@ class Wizard extends React.Component {
 
   initializeFormDataMap = (formStates) => {
     let formData = new Map();
-    
     for (let i = 0; i < WIZARD_STEPS_LIST.length; i++) {
       let iFormName = STEP_MAP.get(WIZARD_STEPS_LIST[i]).name;
       if (formStates === undefined) {
@@ -143,8 +141,8 @@ class Wizard extends React.Component {
           // required fields in the schema (but not in the form itself).
           formData.set(iFormName, { 
               datasetVersion: {
-                "experimentalApproachIntro": null,
-                "techniqueIntro": null
+                "_experimentalApproachIntro": "",
+                "_techniqueIntro": ""
               }
             }
           )
@@ -153,6 +151,18 @@ class Wizard extends React.Component {
         }
       } else {
         formData.set(iFormName, formStates[iFormName])
+        // If experiment form is loaded from a json file, then make sure that the _experimentalApproachIntro is a string, not null
+        if (iFormName === 'experiment') {
+          let datasetVersionObj = formData.get(iFormName).datasetVersion;
+
+          if (datasetVersionObj._experimentalApproachIntro === null) {
+            datasetVersionObj._experimentalApproachIntro = "";
+          }
+          if (datasetVersionObj._techniqueIntro === null) {
+            datasetVersionObj._techniqueIntro = "";
+          }
+          formData.set(iFormName, {datasetVersion: datasetVersionObj} );
+        }
       }
     }
     return formData;
@@ -413,10 +423,17 @@ class Wizard extends React.Component {
     formData.append('excelData', subjectExcelData) // Excel data is in the form of a dataURL
     formData.append('previewImage', previewImageFile)
 
+    const messageConfig = {
+      content: 'Submitting form. Please wait...',
+      duration: 0,
+      style: {'fontSize': '1.2em', marginTop: '250px', zIndex: 10000},
+    }
+    message.loading(messageConfig);
+
     // Route the POST request with data to api/sendmail
     axios.post(SUBMISSION_PATH, formData)
-      .then( response => {console.log(response); this.goToWizardStep(WIZARD_SUCCEEDED) } )
-      .catch( error => {console.log(error); this.goToWizardStep(WIZARD_FAILED) } );
+      .then( response => {console.log(response); message.destroy(); this.goToWizardStep(WIZARD_SUCCEEDED) } )
+      .catch( error => {console.log(error); message.destroy(); this.goToWizardStep(WIZARD_FAILED) } );
   }
 
   createJsonStringFromFormData = () => {
@@ -465,13 +482,12 @@ class Wizard extends React.Component {
 
           let loadedJsonFileSpec = this.getJsonFileSpec(jsonObject);
           this.jsonFile = loadedJsonFileSpec;
-
           let formData = jsonObject.formData;
           this.replaceFormData(formData);
           const messageConfig = {
             content: 'Form updated from uploaded JSON.',
             duration: 5,
-            style: {'fontSize': '1.2em'},
+            style: {'fontSize': '1.2em', marginTop: '250px', zIndex: 10000},
           }
           message.success(messageConfig);
 

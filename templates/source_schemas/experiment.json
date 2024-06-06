@@ -157,11 +157,11 @@
     "datasetVersion": {
       "type": "object",
       "title": "",
-      "required": ["experimentalApproach", "experimentalApproachIntro", "technique", "techniqueIntro"],
+      "required": ["experimentalApproach", "technique"],
       "properties": {
         "_experimentalApproachIntro": {
           "type": "string",
-          "title": "Experimental approach",
+          "title": "Experimental approach*",
           "text": "Please indicate which experimental approaches best describe your data. Start typing to find relevant categories and select as many as appropriate. "
         },
         "experimentalApproach": {
@@ -194,7 +194,7 @@
         },
         "_techniqueIntro": {
           "type": "string",
-          "title": "Technique",
+          "title": "Technique*",
           "text": "Please select techniques describing your data acquisition and analysis. Start typing to find relevant techniques and then select from the list. If you cannot find the technique you are looking for, you can add it as a keyword below."
         },
         "technique": {
