@@ -36,6 +36,9 @@ else if (process.env.DEPLOYMENT_LOCATION==='CSCS') {
       user: process.env.EMAIL_ADDRESS_SENDER,
       pass: process.env.EMAIL_PASSWORD
     },
+    tls: {
+      rejectUnauthorized: false
+    },
     logger: true,
     debug: true
   }
