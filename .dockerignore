@@ -4,15 +4,13 @@ Dockerfile
 
 # Ignore the .env file
 .env.local
+.env.*
 
 # Ignore node modules which will anyway be created when we run npm install
 /node_modules
 
 # Ignore production files, they will be created when docker image is run
 /build
-
-# Ignore some secrets
-**/mail_credentials.js
 
 # controlled terms (fetched on run-time)
 /src/controlledTerms/*.json

@@ -38,6 +38,8 @@ src/schemas/uiSchema.json
 .DS_Store
 
 .env.local
+.env.*
+!.env.template
 .env.development.local
 .env.production.local
 
