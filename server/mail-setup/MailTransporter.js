@@ -1,6 +1,7 @@
 // This script creates a transport object which can be used to send emails
 
 //  This script requires the following environment variables to be set:
+//  - DEPLOYMENT_LOCATION : The location where the app is deployed, either local, CSCS or JSC
 //  - EMAIL_HOSTNAME : The hostname of the smtp server, e.g. smtp.gmail.com, a relay server or an ip address.
 //  - EMAIL_ADDRESS_SENDER : The email address of the sender
 //  - EMAIL_PASSWORD : The password of the sender email address (optional, depending on the smtp server configuration)
