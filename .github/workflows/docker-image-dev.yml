@@ -19,6 +19,12 @@ jobs:
         run: |
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/kubeconfig.yaml
+
+      - name: Display kubernetes config
+        env:
+          KUBECONFIG: $HOME/.kube/kubeconfig.yaml
+        run: |
+          cat $HOME/.kube/kubeconfig.yaml
       - name: Update Kubernetes deployment
         env:
           KUBECONFIG: $HOME/.kube/kubeconfig.yaml
