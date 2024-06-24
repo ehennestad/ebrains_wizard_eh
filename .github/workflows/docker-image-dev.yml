@@ -19,12 +19,6 @@ jobs:
         run: |
           mkdir -p ${{ runner.temp }}/.kube
           echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ${{ runner.temp }}/.kube/kubeconfig.yaml
-      - name: Verify KUBECONFIG environment variable
-        env: 
-          KUBECONFIG: ${{ runner.temp }}/.kube/kubeconfig.yaml
-        run: |
-          echo "KUBECONFIG is set to: $KUBECONFIG"
-          ls -l $KUBECONFIG
       - name: Update Kubernetes deployment
         env: 
           KUBECONFIG: ${{ runner.temp }}/.kube/kubeconfig.yaml
