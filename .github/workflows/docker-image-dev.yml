@@ -17,6 +17,6 @@ jobs:
           docker push docker-registry.ebrains.eu/ebrains-data-curation/metadata-wizard-dev:${{ github.sha }}
       - name: Update Kubernetes deployment
         env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
         run: |
           kubectl set image deployment/metadata-wizard-dev container-0=docker-registry.ebrains.eu/ebrains-data-curation/metadata-wizard-dev:${{ github.sha }} --namespace=metadata-wizard-dev
