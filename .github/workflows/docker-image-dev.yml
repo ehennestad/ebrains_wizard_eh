@@ -8,7 +8,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     env:
-      KUBECONFIG: ${{ env.HOME }}/.kube/kubeconfig.yaml
+      KUBECONFIG: ${{ runner.temp }}/.kube/kubeconfig.yaml
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -19,8 +19,8 @@ jobs:
           docker push docker-registry.ebrains.eu/ebrains-data-curation/metadata-wizard-dev:${{ github.sha }}
       - name: Write kubeconfig to file
         run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/kubeconfig.yaml
+          mkdir -p ${{ runner.temp }}/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ${{ runner.temp }}/.kube/kubeconfig.yaml
       - name: Verify KUBECONFIG environment variable
         run: |
           echo "KUBECONFIG is set to: $KUBECONFIG"
