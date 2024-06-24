@@ -7,8 +7,6 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    env:
-      KUBECONFIG: ${{ runner.temp }}/.kube/kubeconfig.yaml
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -22,9 +20,13 @@ jobs:
           mkdir -p ${{ runner.temp }}/.kube
           echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ${{ runner.temp }}/.kube/kubeconfig.yaml
       - name: Verify KUBECONFIG environment variable
+        env: 
+          KUBECONFIG: ${{ runner.temp }}/.kube/kubeconfig.yaml
         run: |
           echo "KUBECONFIG is set to: $KUBECONFIG"
           ls -l $KUBECONFIG
       - name: Update Kubernetes deployment
+        env: 
+          KUBECONFIG: ${{ runner.temp }}/.kube/kubeconfig.yaml
         run: |
           kubectl set image deployment/metadata-wizard-dev container-0=docker-registry.ebrains.eu/ebrains-data-curation/metadata-wizard-dev:${{ github.sha }} --namespace=metadata-wizard-dev
