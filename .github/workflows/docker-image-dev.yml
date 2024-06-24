@@ -17,9 +17,10 @@ jobs:
           docker push docker-registry.ebrains.eu/ebrains-data-curation/metadata-wizard-dev:${{ github.sha }}
       - name: Write kubeconfig to file
         run: |
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
-        env:
-          KUBECONFIG: $HOME/.kube/config
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/kubeconfig.yam
       - name: Update Kubernetes deployment
+        env:
+          KUBECONFIG: $HOME/.kube/kubeconfig.yaml
         run: |
           kubectl set image deployment/metadata-wizard-dev container-0=docker-registry.ebrains.eu/ebrains-data-curation/metadata-wizard-dev:${{ github.sha }} --namespace=metadata-wizard-dev
