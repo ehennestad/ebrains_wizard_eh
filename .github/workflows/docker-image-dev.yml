@@ -24,7 +24,7 @@ jobs:
         env:
           KUBECONFIG: $HOME/.kube/kubeconfig.yaml
         run: |
-          cat $HOME/.kube/kubeconfig.yaml
+          cat $KUBECONFIG
       - name: Update Kubernetes deployment
         env:
           KUBECONFIG: $HOME/.kube/kubeconfig.yaml
