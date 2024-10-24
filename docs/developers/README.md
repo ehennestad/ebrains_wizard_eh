@@ -22,3 +22,9 @@ This version is based on the `dev` branch from https://github.com/ehennestad/ebr
 
 
 
+
+# Useful tips:
+
+## Create app password for gmail to test sending email from local server instance
+Go to the following page to create a new app password for a gmail account:
+https://myaccount.google.com/apppasswords
